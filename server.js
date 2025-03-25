@@ -32,5 +32,5 @@ connectDb();
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
     console.log(`Server started on port ${PORT}`);
-    console.log(`swagger ui is available at "https://localhost:${PORT}/api-docs"`)
+    console.log(`swagger ui is available at "http://localhost:${PORT}/api-docs"`)
 })
