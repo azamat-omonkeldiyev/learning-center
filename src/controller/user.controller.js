@@ -34,7 +34,7 @@ const register = async (req, res) => {
       return res.status(400).json({ error: error.details[0].message });
     }
 
-    let { phone, email, password, region_id, fullname, ...rest } = req.body;
+    let { phone, email, password, region_id,role, fullname, ...rest } = req.body;
 
     let userEmail = await User.findOne({ where: { email } });
     if (userEmail) {
@@ -52,6 +52,10 @@ const register = async (req, res) => {
         message: "Fullname already exists. Please change your username..",
       });
     }
+
+    if (!["user", "ceo"].includes(role)) {
+      return res.status(400).json({ message: "Invalid role" });
+    };
 
     let region = await Region.findByPk(region_id);
     if (!region) return res.status(404).json({ message: "region not found" });
@@ -73,17 +77,88 @@ const register = async (req, res) => {
   }
 };
 
+const createAdmin = async (req, res) => {
+  try {
+    const { error } = userValidationSchema.validate(req.body);
+    if (error) {
+      return res.status(400).json({ error: error.details[0].message });
+    }
+
+    let { phone, email, password, region_id, fullname, role, ...rest } =
+      req.body;
+
+    if (!["admin", "superadmin"].includes(role)) {
+      return res.status(400).json({ message: "Invalid role" });
+    }
+
+    let userEmail = await User.findOne({ where: { email } });
+    if (userEmail)
+      return res.status(400).json({ message: "Email already exists" });
+
+    let userPhone = await User.findOne({ where: { phone } });
+    if (userPhone)
+      return res.status(400).json({ message: "Phone already exists" });
+
+    let usernameFound = await User.findOne({ where: { fullname } });
+    if (usernameFound) {
+      return res
+        .status(400)
+        .json({ message: "Fullname already exists. Please choose another." });
+    }
+
+    let region = await Region.findByPk(region_id);
+    if (!region) return res.status(404).json({ message: "Region not found" });
+
+    let hash = bcrypt.hashSync(password, 10);
+
+    let newAdmin = await User.create({
+      ...rest,
+      fullname,
+      region_id,
+      email,
+      phone,
+      password: hash,
+      role,
+    });
+
+    res.status(201).json(newAdmin);
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ error: err.message });
+  }
+};
+
+const deleteAdmin = async (req, res) => {
+  try {
+    const user = await User.findByPk(req.params.id);
+    if (!user) {
+      return res.status(404).json({ error: "Admin not found" });
+    }
+    await user.destroy();
+    res.status(200).json({ message: "Admin deleted successfully" });
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ error: err.message });
+  }
+};
+
 const login = async (req, res) => {
   try {
     let { fullname, password } = req.body;
     if (!fullname || !password) {
-      return res.status(400).json({ message: "Please enter fullname and password..." });
+      return res
+        .status(400)
+        .json({ message: "Please enter fullname and password..." });
     }
 
     let user = await User.findOne({ where: { fullname } });
 
-    if (!user && fullname === process.env.ADMIN_FULLNAME && password === process.env.ADMIN_PASSWORD) {
-      let hashedPassword = bcrypt.hashSync(password, 10); 
+    if (
+      !user &&
+      fullname === process.env.ADMIN_FULLNAME &&
+      password === process.env.ADMIN_PASSWORD
+    ) {
+      let hashedPassword = bcrypt.hashSync(password, 10);
 
       user = await User.create({
         fullname: process.env.ADMIN_FULLNAME,
@@ -336,4 +411,6 @@ module.exports = {
   updateUser,
   deleteUser,
   me,
+  createAdmin,
+  deleteAdmin,
 };

@@ -73,19 +73,22 @@ const getBranch = async (req, res) => {
   }
 };
 
+// ✅ CREATE BRANCH: CEO faqat o‘zining EduCenteriga branch qo‘sha oladi
 const createBranch = async (req, res) => {
   try {
-    const { fields,subjects, ...rest } = req.body;
-    const { error } = branchValidationSchema.validate(rest, {
-      abortEarly: false,
-    });
-    console.log(fields, subjects)
+    const { fields, subjects, edu_id, ...rest } = req.body;
 
+    const { error } = branchValidationSchema.validate(rest, { abortEarly: false });
     if (error) {
-      return res
-        .status(400)
-        .json({ message: error.details.map((detail) => detail.message) });
-    };
+      return res.status(400).json({ message: error.details.map((detail) => detail.message) });
+    }
+
+    if (req.userRole === "ceo") {
+      const userEdu = await EduCenter.findOne({ where: { id: edu_id, user_id: req.userId } });
+      if (!userEdu) {
+        return res.status(403).json({ message: "You can only create branches for your own education center" });
+      }
+    }
 
     const existingEdu = await Branch.findOne({ where: { name: rest.name } });
     if (existingEdu) {
@@ -94,14 +97,11 @@ const createBranch = async (req, res) => {
     const existingPhone = await Branch.findOne({ where: { phone: rest.phone } });
     if (existingPhone) {
       return res.status(400).json({ message: "This phone number is already in use" });
-    };
+    }
 
-    
     if (subjects && subjects.length > 0) {
       const validSubjects = await Subjects.findAll({ where: { id: subjects } });
-      const validSubjectIds = validSubjects.map((s) => s.id);
-
-      const invalidSubjects = subjects.filter((id) => !validSubjectIds.includes(id));
+      const invalidSubjects = subjects.filter((id) => !validSubjects.some((s) => s.id === id));
       if (invalidSubjects.length > 0) {
         return res.status(400).json({ message: `Invalid subject IDs: ${invalidSubjects.join(", ")}` });
       }
@@ -109,56 +109,35 @@ const createBranch = async (req, res) => {
 
     if (fields && fields.length > 0) {
       const validFields = await Fields.findAll({ where: { id: fields } });
-      const validFieldIds = validFields.map((f) => f.id);
-
-      const invalidFields = fields.filter((id) => !validFieldIds.includes(id));
+      const invalidFields = fields.filter((id) => !validFields.some((f) => f.id === id));
       if (invalidFields.length > 0) {
         return res.status(400).json({ message: `Invalid field IDs: ${invalidFields.join(", ")}` });
       }
-    };
-
-    const branch = await Branch.create(rest);
-    let subjects_branch;
-    if(subjects){
-      subjects_branch = subjects.map((id) => ({
-        edu_id: branch.id,
-        field_id: id,
-      }));
-      await BranchSubject.bulkCreate(subjects_educenter);
-    };
-
-    let fields_branch;
-    if(fields){
-      fields_branch = fields.map((id) => ({
-        edu_id: branch.id,
-        field_id: id,
-      }));
-      await BranchField.bulkCreate(fields_educenter);
     }
 
-    if(!subjects && !fields){
-      return res.status(400).json({message: "fields or subjects is required"})
+    const branch = await Branch.create({ edu_id, ...rest });
+
+    if (subjects && subjects.length > 0) {
+      const subjects_branch = subjects.map((id) => ({ branch_id: branch.id, subject_id: id }));
+      await BranchSubject.bulkCreate(subjects_branch);
     }
 
+    if (fields && fields.length > 0) {
+      const fields_branch = fields.map((id) => ({ branch_id: branch.id, field_id: id }));
+      await BranchField.bulkCreate(fields_branch);
+    }
 
-    res.status(201).json({
-      branch,
-      subjects: subjects_branch,
-      fields: fields_branch
-    });
+    res.status(201).json({ branch });
   } catch (error) {
-    console.log(error);
+    console.error(error);
     res.status(500).json({ message: error.message });
   }
 };
 
+// ✅ UPDATE BRANCH: Faqat CEO o‘zining branchini o‘zgartira oladi
 const updateBranch = async (req, res) => {
   try {
-    // **Faqat yuborilgan maydonlarni tekshiramiz**
-    const { error } = branchValidationSchema.fork(Object.keys(req.body), (schema) =>
-      schema.required()
-    ).validate(req.body, { abortEarly: false });
-
+    const { error } = branchValidationSchema.fork(Object.keys(req.body), (schema) => schema.required()).validate(req.body, { abortEarly: false });
     if (error) {
       return res.status(400).json({ message: error.details.map((detail) => detail.message) });
     }
@@ -168,20 +147,22 @@ const updateBranch = async (req, res) => {
       return res.status(404).json({ error: "Branch not found" });
     }
 
-    // **Unique name & phone tekshirish (agar mavjud bo‘lsa)**
+    if (req.userRole === "ceo") {
+      const userEdu = await EduCenter.findOne({ where: { id: branch.edu_id, user_id: req.userId } });
+      if (!userEdu) {
+        return res.status(403).json({ message: "You can only update branches of your own education center" });
+      }
+    }
+
     if (req.body.name) {
-      const existingBranch = await Branch.findOne({
-        where: { name: req.body.name, id: { [Op.ne]: branch.id } },
-      });
+      const existingBranch = await Branch.findOne({ where: { name: req.body.name, id: { [Op.ne]: branch.id } } });
       if (existingBranch) {
         return res.status(400).json({ message: "This branch name already exists" });
       }
     }
 
     if (req.body.phone) {
-      const existingPhone = await Branch.findOne({
-        where: { phone: req.body.phone, id: { [Op.ne]: branch.id } },
-      });
+      const existingPhone = await Branch.findOne({ where: { phone: req.body.phone, id: { [Op.ne]: branch.id } } });
       if (existingPhone) {
         return res.status(400).json({ message: "This phone number is already in use" });
       }
@@ -202,19 +183,24 @@ const updateBranch = async (req, res) => {
     await branch.update(req.body, { fields: Object.keys(req.body) });
 
     res.status(200).json({ message: "Branch updated successfully", branch });
-
   } catch (error) {
-    console.log(error);
+    console.error(error);
     res.status(500).json({ message: error.message });
   }
 };
 
-
-
+// ✅ DELETE BRANCH: Faqat CEO o‘zining branchini o‘chira oladi
 const deleteBranch = async (req, res) => {
   try {
     const branch = await Branch.findByPk(req.params.id);
     if (!branch) return res.status(404).json({ error: "Branch not found" });
+
+    if (req.useRole === "ceo") {
+      const userEdu = await EduCenter.findOne({ where: { id: branch.edu_id, user_id: req.userId } });
+      if (!userEdu) {
+        return res.status(403).json({ message: "You can only delete branches of your own education center" });
+      }
+    }
 
     await BranchSubject.destroy({ where: { branch_id: branch.id } });
     await BranchField.destroy({ where: { branch_id: branch.id } });
@@ -226,8 +212,6 @@ const deleteBranch = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
-
-
 module.exports = {
   getBranches,
   getBranch,

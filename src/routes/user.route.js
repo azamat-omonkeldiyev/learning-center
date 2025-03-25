@@ -203,7 +203,7 @@ router.post("/refresh", refresh);
  *       500:
  *         description: Server error
  */
-router.get("/me", me);
+router.get("/me",roleMiddleware(["admin", "superadmin", "user", "ceo"]), me);
 
 /**
  * @swagger
@@ -240,7 +240,7 @@ router.get("/me", me);
  *       200:
  *         description: List of users with pagination
  */
-router.get("/", getUsers);
+router.get("/",roleMiddleware(["admin", "superadmin"]), getUsers);
 
 /**
  * @swagger
@@ -261,7 +261,7 @@ router.get("/", getUsers);
  *       404:
  *         description: User not found
  */
-router.get("/:id", getUserById);
+router.get("/:id",roleMiddleware(["admin", "superadmin", "user", "ceo"]), getUserById);
 
 /**
  * @swagger
@@ -300,7 +300,7 @@ router.get("/:id", getUserById);
  *       404:
  *         description: User not found
  */
-router.patch("/:id", updateUser);
+router.patch("/:id",roleMiddleware(["admin", "superadmin", "user", "ceo"]), updateUser);
 
 /**
  * @swagger
@@ -321,6 +321,6 @@ router.patch("/:id", updateUser);
  *       404:
  *         description: User not found
  */
-router.delete("/:id", deleteUser);
+router.delete("/:id",roleMiddleware(["admin", "user", "ceo"]), deleteUser);
 
 module.exports = router;

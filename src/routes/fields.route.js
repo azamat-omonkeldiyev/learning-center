@@ -7,6 +7,7 @@ const {
     updateField,
     deleteField
 } = require('../controller/fields.controller');
+const roleMiddleware = require("../rolemiddleware/roleAuth");
 
 // Fields Routes
 /**
@@ -42,7 +43,7 @@ const {
  *       500:
  *         description: Server error
  */
-router.get('/', getFields);
+router.get('/',roleMiddleware(["admin", "superadmin", "user", "ceo"]), getFields);
 
 /**
  * @swagger
@@ -65,7 +66,7 @@ router.get('/', getFields);
  *       500:
  *         description: Server error
  */
-router.get('/:id', getField);
+router.get('/:id',roleMiddleware(["admin", "superadmin", "user", "ceo"]), getField);
 
 /**
  * @swagger
@@ -88,7 +89,7 @@ router.get('/:id', getField);
  *       500:
  *         description: Server error
  */
-router.post('/', createField);
+router.post('/',roleMiddleware(["admin"]), createField);
 
 /**
  * @swagger
@@ -120,7 +121,7 @@ router.post('/', createField);
  *       500:
  *         description: Server error
  */
-router.patch('/:id', updateField);
+router.patch('/:id',roleMiddleware(["admin", "superadmin"]), updateField);
 
 /**
  * @swagger
@@ -143,6 +144,6 @@ router.patch('/:id', updateField);
  *       500:
  *         description: Server error
  */
-router.delete('/:id', deleteField);
+router.delete('/:id',roleMiddleware(["admin"]), deleteField);
 
 module.exports = router;

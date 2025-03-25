@@ -47,10 +47,10 @@ const userValidationSchema = Joi.object({
             "string.empty": "Image is required"
         }),
     role: Joi.string()
-        .valid("ceo", "user")
+        .valid("ceo", "user", "admin", "superadmin")
         .required()
         .messages({
-            "any.only": "Role must be one of: ceo, user",
+            "any.only": "Role must be one of: ceo, user, admin, superadmin",
             "string.empty": "Role is required"
         })
 }).strict();

@@ -7,6 +7,7 @@ const {
     updateSubject,
     deleteSubject
 } = require('../controller/subjects.controller');
+const roleMiddleware = require("../rolemiddleware/roleAuth");
 
 // Subjects Routes
 /**
@@ -42,7 +43,7 @@ const {
  *       500:
  *         description: Server error
  */
-router.get('/', getSubjects);
+router.get('/',roleMiddleware(["admin", "superadmin", "user", "ceo"]), getSubjects);
 
 /**
  * @swagger
@@ -65,7 +66,7 @@ router.get('/', getSubjects);
  *       500:
  *         description: Server error
  */
-router.get('/:id', getSubject);
+router.get('/:id',roleMiddleware(["admin", "superadmin", "user", "ceo"]), getSubject);
 
 /**
  * @swagger
@@ -88,7 +89,7 @@ router.get('/:id', getSubject);
  *       500:
  *         description: Server error
  */
-router.post('/', createSubject);
+router.post('/',roleMiddleware(["admin"]), createSubject);
 
 /**
  * @swagger
@@ -120,7 +121,7 @@ router.post('/', createSubject);
  *       500:
  *         description: Server error
  */
-router.patch('/:id', updateSubject);
+router.patch('/:id',roleMiddleware(["admin", "superadmin"]), updateSubject);
 
 /**
  * @swagger
@@ -143,6 +144,6 @@ router.patch('/:id', updateSubject);
  *       500:
  *         description: Server error
  */
-router.delete('/:id', deleteSubject);
+router.delete('/:id',roleMiddleware(["admin"]), deleteSubject);
 
 module.exports = router;

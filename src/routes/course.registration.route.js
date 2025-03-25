@@ -7,6 +7,7 @@ const {
     updateEnrollment,
     deleteEnrollment
 } = require('../controller/course.registration.controller');
+const roleMiddleware = require("../rolemiddleware/roleAuth");
 
 // Enrollment Routes
 /**
@@ -47,7 +48,7 @@ const {
  *       500:
  *         description: Server error
  */
-router.get('/', getEnrollments);
+router.get('/',roleMiddleware(["admin"]), getEnrollments);
 
 /**
  * @swagger
@@ -70,7 +71,7 @@ router.get('/', getEnrollments);
  *       500:
  *         description: Server error
  */
-router.get('/:id', getEnrollment);
+router.get('/:id',roleMiddleware(["admin", "superadmin", "user", "ceo"]), getEnrollment);
 
 /**
  * @swagger
@@ -95,7 +96,7 @@ router.get('/:id', getEnrollment);
  *       500:
  *         description: Server error
  */
-router.post('/', createEnrollment);
+router.post('/',roleMiddleware(["admin", "superadmin", "user", "ceo"]), createEnrollment);
 
 /**
  * @swagger
@@ -126,7 +127,7 @@ router.post('/', createEnrollment);
  *       500:
  *         description: Server error
  */
-router.patch('/:id', updateEnrollment);
+router.patch('/:id',roleMiddleware(["admin", "superadmin", "user", "ceo"]), updateEnrollment);
 
 /**
  * @swagger
@@ -149,6 +150,6 @@ router.patch('/:id', updateEnrollment);
  *       500:
  *         description: Server error
  */
-router.delete('/:id', deleteEnrollment);
+router.delete('/:id',roleMiddleware(["admin", "superadmin", "user", "ceo"]), deleteEnrollment);
 
 module.exports = router;

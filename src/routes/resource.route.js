@@ -7,6 +7,7 @@ const {
     updateResource,
     deleteResource
 } = require('../controller/resource.controller');
+const roleMiddleware = require("../rolemiddleware/roleAuth");
 
 // Resource Routes
 /**
@@ -52,7 +53,7 @@ const {
  *       500:
  *         description: Server error
  */
-router.get('/', getResources);
+router.get('/',roleMiddleware(["admin", "superadmin", "user", "ceo"]), getResources);
 
 /**
  * @swagger
@@ -75,7 +76,7 @@ router.get('/', getResources);
  *       500:
  *         description: Server error
  */
-router.get('/:id', getResource);
+router.get('/:id',roleMiddleware(["admin", "superadmin", "user", "ceo"]), getResource);
 
 /**
  * @swagger
@@ -103,7 +104,7 @@ router.get('/:id', getResource);
  *       500:
  *         description: Server error
  */
-router.post('/', createResource);
+router.post('/',roleMiddleware(["admin", "superadmin", "user", "ceo"]), createResource);
 
 /**
  * @swagger
@@ -136,7 +137,7 @@ router.post('/', createResource);
  *       500:
  *         description: Server error
  */
-router.patch('/:id', updateResource);
+router.patch('/:id',roleMiddleware(["admin", "superadmin", "user", "ceo"]), updateResource);
 
 /**
  * @swagger
@@ -159,6 +160,6 @@ router.patch('/:id', updateResource);
  *       500:
  *         description: Server error
  */
-router.delete('/:id', deleteResource);
+router.delete('/:id',roleMiddleware(["admin", "superadmin", "user", "ceo"]), deleteResource);
 
 module.exports = router;

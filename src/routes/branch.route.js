@@ -7,6 +7,7 @@ const {
     updateBranch,
     deleteBranch
 } = require('../controller/branch.controller');
+const roleMiddleware = require("../rolemiddleware/roleAuth");
 
 // Branch Routes
 /**
@@ -70,7 +71,7 @@ const {
  *         description: Server error
  */
 
-router.get('/', getBranches);
+router.get('/',roleMiddleware(["admin", "superadmin", "user", "ceo"]), getBranches);
 
 /**
  * @swagger
@@ -103,7 +104,7 @@ router.get('/', getBranches);
  *       500:
  *         description: Server error
  */
-router.get('/:id', getBranch);
+router.get('/:id',roleMiddleware(["admin", "superadmin", "user", "ceo"]), getBranch);
 
 /**
  * @swagger
@@ -139,7 +140,7 @@ router.get('/:id', getBranch);
  *       500:
  *         description: Server error
  */
-router.post('/', createBranch);
+router.post('/',roleMiddleware(["admin", "ceo"]), createBranch);
 
 /**
  * @swagger
@@ -182,7 +183,7 @@ router.post('/', createBranch);
  *       500:
  *         description: Server error
  */
-router.patch('/:id', updateBranch);
+router.patch('/:id',roleMiddleware(["admin", "superadmin", "ceo"]), updateBranch);
 
 /**
  * @swagger
@@ -206,6 +207,6 @@ router.patch('/:id', updateBranch);
  *       500:
  *         description: Server error
  */
-router.delete('/:id', deleteBranch);
+router.delete('/:id',roleMiddleware(["admin", "ceo"]), deleteBranch);
 
 module.exports = router;

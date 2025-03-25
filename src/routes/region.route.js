@@ -34,7 +34,7 @@ const router = express.Router();
  *       400:
  *         description: Invalid request data
  */
-router.post("/", createRegion);
+router.post("/",roleMiddleware(["admin"]), createRegion);
 
 /**
  * @swagger
@@ -57,7 +57,7 @@ router.post("/", createRegion);
  *       200:
  *         description: List of regions
  */
-router.get("/", getAllRegions);
+router.get("/",roleMiddleware(["admin", "superadmin", "user", "ceo"]), getAllRegions);
 
 /**
  * @swagger
@@ -78,7 +78,7 @@ router.get("/", getAllRegions);
  *       404:
  *         description: Region not found
  */
-router.get("/:id", getRegionById);
+router.get("/:id",roleMiddleware(["admin", "superadmin", "user", "ceo"]), getRegionById);
 
 /**
  * @swagger

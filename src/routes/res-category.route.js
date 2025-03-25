@@ -7,6 +7,7 @@ const {
     updateResCategory,
     deleteResCategory
 } = require('../controller/res-category.controller');
+const roleMiddleware = require("../rolemiddleware/roleAuth");
 
 // Resource Category Routes
 /**
@@ -42,7 +43,7 @@ const {
  *       500:
  *         description: Server error
  */
-router.get('/', getResCategories);
+router.get('/',roleMiddleware(["admin", "superadmin", "user", "ceo"]), getResCategories);
 
 /**
  * @swagger
@@ -65,7 +66,7 @@ router.get('/', getResCategories);
  *       500:
  *         description: Server error
  */
-router.get('/:id', getResCategory);
+router.get('/:id',roleMiddleware(["admin", "superadmin", "user", "ceo"]), getResCategory);
 
 /**
  * @swagger
@@ -88,7 +89,7 @@ router.get('/:id', getResCategory);
  *       500:
  *         description: Server error
  */
-router.post('/', createResCategory);
+router.post('/',roleMiddleware(["admin"]), createResCategory);
 
 /**
  * @swagger
@@ -120,7 +121,7 @@ router.post('/', createResCategory);
  *       500:
  *         description: Server error
  */
-router.patch('/:id', updateResCategory);
+router.patch('/:id',roleMiddleware(["admin", "superadmin"]), updateResCategory);
 
 /**
  * @swagger
@@ -143,6 +144,6 @@ router.patch('/:id', updateResCategory);
  *       500:
  *         description: Server error
  */
-router.delete('/:id', deleteResCategory);
+router.delete('/:id',roleMiddleware(["admin"]), deleteResCategory);
 
 module.exports = router;

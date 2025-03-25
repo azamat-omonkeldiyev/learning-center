@@ -9,6 +9,10 @@ const BranchRoute = require("./src/routes/branch.route");
 const FieldsRoute = require("./src/routes/fields.route");
 const SubjectsRoute = require("./src/routes/subjects.route");
 const CommentRoute = require("./src/routes/comment.route");
+const AdminRoute = require("./src/routes/admin.route");
+const ResCategoryRoute = require("./src/routes/res-category.route");
+const ResourceRoute = require("./src/routes/resource.route");
+const UploadRoute = require("./src/routes/multer.route");
 
 const { swaggerUi, specs } = require("./src/config/swagger");
 // const uploadImageRoute = require("./src/route/multer.route");
@@ -27,8 +31,12 @@ app.use("/branches", BranchRoute);
 app.use("/fields", FieldsRoute);
 app.use("/subjects", SubjectsRoute);
 app.use("/comments", CommentRoute);
+app.use("/admin", AdminRoute);
+app.use("/res-categories",ResCategoryRoute );
+app.use("/resources",ResourceRoute );
+app.use("/upload", UploadRoute);
 
-// app.use("/image", express.static(path.join(__dirname, "src", "uploads")));
+app.use("/image", express.static(path.join(__dirname, "src", "uploads")));
 connectDb();
 
 const PORT = process.env.PORT || 3000;

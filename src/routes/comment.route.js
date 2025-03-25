@@ -7,6 +7,7 @@ const {
     updateComment,
     deleteComment
 } = require('../controller/comment.controller');
+const roleMiddleware = require("../rolemiddleware/roleAuth");
 
 // Comment Routes
 /**
@@ -57,7 +58,7 @@ const {
  *       500:
  *         description: Server error
  */
-router.get('/', getComments);
+router.get('/',roleMiddleware(["admin", "superadmin", "user", "ceo"]), getComments);
 
 /**
  * @swagger
@@ -80,7 +81,7 @@ router.get('/', getComments);
  *       500:
  *         description: Server error
  */
-router.get('/:id', getComment);
+router.get('/:id',roleMiddleware(["admin", "superadmin", "user", "ceo"]), getComment);
 
 /**
  * @swagger
@@ -105,7 +106,7 @@ router.get('/:id', getComment);
  *       500:
  *         description: Server error
  */
-router.post('/', createComment);
+router.post('/',roleMiddleware(["admin", "superadmin", "user", "ceo"]), createComment);
 
 /**
  * @swagger
@@ -137,7 +138,7 @@ router.post('/', createComment);
  *       500:
  *         description: Server error
  */
-router.patch('/:id', updateComment);
+router.patch('/:id',roleMiddleware(["admin", "superadmin", "user", "ceo"]), updateComment);
 
 /**
  * @swagger
@@ -160,6 +161,6 @@ router.patch('/:id', updateComment);
  *       500:
  *         description: Server error
  */
-router.delete('/:id', deleteComment);
+router.delete('/:id',roleMiddleware(["admin", "superadmin", "user", "ceo"]), deleteComment);
 
 module.exports = router;
