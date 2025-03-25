@@ -1,4 +1,6 @@
-const {db, DataTypes} = require('../config/db')
+const {db, DataTypes} = require('../config/db');
+const EduCenter = require('./edu_center.model');
+const User = require('./user.model');
 
 const Comment = db.define("comments", {
     id: {
@@ -22,7 +24,13 @@ const Comment = db.define("comments", {
         type: DataTypes.UUID,
         allowNull: false,
     }
-})
+});
+
+Comment.belongsTo(User, { foreignKey: "user_id", onDelete: "CASCADE" });
+User.hasMany(Comment, { foreignKey: "user_id", onDelete: "CASCADE" });
+
+Comment.belongsTo(EduCenter, { foreignKey: "edu_id", onDelete: "CASCADE" });
+EduCenter.hasMany(Comment, { foreignKey: "edu_id", onDelete: "CASCADE" });
 
 
 module.exports = Comment

@@ -1,4 +1,6 @@
-const {db, DataTypes} = require('../config/db')
+const {db, DataTypes} = require('../config/db');
+const resCategory = require('./res-category.model');
+const User = require('./user.model');
 
 const Resource = db.define("resources", {
     id: {
@@ -34,6 +36,13 @@ const Resource = db.define("resources", {
         type: DataTypes.UUID,
         allowNull: false,
     }
-})
+});
+
+Resource.belongsTo(User, { foreignKey: "user_id", onDelete: "CASCADE" });
+User.hasMany(Resource, { foreignKey: "user_id", onDelete: "CASCADE" });
+
+Resource.belongsTo(resCategory, { foreignKey: "edu_id", onDelete: "CASCADE" });
+resCategory.hasMany(Resource, { foreignKey: "edu_id", onDelete: "CASCADE" });
+
 
 module.exports = Resource
