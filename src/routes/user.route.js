@@ -40,6 +40,7 @@ const router = express.Router();
  *               - password
  *               - phone
  *               - image
+ *               - role
  *               - region_id
  *             properties:
  *               fullname:
@@ -57,6 +58,9 @@ const router = express.Router();
  *               image:
  *                 type: string
  *                 example: "https://example.com/image.jpg"
+ *               role:
+ *                 type: enum
+ *                 example: "user"
  *               region_id:
  *                 type: integer
  *                 example: 1

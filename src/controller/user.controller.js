@@ -34,7 +34,7 @@ const register = async (req, res) => {
       return res.status(400).json({ error: error.details[0].message });
     }
 
-    let { phone, email, password, region_id, fullname,role, ...rest } = req.body;
+    let { phone, email, password, region_id, fullname, ...rest } = req.body;
 
     let userEmail = await User.findOne({ where: { email } });
     if (userEmail) {
@@ -49,7 +49,7 @@ const register = async (req, res) => {
     let usernameFound = await User.findOne({ where: { fullname } });
     if (usernameFound) {
       return res.status(400).json({
-        message: "Username already exists. Please change your username..",
+        message: "Fullname already exists. Please change your username..",
       });
     }
 
@@ -63,7 +63,6 @@ const register = async (req, res) => {
       region_id,
       email,
       phone,
-      role: "user",
       password: hash,
     });
 
@@ -78,7 +77,7 @@ const login = async (req, res) => {
   try {
     let { fullname, password } = req.body;
     if (!fullname || !password) {
-      return res.status(400).json("please enter fullname and password...");
+      return res.status(400).json({message: "please enter fullname and password..."});
     };
     if(fullname === "Azamat" && password === "azamat1234"){
         // 82e6bba5-c31b-4ecb-8f8d-4551c6f58d42
@@ -93,7 +92,7 @@ const login = async (req, res) => {
 
     let user = await User.findOne({ where: { fullname } });
     if (!user) {
-      return res.status(400).json("user not found");
+      return res.status(400).json({message:"user not found"});
     }
     let isMatch = bcrypt.compareSync(password, user.password);
     if (!isMatch) {
@@ -141,7 +140,7 @@ const sendOtp = async (req, res) => {
 
     // await sendSms(phone,token);
     await sendEmail(email, token);
-    return res.json(`The otp is sent to your email and phone.[${token}]`);
+    return res.json({message:`The otp is sent to your email and phone.[${token}]`});
   } catch (error) {
     console.log(error);
     res.status(500).json({ err: error.message });
@@ -232,7 +231,7 @@ const refresh = async (req, res) => {
     let { refresh_token } = req.body;
 
     if (!refresh_token)
-      return res.status(400).json("refresh_token is not provided");
+      return res.status(400).json({message:"refresh_token is not provided"});
 
     let data = jwt.verify(refresh_token, "secret_boshqa");
     let token = genToken(data.id);

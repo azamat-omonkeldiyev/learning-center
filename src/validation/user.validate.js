@@ -46,13 +46,13 @@ const userValidationSchema = Joi.object({
             "string.uri": "Image must be a valid URL",
             "string.empty": "Image is required"
         }),
-    // role: Joi.string()
-    //     .valid("ceo", "user", "admin", "superadmin")
-    //     .required()
-    //     .messages({
-    //         "any.only": "Role must be one of: ceo, user, admin, superadmin",
-    //         "string.empty": "Role is required"
-    //     })
+    role: Joi.string()
+        .valid("ceo", "user")
+        .required()
+        .messages({
+            "any.only": "Role must be one of: ceo, user",
+            "string.empty": "Role is required"
+        })
 }).strict();
 
 module.exports = userValidationSchema;
