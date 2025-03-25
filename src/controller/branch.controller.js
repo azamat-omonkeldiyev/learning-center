@@ -3,6 +3,8 @@ const EduCenter = require("../models/edu_center.model");
 const Enrollment = require("../models/course_register.model");
 const branchValidationSchema = require("../validation/branch.validate");
 const { Op } = require("sequelize");
+const SubjectsOfEdu = require("../models/edu_center_subjects.model");
+const FieldsOfEdu = require("../models/edu_center_fields.model");
 
 const getBranches = async (req, res) => {
   try {
@@ -77,16 +79,44 @@ const getBranch = async (req, res) => {
 
 const createBranch = async (req, res) => {
   try {
-    const { error } = branchValidationSchema.validate(req.body, {
+    const { fields,subjects, ...rest } = req.body;
+    const { error } = branchValidationSchema.validate(rest, {
       abortEarly: false,
     });
+    console.log(fields, subjects)
+
     if (error) {
       return res
         .status(400)
         .json({ message: error.details.map((detail) => detail.message) });
+    };
+    const branch = await Branch.create(req.body);
+    console.log(branch.id, "salomlarrrrrrrrrrr")
+    let subjects_educenter;
+    if(subjects){
+      subjects_educenter = subjects.map((id) => ({
+        edu_id: branch.id,
+        field_id: id,
+      }));
+      await SubjectsOfEdu.bulkCreate(subjects_educenter);
+      console.log(subjects_educenter);
+    };
+
+    let fields_educenter;
+    if(fields){
+      fields_educenter = fields.map((id) => ({
+        edu_id: branch.id,
+        field_id: id,
+      }));
+      await FieldsOfEdu.bulkCreate(fields_educenter);
+      console.log(fields_educenter);
     }
 
-    const branch = await Branch.create(req.body);
+    if(!subjects && !fields){
+      return res.status(400).json({message: "fields or subjects is required"})
+    }
+
+
     res.status(201).json(branch);
   } catch (error) {
     console.log(error);

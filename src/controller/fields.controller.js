@@ -8,7 +8,6 @@ const getFields = async (req, res) => {
     const { page, limit, sort, name } = req.query;
 
     const queryOptions = {
-      include: [{ model: EduCenter, attributes: ["id", "name"] }],
       where: {},
       order: [],
     };

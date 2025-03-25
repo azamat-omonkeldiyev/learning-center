@@ -12,7 +12,7 @@ const educenterValidationSchema = Joi.object({
             'string.max': 'Name cannot exceed 100 characters'
         }),
     phone: Joi.string()
-        .pattern(/^\+?[1-9]\d{1,14}$/)
+        .pattern(/^\+?[1-9]\d{7,14}$/)
         .required()
         .messages({
             'string.base': 'Phone must be a string',
