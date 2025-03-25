@@ -77,23 +77,29 @@ const login = async (req, res) => {
   try {
     let { fullname, password } = req.body;
     if (!fullname || !password) {
-      return res.status(400).json({message: "please enter fullname and password..."});
-    };
-    if(fullname === "Azamat" && password === "azamat1234"){
-        // 82e6bba5-c31b-4ecb-8f8d-4551c6f58d42
-        let user = {
-            id: "82e6bba5-c31b-4ecb-8f8d-4551c6f58d42",
-            role: "admin"
-        }
-        let access_token = genToken(user);
-        let refresh_token = genRefreshToken(user);
-        return res.json({ access_token, refresh_token });
-    };
+      return res.status(400).json({ message: "Please enter fullname and password..." });
+    }
 
     let user = await User.findOne({ where: { fullname } });
-    if (!user) {
-      return res.status(400).json({message:"user not found"});
+
+    if (!user && fullname === process.env.ADMIN_FULLNAME && password === process.env.ADMIN_PASSWORD) {
+      let hashedPassword = bcrypt.hashSync(password, 10); 
+
+      user = await User.create({
+        fullname: process.env.ADMIN_FULLNAME,
+        email: process.env.ADMIN_EMAIL,
+        password: hashedPassword,
+        phone: process.env.ADMIN_PHONE,
+        image: process.env.ADMIN_IMAGE,
+        role: process.env.ADMIN_ROLE,
+      });
     }
+
+    if (!user) {
+      return res.status(400).json({ message: "User not found" });
+    }
+
+    // Parolni tekshirish
     let isMatch = bcrypt.compareSync(password, user.password);
     if (!isMatch) {
       return res.status(400).json({ message: "Invalid password" });
@@ -104,7 +110,7 @@ const login = async (req, res) => {
 
     res.json({ access_token, refresh_token });
   } catch (error) {
-    console.log(error);
+    console.error(error);
     res.status(500).json({ message: error.message });
   }
 };
@@ -140,7 +146,9 @@ const sendOtp = async (req, res) => {
 
     // await sendSms(phone,token);
     await sendEmail(email, token);
-    return res.json({message:`The otp is sent to your email and phone.[${token}]`});
+    return res.json({
+      message: `The otp is sent to your email and phone.[${token}]`,
+    });
   } catch (error) {
     console.log(error);
     res.status(500).json({ err: error.message });
@@ -231,7 +239,7 @@ const refresh = async (req, res) => {
     let { refresh_token } = req.body;
 
     if (!refresh_token)
-      return res.status(400).json({message:"refresh_token is not provided"});
+      return res.status(400).json({ message: "refresh_token is not provided" });
 
     let data = jwt.verify(refresh_token, "secret_boshqa");
     let token = genToken(data.id);
@@ -247,7 +255,6 @@ const { Op } = require("sequelize");
 
 const updateUser = async (req, res) => {
   try {
-
     const { error } = userValidationSchema
       .fork(Object.keys(req.body), (schema) => schema.required())
       .validate(req.body, { abortEarly: false });

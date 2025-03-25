@@ -57,14 +57,6 @@ const educenterValidationSchema = Joi.object({
             'number.min': 'Branch count cannot be negative',
             'any.required': 'Branch count is required'
         }),
-    CEO_id: Joi.string()
-        .uuid()
-        .required()
-        .messages({
-            'string.base': 'CEO ID must be a string',
-            'string.empty': 'CEO ID is required',
-            'string.uuid': 'CEO ID must be a valid UUID'
-        }),
     description: Joi.string()
         .min(10)
         .max(1000)

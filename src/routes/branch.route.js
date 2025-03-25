@@ -41,12 +41,35 @@ const {
  *         schema:
  *           type: string
  *         description: Filter by EduCenter ID
+ *       - in: query
+ *         name: subject_id
+ *         schema:
+ *           type: integer
+ *         description: Filter by Subject ID
+ *       - in: query
+ *         name: field_id
+ *         schema:
+ *           type: integer
+ *         description: Filter by Field ID
  *     responses:
  *       200:
  *         description: List of Branches retrieved successfully
+ *         content:
+ *           application/json:
+ *             example:
+ *               total: 2
+ *               page: 1
+ *               totalPages: 1
+ *               data:
+ *                 - id: "550e8400-e29b-41d4-a716-446655440000"
+ *                   name: "Branch A"
+ *                   phone: "+1234567890"
+ *                   subjects: [1, 2]
+ *                   fields: [3, 4]
  *       500:
  *         description: Server error
  */
+
 router.get('/', getBranches);
 
 /**
@@ -66,6 +89,15 @@ router.get('/', getBranches);
  *     responses:
  *       200:
  *         description: Branch details retrieved successfully
+ *         content:
+ *           application/json:
+ *             example:
+ *               id: "550e8400-e29b-41d4-a716-446655440000"
+ *               name: "Branch A"
+ *               phone: "+1234567890"
+ *               address: "789 Oak St"
+ *               subjects: [1, 2]
+ *               fields: [3, 4]
  *       404:
  *         description: Branch not found
  *       500:
@@ -90,9 +122,18 @@ router.get('/:id', getBranch);
  *             address: "789 Oak St"
  *             region_id: 1
  *             edu_id: "550e8400-e29b-41d4-a716-446655440000"
+ *             subjects: [1, 2]
+ *             fields: [3, 4]
  *     responses:
  *       201:
  *         description: Branch created successfully
+ *         content:
+ *           application/json:
+ *             example:
+ *               id: "550e8400-e29b-41d4-a716-446655440000"
+ *               name: "Branch A"
+ *               subjects: [1, 2]
+ *               fields: [3, 4]
  *       400:
  *         description: Validation failed
  *       500:
@@ -121,9 +162,19 @@ router.post('/', createBranch);
  *           example:
  *             name: "Updated Branch A"
  *             address: "101 Pine St"
+ *             subjects: [1, 3]
+ *             fields: [2, 5]
  *     responses:
  *       200:
  *         description: Branch updated successfully
+ *         content:
+ *           application/json:
+ *             example:
+ *               id: "550e8400-e29b-41d4-a716-446655440000"
+ *               name: "Updated Branch A"
+ *               address: "101 Pine St"
+ *               subjects: [1, 3]
+ *               fields: [2, 5]
  *       400:
  *         description: Validation failed
  *       404:

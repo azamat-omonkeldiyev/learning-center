@@ -7,6 +7,7 @@ const {
     updateEduCenter,
     deleteEduCenter
 } = require('../controller/edu_center.controller');
+const roleMiddleware = require("../rolemiddleware/roleAuth");
 
 // EduCenter Routes
 /**
@@ -57,7 +58,7 @@ const {
  *       500:
  *         description: Server error
  */
-router.get('/', getEduCenters);
+router.get('/',roleMiddleware(["admin", "superadmin","ceo", "user"]), getEduCenters);
 
 /**
  * @swagger
@@ -81,7 +82,7 @@ router.get('/', getEduCenters);
  *       500:
  *         description: Server error
  */
-router.get('/:id', getEduCenter);
+router.get('/:id',roleMiddleware(["admin", "superadmin","ceo", "user"]), getEduCenter);
 
 /**
  * @swagger
@@ -100,7 +101,6 @@ router.get('/:id', getEduCenter);
  *             address: "123 Main St"
  *             region_id: 1
  *             branchCount: 3
- *             CEO_id: "550e8400-e29b-41d4-a716-446655440001"
  *             description: "A leading education center"
  *             subjects: [1, 2, 3]  # REQUIRED
  *             fields: [4, 5]       # REQUIRED
@@ -115,7 +115,7 @@ router.get('/:id', getEduCenter);
  *       - `subjects` **required** → At least one subject ID must be provided.
  *       - `fields` **required** → At least one field ID must be provided.
  */
-router.post('/', createEduCenter);
+router.post('/',roleMiddleware(["admin","ceo"]), createEduCenter);
 
 /**
  * @swagger
@@ -154,7 +154,7 @@ router.post('/', createEduCenter);
  *       - Send only the fields you want to update.
  *       - If updating `subjects` or `fields`, send the **new** array of IDs.
  */
-router.patch('/:id', updateEduCenter);
+router.patch('/:id',roleMiddleware(["admin", "superadmin","ceo"]), updateEduCenter);
 
 /**
  * @swagger
@@ -178,6 +178,6 @@ router.patch('/:id', updateEduCenter);
  *       500:
  *         description: Server error
  */
-router.delete('/:id', deleteEduCenter);
+router.delete('/:id',roleMiddleware(["admin","ceo"]), deleteEduCenter);
 
 module.exports = router;

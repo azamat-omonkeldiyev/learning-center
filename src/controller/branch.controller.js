@@ -3,17 +3,22 @@ const EduCenter = require("../models/edu_center.model");
 const Enrollment = require("../models/course_register.model");
 const branchValidationSchema = require("../validation/branch.validate");
 const { Op } = require("sequelize");
-const SubjectsOfEdu = require("../models/edu_center_subjects.model");
+const BranchSubject = require("../models/branch_subjects.model");
+const BranchField = require("../models/branch_fields.model");
+const Subjects = require("../models/subject.model");
+const Fields = require("../models/fields.model");
 const FieldsOfEdu = require("../models/edu_center_fields.model");
 
 const getBranches = async (req, res) => {
   try {
-    const { page, limit, sort, name, edu_id } = req.query;
+    const { page, limit, sort, name, edu_id, subject_id, field_id } = req.query;
 
     const queryOptions = {
       include: [
         { model: EduCenter, attributes: ["id", "name"] },
         { model: Enrollment, attributes: ["id", "date"] },
+        { model: Subjects, through: { attributes: [] }, as: "subjects" },
+        { model: FieldsOfEdu, through: { attributes: [] }, as: "fields" },
       ],
       where: {},
       order: [],
@@ -26,36 +31,25 @@ const getBranches = async (req, res) => {
 
     if (sort) {
       const [sortField, sortOrder] = sort.split(":");
-      queryOptions.order.push([
-        sortField || "createdAt",
-        sortOrder && sortOrder.toUpperCase() === "DESC" ? "DESC" : "ASC",
-      ]);
+      queryOptions.order.push([sortField || "createdAt", sortOrder?.toUpperCase() === "DESC" ? "DESC" : "ASC"]);
     } else {
       queryOptions.order.push(["createdAt", "ASC"]);
     }
 
-    if (name) {
-      queryOptions.where.name = { [Op.like]: `%${name}%` };
-    }
-    if (edu_id) {
-      queryOptions.where.edu_id = edu_id;
-    }
+    if (name) queryOptions.where.name = { [Op.like]: `%${name}%` };
+    if (edu_id) queryOptions.where.edu_id = edu_id;
+    if (subject_id) queryOptions.include[2].where = { id: subject_id };
+    if (field_id) queryOptions.include[3].where = { id: field_id };
 
     const branches = await Branch.findAndCountAll(queryOptions);
 
-    const response = {
+    res.json({
       data: branches.rows,
       total: branches.count,
-    };
-
-    if (page && limit) {
-      response.page = parseInt(page);
-      response.totalPages = Math.ceil(branches.count / limit);
-    }
-
-    res.json(response);
+      ...(page && limit && { page: parseInt(page), totalPages: Math.ceil(branches.count / limit) }),
+    });
   } catch (error) {
-    console.log(error);
+    console.error(error);
     res.status(500).json({ message: error.message });
   }
 };
@@ -66,13 +60,15 @@ const getBranch = async (req, res) => {
       include: [
         { model: EduCenter, attributes: ["id", "name"] },
         { model: Enrollment, attributes: ["id", "date"] },
+        { model: Subjects, through: { attributes: [] }, as: "subjects" },
+        { model: Fields, through: { attributes: [] }, as: "fields" },
       ],
     });
     if (!branch) return res.status(404).json({ error: "Branch not found" });
 
     res.json(branch);
   } catch (error) {
-    console.log(error);
+    console.error(error);
     res.status(500).json({ message: error.message });
   }
 };
@@ -90,26 +86,54 @@ const createBranch = async (req, res) => {
         .status(400)
         .json({ message: error.details.map((detail) => detail.message) });
     };
-    const branch = await Branch.create(req.body);
-    console.log(branch.id, "salomlarrrrrrrrrrr")
-    let subjects_educenter;
-    if(subjects){
-      subjects_educenter = subjects.map((id) => ({
-        edu_id: branch.id,
-        field_id: id,
-      }));
-      await SubjectsOfEdu.bulkCreate(subjects_educenter);
-      console.log(subjects_educenter);
+
+    const existingEdu = await Branch.findOne({ where: { name: rest.name } });
+    if (existingEdu) {
+      return res.status(400).json({ message: "This education branch name already exists" });
+    }
+    const existingPhone = await Branch.findOne({ where: { phone: rest.phone } });
+    if (existingPhone) {
+      return res.status(400).json({ message: "This phone number is already in use" });
     };
 
-    let fields_educenter;
-    if(fields){
-      fields_educenter = fields.map((id) => ({
+    
+    if (subjects && subjects.length > 0) {
+      const validSubjects = await Subjects.findAll({ where: { id: subjects } });
+      const validSubjectIds = validSubjects.map((s) => s.id);
+
+      const invalidSubjects = subjects.filter((id) => !validSubjectIds.includes(id));
+      if (invalidSubjects.length > 0) {
+        return res.status(400).json({ message: `Invalid subject IDs: ${invalidSubjects.join(", ")}` });
+      }
+    }
+
+    if (fields && fields.length > 0) {
+      const validFields = await Fields.findAll({ where: { id: fields } });
+      const validFieldIds = validFields.map((f) => f.id);
+
+      const invalidFields = fields.filter((id) => !validFieldIds.includes(id));
+      if (invalidFields.length > 0) {
+        return res.status(400).json({ message: `Invalid field IDs: ${invalidFields.join(", ")}` });
+      }
+    };
+
+    const branch = await Branch.create(rest);
+    let subjects_branch;
+    if(subjects){
+      subjects_branch = subjects.map((id) => ({
         edu_id: branch.id,
         field_id: id,
       }));
-      await FieldsOfEdu.bulkCreate(fields_educenter);
-      console.log(fields_educenter);
+      await BranchSubject.bulkCreate(subjects_educenter);
+    };
+
+    let fields_branch;
+    if(fields){
+      fields_branch = fields.map((id) => ({
+        edu_id: branch.id,
+        field_id: id,
+      }));
+      await BranchField.bulkCreate(fields_educenter);
     }
 
     if(!subjects && !fields){
@@ -117,7 +141,11 @@ const createBranch = async (req, res) => {
     }
 
 
-    res.status(201).json(branch);
+    res.status(201).json({
+      branch,
+      subjects: subjects_branch,
+      fields: fields_branch
+    });
   } catch (error) {
     console.log(error);
     res.status(500).json({ message: error.message });
@@ -126,38 +154,79 @@ const createBranch = async (req, res) => {
 
 const updateBranch = async (req, res) => {
   try {
-    const branch = await Branch.findByPk(req.params.id);
-    if (!branch) return res.status(404).json({ error: "Branch not found" });
+    // **Faqat yuborilgan maydonlarni tekshiramiz**
+    const { error } = branchValidationSchema.fork(Object.keys(req.body), (schema) =>
+      schema.required()
+    ).validate(req.body, { abortEarly: false });
 
-    const { error } = branchValidationSchema.validate(req.body, {
-      abortEarly: false,
-    });
     if (error) {
-      return res
-        .status(400)
-        .json({ message: error.details.map((detail) => detail.message) });
+      return res.status(400).json({ message: error.details.map((detail) => detail.message) });
     }
 
-    await branch.update(req.body);
-    res.json(branch);
+    const branch = await Branch.findByPk(req.params.id);
+    if (!branch) {
+      return res.status(404).json({ error: "Branch not found" });
+    }
+
+    // **Unique name & phone tekshirish (agar mavjud bo‘lsa)**
+    if (req.body.name) {
+      const existingBranch = await Branch.findOne({
+        where: { name: req.body.name, id: { [Op.ne]: branch.id } },
+      });
+      if (existingBranch) {
+        return res.status(400).json({ message: "This branch name already exists" });
+      }
+    }
+
+    if (req.body.phone) {
+      const existingPhone = await Branch.findOne({
+        where: { phone: req.body.phone, id: { [Op.ne]: branch.id } },
+      });
+      if (existingPhone) {
+        return res.status(400).json({ message: "This phone number is already in use" });
+      }
+    }
+
+    if (req.body.subjects) {
+      await BranchSubject.destroy({ where: { branch_id: branch.id } });
+      const subjectLinks = req.body.subjects.map((id) => ({ branch_id: branch.id, subject_id: id }));
+      await BranchSubject.bulkCreate(subjectLinks);
+    }
+
+    if (req.body.fields) {
+      await BranchField.destroy({ where: { branch_id: branch.id } });
+      const fieldLinks = req.body.fields.map((id) => ({ branch_id: branch.id, field_id: id }));
+      await BranchField.bulkCreate(fieldLinks);
+    }
+
+    await branch.update(req.body, { fields: Object.keys(req.body) });
+
+    res.status(200).json({ message: "Branch updated successfully", branch });
+
   } catch (error) {
     console.log(error);
     res.status(500).json({ message: error.message });
   }
 };
+
+
 
 const deleteBranch = async (req, res) => {
   try {
     const branch = await Branch.findByPk(req.params.id);
     if (!branch) return res.status(404).json({ error: "Branch not found" });
 
+    await BranchSubject.destroy({ where: { branch_id: branch.id } });
+    await BranchField.destroy({ where: { branch_id: branch.id } });
     await branch.destroy();
+
     res.status(200).json({ message: "Deleted successfully" });
   } catch (error) {
-    console.log(error);
+    console.error(error);
     res.status(500).json({ message: error.message });
   }
 };
+
 
 module.exports = {
   getBranches,

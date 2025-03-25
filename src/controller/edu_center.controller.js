@@ -140,14 +140,13 @@ const createEduCenter = async (req, res) => {
     const { subjects, fields, ...rest } = req.body;
     console.log(req.body);
     const user_id = req.userId;
+    console.log(rest);
 
-    // Validation
     const { error } = educenterValidationSchema.validate(rest, { abortEarly: false });
     if (error) {
       return res.status(400).json({ message: error.details.map((detail) => detail.message) });
     }
 
-    // Unique name va phone tekshirish
     const existingEdu = await EduCenter.findOne({ where: { name: rest.name } });
     if (existingEdu) {
       return res.status(400).json({ message: "This education center name already exists" });
@@ -157,7 +156,6 @@ const createEduCenter = async (req, res) => {
       return res.status(400).json({ message: "This phone number is already in use" });
     }
 
-    // **Subjects IDlarini tekshiramiz (EduCenter yaratishdan oldin!)**
     if (subjects && subjects.length > 0) {
       const validSubjects = await Subjects.findAll({ where: { id: subjects } });
       const validSubjectIds = validSubjects.map((s) => s.id);
@@ -168,7 +166,6 @@ const createEduCenter = async (req, res) => {
       }
     }
 
-    // **Fields IDlarini tekshiramiz (EduCenter yaratishdan oldin!)**
     if (fields && fields.length > 0) {
       const validFields = await Fields.findAll({ where: { id: fields } });
       const validFieldIds = validFields.map((f) => f.id);
@@ -179,8 +176,7 @@ const createEduCenter = async (req, res) => {
       }
     }
 
-    // **Tekshiruvlardan o‘tganidan keyin EduCenter yaratamiz**
-    const educenter = await EduCenter.create(rest);
+    const educenter = await EduCenter.create({ ...rest, CEO_id:user_id});
 
     // Subjects bog‘lash
     let subjects_educenter;

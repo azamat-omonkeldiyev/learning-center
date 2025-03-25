@@ -21,7 +21,6 @@ const User = db.define("user", {
   },
   region_id: {
     type: DataTypes.INTEGER,
-    allowNull: false,
     references: {
       model: Region,
       key: "id",
