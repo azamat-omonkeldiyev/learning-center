@@ -14,7 +14,7 @@ const router = express.Router();
  * @swagger
  * /regions:
  *   post:
- *     summary: Create a new region
+ *     summary: Create a new region ➕
  *     tags: [Regions]
  *     requestBody:
  *       required: true
@@ -40,7 +40,7 @@ router.post("/", createRegion);
  * @swagger
  * /regions:
  *   get:
- *     summary: Get all regions
+ *     summary: Get all regions 🌍
  *     tags: [Regions]
  *     parameters:
  *       - in: query
@@ -63,7 +63,7 @@ router.get("/", getAllRegions);
  * @swagger
  * /regions/{id}:
  *   get:
- *     summary: Get region by ID
+ *     summary: Get region by ID 🔍
  *     tags: [Regions]
  *     parameters:
  *       - in: path
@@ -84,7 +84,7 @@ router.get("/:id", getRegionById);
  * @swagger
  * /regions/{id}:
  *   patch:
- *     summary: Update a region
+ *     summary: Update a region ✏️
  *     tags: [Regions]
  *     parameters:
  *       - in: path
@@ -109,13 +109,13 @@ router.get("/:id", getRegionById);
  *       404:
  *         description: Region not found
  */
-router.patch("/:id",roleMiddleware(["admin", "superadmin"]), updateRegion);
+router.patch("/:id", roleMiddleware(["admin", "superadmin"]), updateRegion);
 
 /**
  * @swagger
  * /regions/{id}:
  *   delete:
- *     summary: Delete a region
+ *     summary: Delete a region 🗑️
  *     tags: [Regions]
  *     parameters:
  *       - in: path
@@ -130,6 +130,6 @@ router.patch("/:id",roleMiddleware(["admin", "superadmin"]), updateRegion);
  *       404:
  *         description: Region not found
  */
-router.delete("/:id",roleMiddleware(["admin"]), deleteRegion);
+router.delete("/:id", roleMiddleware(["admin"]), deleteRegion);
 
 module.exports = router;

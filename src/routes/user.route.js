@@ -26,7 +26,7 @@ const router = express.Router();
  * @swagger
  * /users/register:
  *   post:
- *     summary: Register a new user
+ *     summary: Register a new user 📝
  *     tags: [Users]
  *     requestBody:
  *       required: true
@@ -76,7 +76,7 @@ router.post("/register", register);
  * @swagger
  * /users/login:
  *   post:
- *     summary: Login a user
+ *     summary: Login a user 🔑
  *     tags: [Users]
  *     requestBody:
  *       required: true
@@ -106,7 +106,7 @@ router.post("/login", login);
  * @swagger
  * /users/send-otp:
  *   post:
- *     summary: Send OTP to user email or phone
+ *     summary: Send OTP to user email or phone 📩
  *     tags: [Users]
  *     requestBody:
  *       required: true
@@ -136,7 +136,7 @@ router.post("/send-otp", sendOtp);
  * @swagger
  * /users/verify-otp:
  *   post:
- *     summary: Verify OTP code
+ *     summary: Verify OTP code ✅
  *     tags: [Users]
  *     requestBody:
  *       required: true
@@ -166,7 +166,7 @@ router.post("/verify-otp", verify);
  * @swagger
  * /users/refresh:
  *   post:
- *     summary: Refresh access token using refresh token
+ *     summary: Refresh access token using refresh token 🔄
  *     tags: [Users]
  *     requestBody:
  *       required: true
@@ -192,7 +192,7 @@ router.post("/refresh", refresh);
  * @swagger
  * /users/me:
  *   get:
- *     summary: Get the current user's information
+ *     summary: Get the current user's information 👤
  *     description: Retrieves the details of the currently authenticated user.
  *     tags: [Users]
  *     responses:
@@ -209,7 +209,7 @@ router.get("/me", me);
  * @swagger
  * /users:
  *   get:
- *     summary: Get all users with pagination and filtering
+ *     summary: Get all users with pagination and filtering 👥
  *     tags: [Users]
  *     parameters:
  *       - in: query
@@ -246,7 +246,7 @@ router.get("/", getUsers);
  * @swagger
  * /users/{id}:
  *   get:
- *     summary: Get a user by ID
+ *     summary: Get a user by ID 🔍
  *     tags: [Users]
  *     parameters:
  *       - in: path
@@ -263,13 +263,11 @@ router.get("/", getUsers);
  */
 router.get("/:id", getUserById);
 
-
-
 /**
  * @swagger
  * /users/{id}:
  *   patch:
- *     summary: Update a user
+ *     summary: Update a user ✏️
  *     tags: [Users]
  *     parameters:
  *       - in: path
@@ -308,7 +306,7 @@ router.patch("/:id", updateUser);
  * @swagger
  * /users/{id}:
  *   delete:
- *     summary: Delete a user
+ *     summary: Delete a user 🗑️
  *     tags: [Users]
  *     parameters:
  *       - in: path
@@ -323,6 +321,6 @@ router.patch("/:id", updateUser);
  *       404:
  *         description: User not found
  */
-router.delete("/:id",deleteUser);
+router.delete("/:id", deleteUser);
 
 module.exports = router;
