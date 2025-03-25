@@ -2,6 +2,7 @@ const {db, DataTypes} = require('../config/db')
 
 const EduCenter = require('./edu_center.model')
 const Branch = require('./branch.model')
+const User = require('./user.model')
 
 const Enrollment = db.define("enrollment", {
     id: {
@@ -27,7 +28,14 @@ const Enrollment = db.define("enrollment", {
     },
 })
 
-Enrollment.belongsTo(EduCenter, {foreignKey: 'edu_id'})
-Enrollment.belongsTo(Branch, {foreignKey: 'branch_id'})
+Enrollment.belongsTo(EduCenter, { foreignKey: "edu_id", onDelete: "CASCADE" });
+EduCenter.hasMany(Enrollment, { foreignKey: "edu_id", onDelete: "CASCADE" });
+
+Enrollment.belongsTo(Branch, { foreignKey: "branch_id", onDelete: "CASCADE" });
+Branch.hasMany(EduCenter, { foreignKey: "branch_id", onDelete: "CASCADE" });
+
+Enrollment.belongsTo(User, {foreignKey: "user_id", onDelete: "CASCADE"});
+User.hasMany(Enrollment, { foreignKey: "user_id", onDelete: "CASCADE"});
+
 
 module.exports = Enrollment

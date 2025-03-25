@@ -1,11 +1,8 @@
-const {db, DataTypes} = require('../config/db')
+const {db, DataTypes} = require('../config/db');
+const Region = require('./region.model');
+const User = require('./user.model');
 
-const Branch = require('./branch.model')
-const Enrollment = require('./course_register.model')
-const Subjects = require('./subject.model')
-const Fields = require('./fields.model')
-const SubjectsOfEdu = require('./edu_center_subjects.model')
-const FieldsOfEdu = require('./edu_center_fields.model')
+
 
 const EduCenter = db.define("educenters", {
     id: {
@@ -45,20 +42,12 @@ const EduCenter = db.define("educenters", {
         type: DataTypes.TEXT,
         allowNull: false,
     }
-})
+});
 
-EduCenter.hasMany(Branch, {foreignKey: 'edu_id'})
-EduCenter.hasMany(Enrollment, {foreignKey: 'edu_id'})
+EduCenter.belongsTo(User, { foreignKey: "CEO_id", onDelete: "CASCADE" });
+User.hasMany(EduCenter, { foreignKey: "CEO_id", onDelete: "CASCADE" });
 
-EduCenter.belongsToMany(Subjects, {
-    through: SubjectsOfEdu,
-    foreignKey: 'edu_id',
-    otherKey: 'subject_id'
-})
-EduCenter.belongsToMany(Fields, {
-    through: FieldsOfEdu,
-    foreignKey: 'edu_id',
-    otherKey: 'field_id'
-})
+EduCenter.belongsTo(Region, { foreignKey: "region_id", onDelete: "CASCADE" });
+Region.hasMany(EduCenter, { foreignKey: "region_id", onDelete: "CASCADE" });
 
 module.exports = EduCenter
