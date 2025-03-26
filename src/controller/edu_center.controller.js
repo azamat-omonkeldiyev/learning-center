@@ -22,7 +22,6 @@ const getEduCenters = async (req, res) => {
       whereClause.region_id = region_id;
     }
 
-    // **Filter qo‘shish (subject yoki field bo‘yicha)**
     const includeOptions = [
       { model: Branch, attributes: ["id", "name"], as: "branches" },
       { model: Subjects, attributes: ["id", "name"], as: "subjects" },
@@ -36,7 +35,6 @@ const getEduCenters = async (req, res) => {
       {model: Region, attributes: ["name"]}
     ];
 
-    // Subject filter
     if (subject_id) {
       includeOptions.push({
         model: Subjects,
@@ -47,7 +45,6 @@ const getEduCenters = async (req, res) => {
       });
     }
 
-    // Field filter
     if (field_id) {
       includeOptions.push({
         model: Fields,
@@ -58,20 +55,19 @@ const getEduCenters = async (req, res) => {
       });
     }
 
-    // **Umumiy son (limit va offset ta'sir qilmasligi uchun)**
     const total = await EduCenter.count({
       where: whereClause,
       include: includeOptions,
       distinct: true,
     });
 
-    // **Asosiy query**
     const queryOptions = {
       include: includeOptions,
       where: whereClause,
       order: [],
-      distinct: true, // Agar join bo‘lsa, dublikatsiyani oldini oladi
+      distinct: true,
     };
+
 
     if (page && limit) {
       queryOptions.limit = parseInt(limit);
@@ -90,10 +86,15 @@ const getEduCenters = async (req, res) => {
 
     const educenters = await EduCenter.findAll(queryOptions);
 
-    // **Natijani qaytarish**
+    educenters = await Promise.all(educenters.map(async (edu) => {
+      const branchCount = await Branch.count({ where: { edu_center_id: edu.id } });
+      const likeCount = await Like.count({ where: { edu_id: edu.id } });
+      return { ...edu.toJSON(), branchCount,likeCount }; 
+    }));
+
     const response = {
       data: educenters,
-      total, // **To‘g‘ri umumiy son**
+      total, 
     };
 
     if (page && limit) {
@@ -128,7 +129,10 @@ const getEduCenter = async (req, res) => {
     if (!educenter)
       return res.status(404).json({ error: "EduCenter not found" });
 
-    res.json(educenter);
+    const branchCount = await Branch.count({ where: { edu_center_id: educenter.id } });
+    const likeCount = await Like.count({ where: { edu_id: educenter.id } });
+
+    res.json({ ...educenter.toJSON(), branchCount, likeCount });
   } catch (error) {
     console.log(error);
     res.status(500).json({ message: error.message });
@@ -137,7 +141,7 @@ const getEduCenter = async (req, res) => {
 
 const createEduCenter = async (req, res) => {
   try {
-    const { subjects, fields, ...rest } = req.body;
+    const { subjects, fields,branchCount, ...rest } = req.body;
     console.log(req.body);
     const user_id = req.userId;
     console.log(rest);
@@ -176,9 +180,8 @@ const createEduCenter = async (req, res) => {
       }
     }
 
-    const educenter = await EduCenter.create({ ...rest, CEO_id:user_id});
+    const educenter = await EduCenter.create({ ...rest, branchCount: 0, CEO_id:user_id});
 
-    // Subjects bog‘lash
     let subjects_educenter;
     if (subjects && subjects.length > 0) {
       subjects_educenter = subjects.map((id) => ({
@@ -188,7 +191,6 @@ const createEduCenter = async (req, res) => {
       await SubjectsOfEdu.bulkCreate(subjects_educenter);
     }
 
-    // Fields bog‘lash
     let fields_educenter;
     if (fields && fields.length > 0) {
       fields_educenter = fields.map((id) => ({
@@ -213,7 +215,6 @@ const createEduCenter = async (req, res) => {
 
 const updateEduCenter = async (req, res) => {
   try {
-    // **Faqat yuborilgan maydonlarni tekshiramiz**
     const { error } = educenterValidationSchema.fork(Object.keys(req.body), (schema) =>
       schema.required()
     ).validate(req.body, { abortEarly: false });
