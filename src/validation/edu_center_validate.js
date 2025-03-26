@@ -47,16 +47,6 @@ const educenterValidationSchema = Joi.object({
             'number.positive': 'Region ID must be a positive number',
             'any.required': 'Region ID is required'
         }),
-    branchCount: Joi.number()
-        .integer()
-        .min(0)
-        .required()
-        .messages({
-            'number.base': 'Branch count must be a number',
-            'number.integer': 'Branch count must be an integer',
-            'number.min': 'Branch count cannot be negative',
-            'any.required': 'Branch count is required'
-        }),
     description: Joi.string()
         .min(10)
         .max(1000)

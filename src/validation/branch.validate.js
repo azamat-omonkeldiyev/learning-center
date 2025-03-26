@@ -46,14 +46,6 @@ const branchValidationSchema = Joi.object({
             'number.integer': 'Region ID must be an integer',
             'number.positive': 'Region ID must be a positive number',
             'any.required': 'Region ID is required'
-        }),
-    edu_id: Joi.string()
-        .uuid()
-        .required()
-        .messages({
-            'string.base': 'EduCenter ID must be a string',
-            'string.empty': 'EduCenter ID is required',
-            'string.uuid': 'EduCenter ID must be a valid UUID'
         })
 });
 

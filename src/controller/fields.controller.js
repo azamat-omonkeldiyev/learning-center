@@ -75,6 +75,9 @@ const createField = async (req, res) => {
         .json({ message: error.details.map((detail) => detail.message) });
     }
 
+    let fieldExists = await Fields.findOne({where: {name: req.body.name}});
+    if(fieldExists) return res.status(400).json({message: "field already created"})
+
     const field = await Fields.create(req.body);
     res.status(201).json(field);
   } catch (error) {

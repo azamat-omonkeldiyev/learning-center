@@ -6,6 +6,9 @@ const createRegion = async (req, res) => {
         const { name } = req.body;
         if (!name) return res.status(400).json({ message: "Region name is required" });
 
+        let RegionExists = await Region.findOne({where: {name}});
+        if(RegionExists) return res.status(400).json({message: "region already created"})
+
         const region = await Region.create({ name });
         res.status(201).json({ region });
     } catch (error) {

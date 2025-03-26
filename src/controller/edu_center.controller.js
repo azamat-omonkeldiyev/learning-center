@@ -228,7 +228,6 @@ const updateEduCenter = async (req, res) => {
       return res.status(404).json({ error: "EduCenter not found" });
     }
 
-    // **Unique name & phone tekshirish (agar mavjud bo‘lsa)**
     if (req.body.name) {
       const existingEdu = await EduCenter.findOne({
         where: { name: req.body.name, id: { [Op.ne]: educenter.id } },
@@ -300,5 +299,5 @@ module.exports = {
   getEduCenter,
   createEduCenter,
   updateEduCenter,
-  deleteEduCenter,
+  deleteEduCenter
 };

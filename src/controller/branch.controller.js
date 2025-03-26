@@ -80,6 +80,7 @@ const createBranch = async (req, res) => {
 
     const { error } = branchValidationSchema.validate(rest, { abortEarly: false });
     if (error) {
+      console.log("salom")
       return res.status(400).json({ message: error.details.map((detail) => detail.message) });
     }
 
@@ -117,17 +118,23 @@ const createBranch = async (req, res) => {
 
     const branch = await Branch.create({ edu_id, ...rest });
 
+    let subjects_branch;
     if (subjects && subjects.length > 0) {
-      const subjects_branch = subjects.map((id) => ({ branch_id: branch.id, subject_id: id }));
+      subjects_branch = subjects.map((id) => ({ branch_id: branch.id, subject_id: id }));
       await BranchSubject.bulkCreate(subjects_branch);
     }
 
+    let fields_branch;
     if (fields && fields.length > 0) {
-      const fields_branch = fields.map((id) => ({ branch_id: branch.id, field_id: id }));
+      fields_branch = fields.map((id) => ({ branch_id: branch.id, field_id: id }));
       await BranchField.bulkCreate(fields_branch);
     }
 
-    res.status(201).json({ branch });
+    res.status(201).json({
+       branch,
+      subjects: subjects_branch,
+      fields: fields_branch
+      });
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: error.message });
