@@ -9,16 +9,6 @@ const getResources = async (req, res) => {
   try {
       const { page, limit, sortField, sortOrder, name, category_id, user_id } = req.query;
 
-<<<<<<< HEAD
-      const queryOptions = {
-          include: [
-              { model: User, attributes: ["id", "name"] },
-              { model: resCategory, attributes: ["id", "name"] }
-          ],
-          where: {},
-          order: [],
-      };
-=======
     const queryOptions = {
       include: [
         { model: User, attributes: ["id", "fullname"] },
@@ -27,7 +17,6 @@ const getResources = async (req, res) => {
       where: {},
       order: [],
     };
->>>>>>> 0bf504b8e0af465783a396931ee4209b0a32cc3c
 
       if (page && limit) {
           queryOptions.limit = parseInt(limit);

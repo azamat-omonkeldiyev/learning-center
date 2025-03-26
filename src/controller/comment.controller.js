@@ -9,11 +9,7 @@ const { Op } = require("sequelize");
 // ✅ GET: All Comments (Filtered)
 const getComments = async (req, res) => {
     try {
-<<<<<<< HEAD
-        const { page, limit, sortField, sortOrder, text, star, edu_id, user_id } = req.query;
-=======
         const { page, limit, sort, text, star, edu_id, branch_id, user_id } = req.query;
->>>>>>> 0bf504b8e0af465783a396931ee4209b0a32cc3c
 
         const queryOptions = {
             include: [

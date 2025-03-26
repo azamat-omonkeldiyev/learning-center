@@ -11,18 +11,6 @@ const FieldsOfEdu = require("../models/edu_center_fields.model");
 
 const getBranches = async (req, res) => {
   try {
-<<<<<<< HEAD
-      const { page, limit, sortField, sortOrder, name, edu_id } = req.query;
-
-      const queryOptions = {
-          include: [
-              { model: EduCenter, attributes: ["id", "name"] },
-              { model: Enrollment, attributes: ["id", "date"] },
-          ],
-          where: {},
-          order: [],
-      };
-=======
     const { page, limit, sort, name, edu_id, subject_id, field_id } = req.query;
 
     const queryOptions = {
@@ -35,30 +23,12 @@ const getBranches = async (req, res) => {
       where: {},
       order: [],
     };
->>>>>>> 0bf504b8e0af465783a396931ee4209b0a32cc3c
 
       if (page && limit) {
           queryOptions.limit = parseInt(limit);
           queryOptions.offset = (parseInt(page) - 1) * parseInt(limit);
       }
 
-<<<<<<< HEAD
-      if (sortField && sortOrder) {
-          queryOptions.order.push([
-              sortField,
-              sortOrder.toUpperCase() === "DESC" ? "DESC" : "ASC",
-          ]);
-      } else {
-          queryOptions.order.push(["createdAt", "ASC"]);
-      }
-
-      if (name) {
-          queryOptions.where.name = { [Op.like]: `%${name}%` };
-      }
-      if (edu_id) {
-          queryOptions.where.edu_id = edu_id;
-      }
-=======
     if (sort) {
       const [sortField, sortOrder] = sort.split(":");
       queryOptions.order.push([sortField || "createdAt", sortOrder?.toUpperCase() === "DESC" ? "DESC" : "ASC"]);
@@ -70,26 +40,9 @@ const getBranches = async (req, res) => {
     if (edu_id) queryOptions.where.edu_id = edu_id;
     if (subject_id) queryOptions.include[2].where = { id: subject_id };
     if (field_id) queryOptions.include[3].where = { id: field_id };
->>>>>>> 0bf504b8e0af465783a396931ee4209b0a32cc3c
 
       const branches = await Branch.findAndCountAll(queryOptions);
 
-<<<<<<< HEAD
-      const response = {
-          data: branches.rows,
-          total: branches.count,
-      };
-
-      if (page && limit) {
-          response.page = parseInt(page);
-          response.totalPages = Math.ceil(branches.count / limit);
-      }
-
-      res.json(response);
-  } catch (error) {
-      console.log(error);
-      res.status(500).json({ message: error.message });
-=======
     res.json({
       data: branches.rows,
       total: branches.count,
@@ -98,7 +51,6 @@ const getBranches = async (req, res) => {
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: error.message });
->>>>>>> 0bf504b8e0af465783a396931ee4209b0a32cc3c
   }
 };
 

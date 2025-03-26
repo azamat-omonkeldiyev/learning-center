@@ -2,13 +2,9 @@ const EduCenter = require("../models/edu_center.model");
 const Branch = require("../models/branch.model");
 const Subjects = require("../models/subject.model");
 const Fields = require("../models/fields.model");
-<<<<<<< HEAD
-const Comment = require('../models/comment.model')
-=======
 const FieldsOfEdu = require("../models/edu_center_fields.model");
 const SubjectsOfEdu = require("../models/edu_center_subjects.model");
 const Comment = require("../models/comment.model");
->>>>>>> 0bf504b8e0af465783a396931ee4209b0a32cc3c
 const educenterValidationSchema = require("../validation/edu_center_validate");
 const { Op } = require("sequelize");
 const User = require("../models/user.model");
@@ -16,25 +12,6 @@ const Region = require("../models/region.model");
 
 const getEduCenters = async (req, res) => {
   try {
-<<<<<<< HEAD
-      const { page, limit, sortField, sortOrder, name } = req.query;
-
-      const queryOptions = {
-          include: [
-              { model: Branch, attributes: ["id", "name"] },
-              { model: Subjects, as: "subjects", attributes: ["id", "name"], through: { attributes: [] } },
-              { model: Fields, as: "fields", attributes: ["id", "name"], through: { attributes: [] } },
-              { model: Comment, attributes: ["id", "text", "star"] },
-          ],
-          where: {},
-          order: [],
-      };
-
-      if (page && limit) {
-          queryOptions.limit = parseInt(limit);
-          queryOptions.offset = (parseInt(page) - 1) * parseInt(limit);
-      }
-=======
     const { page, limit, sort, name, region_id, subject_id, field_id } = req.query;
 
     const whereClause = {};
@@ -96,7 +73,6 @@ const getEduCenters = async (req, res) => {
       queryOptions.limit = parseInt(limit);
       queryOptions.offset = (parseInt(page) - 1) * parseInt(limit);
     }
->>>>>>> 0bf504b8e0af465783a396931ee4209b0a32cc3c
 
       if (sortField && sortOrder) {
           queryOptions.order.push([
@@ -107,23 +83,6 @@ const getEduCenters = async (req, res) => {
           queryOptions.order.push(["createdAt", "ASC"]);
       }
 
-<<<<<<< HEAD
-      if (name) {
-          queryOptions.where.name = { [Op.like]: `%${name}%` };
-      }
-
-      const eduCenters = await EduCenter.findAndCountAll(queryOptions);
-
-      const response = {
-          data: eduCenters.rows,
-          total: eduCenters.count,
-      };
-
-      if (page && limit) {
-          response.page = parseInt(page);
-          response.totalPages = Math.ceil(eduCenters.count / limit);
-      }
-=======
     const educenters = await EduCenter.findAll(queryOptions);
 
     educenters = await Promise.all(educenters.map(async (edu) => {
@@ -141,7 +100,6 @@ const getEduCenters = async (req, res) => {
       response.page = parseInt(page);
       response.totalPages = Math.ceil(total / limit);
     }
->>>>>>> 0bf504b8e0af465783a396931ee4209b0a32cc3c
 
       res.json(response);
   } catch (error) {
