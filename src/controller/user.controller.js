@@ -32,6 +32,7 @@ const register = async (req, res) => {
   try {
     const { error } = userValidationSchema.validate(req.body);
     if (error) {
+      console.log(error)
       return res.status(400).json({ error: error.details[0].message });
     }
 
@@ -57,6 +58,8 @@ const register = async (req, res) => {
     if (!["user", "ceo"].includes(role)) {
       return res.status(400).json({ message: "Invalid role" });
     };
+
+    if(!region_id) return res.status(400).json({message: "region_id is required"});
 
     let region = await Region.findByPk(region_id);
     if (!region) return res.status(404).json({ message: "region not found" });
@@ -86,7 +89,7 @@ const createAdmin = async (req, res) => {
       return res.status(400).json({ error: error.details[0].message });
     }
 
-    let { phone, email, password, region_id, fullname, role, ...rest } =
+    let { phone, email, password, fullname, role, ...rest } =
       req.body;
 
     if (!["admin", "superadmin"].includes(role)) {
@@ -108,15 +111,11 @@ const createAdmin = async (req, res) => {
         .json({ message: "Fullname already exists. Please choose another." });
     }
 
-    let region = await Region.findByPk(region_id);
-    if (!region) return res.status(404).json({ message: "Region not found" });
-
     let hash = bcrypt.hashSync(password, 10);
 
     let newAdmin = await User.create({
       ...rest,
       fullname,
-      region_id,
       email,
       phone,
       password: hash,

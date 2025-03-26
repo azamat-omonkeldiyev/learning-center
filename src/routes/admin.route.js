@@ -46,9 +46,6 @@ const router = express.Router();
  *           type: string
  *           format: uri
  *           example: "http://example.com/admin.jpg"
- *         region_id:
- *           type: integer
- *           example: 1
  */
 
 /**

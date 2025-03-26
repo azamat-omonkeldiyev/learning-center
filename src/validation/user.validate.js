@@ -25,7 +25,7 @@ const userValidationSchema = Joi.object({
         }),
     region_id: Joi.number()
         .integer()
-        .required()
+        .optional()
         .messages({
             "number.base": "Region ID must be a number",
             "any.required": "Region ID is required"

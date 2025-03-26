@@ -27,7 +27,7 @@ const getEduCenters = async (req, res) => {
         model: Comment, 
         attributes: ["id", "text", "star", "user_id"], 
         as: "comments",
-        include: [{ model: User, attributes: ["id", "fullname"], as: "user" }]
+        // include: [{ model: User, attributes: ["id", "fullname"], as: "user" }]
       },
       { model: Region, attributes: ["name"] }
     ];
@@ -97,8 +97,13 @@ const getEduCenter = async (req, res) => {
   try {
     const educenter = await EduCenter.findByPk(req.params.id, {
       include: [
-        { model: Branch, as: "branches", attributes: ["id", "name"] },
-        { model: Subjects, as: "subjects", attributes: ["id", "name"] },
+        { model: Branch, as: "branches",
+          include : [
+            { model: Subjects, as: "subjects2", attributes: ["id", "name"],through: { attributes: [] } },
+            { model: Fields, attributes: ["id", "name"], as: "fields2", through: { attributes: [] } },
+          ]
+         },
+        { model: Subjects, as: "subjects", attributes: ["id", "name"],through: { attributes: [] } },
         { model: Fields, attributes: ["id", "name"], as: "fields", through: { attributes: [] } },
         { 
           model: Comment, 
