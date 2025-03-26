@@ -89,20 +89,6 @@ router.delete("/:id", roleMiddleware(["admin","superadmin","user","ceo"]), async
             return res.status(404).json({ message: "Session not found" });
         };
 
-        // let user = await Session.findOne({where: {id: req.params.id }});
-        // let user2 = await Session.findOne({where: {ip_id: req.userIp }});
-
-        // console.log({1: user, 2 : user2, ip: req.userIp});
-        // if (!user || !user2) {
-        //     return res.status(404).json({ message: "User not found" });
-        // };
-
-        // if (user.createdAt < user2.createdAt) {
-        //     return res.status(403).json({
-        //         message: "You cannot delete a user who was created before you.",
-        //     });
-        // };
-
         const deletedSession = { ...session.get() };
         await session.destroy();
 
