@@ -24,10 +24,10 @@ const getBranches = async (req, res) => {
       order: [],
     };
 
-    if (page && limit) {
-      queryOptions.limit = parseInt(limit);
-      queryOptions.offset = (parseInt(page) - 1) * parseInt(limit);
-    }
+      if (page && limit) {
+          queryOptions.limit = parseInt(limit);
+          queryOptions.offset = (parseInt(page) - 1) * parseInt(limit);
+      }
 
     if (sort) {
       const [sortField, sortOrder] = sort.split(":");
@@ -41,7 +41,7 @@ const getBranches = async (req, res) => {
     if (subject_id) queryOptions.include[2].where = { id: subject_id };
     if (field_id) queryOptions.include[3].where = { id: field_id };
 
-    const branches = await Branch.findAndCountAll(queryOptions);
+      const branches = await Branch.findAndCountAll(queryOptions);
 
     res.json({
       data: branches.rows,

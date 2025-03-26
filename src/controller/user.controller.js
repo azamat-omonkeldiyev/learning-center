@@ -258,26 +258,51 @@ const verify = async (req, res) => {
 // Get All Users
 const getUsers = async (req, res) => {
   try {
-    const { region_id, page = 1, limit = 10, sort = "ASC" } = req.query;
+      const { page, limit, sortField, sortOrder, region_id } = req.query;
 
-    const whereCondition = region_id ? { region_id } : {};
+      const queryOptions = {
+          include: [
+              { model: Comment, attributes: ["id", "text", "star"] }
+          ],
+          where: {},
+          order: [],
+          attributes: { exclude: ['password'] },
+      };
 
-    const users = await User.findAndCountAll({
-      where: whereCondition,
-      include: { model: Region },
-      limit: parseInt(limit),
-      offset: (parseInt(page) - 1) * parseInt(limit),
-      order: [["fullname", sort.toUpperCase()]],
-    });
+      if (page && limit) {
+          queryOptions.limit = parseInt(limit);
+          queryOptions.offset = (parseInt(page) - 1) * parseInt(limit);
+      }
 
-    res.status(200).json({
-      total: users.count,
-      page: parseInt(page),
-      data: users.rows,
-    });
-  } catch (err) {
-    console.log(err);
-    res.status(500).json({ error: err.message });
+      if (sortField && sortOrder) {
+          queryOptions.order.push([
+              sortField,
+              sortOrder.toUpperCase() === "DESC" ? "DESC" : "ASC",
+          ]);
+      } else {
+          queryOptions.order.push(["fullname", "ASC"]);
+      }
+
+      if (region_id) {
+          queryOptions.where.region_id = region_id;
+      }
+
+      const users = await User.findAndCountAll(queryOptions);
+
+      const response = {
+          data: users.rows,
+          total: users.count,
+      };
+
+      if (page && limit) {
+          response.page = parseInt(page);
+          response.totalPages = Math.ceil(users.count / limit);
+      }
+
+      res.json(response);
+  } catch (error) {
+      console.log(error);
+      res.status(500).json({ message: error.message });
   }
 };
 

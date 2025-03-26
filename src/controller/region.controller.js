@@ -20,21 +20,42 @@ const createRegion = async (req, res) => {
 //  Barcha regionlarni olish (Read All + Pagination)
 const getAllRegions = async (req, res) => {
     try {
-        const { page = 1, limit = 10 } = req.query;
+        const { page, limit, sortField, sortOrder } = req.query;
 
-        const regions = await Region.findAndCountAll({
-            limit: parseInt(limit),
-            offset: (parseInt(page) - 1) * parseInt(limit),
-        });
+        const queryOptions = {
+            order: [],
+        };
 
-        res.status(200).json({
-            total: regions.count,
-            page: parseInt(page),
+        if (page && limit) {
+            queryOptions.limit = parseInt(limit);
+            queryOptions.offset = (parseInt(page) - 1) * parseInt(limit);
+        }
+
+        if (sortField && sortOrder) {
+            queryOptions.order.push([
+                sortField,
+                sortOrder.toUpperCase() === "DESC" ? "DESC" : "ASC",
+            ]);
+        } else {
+            queryOptions.order.push(["createdAt", "ASC"]);
+        }
+
+        const regions = await Region.findAndCountAll(queryOptions);
+
+        const response = {
             data: regions.rows,
-        });
+            total: regions.count,
+        };
+
+        if (page && limit) {
+            response.page = parseInt(page);
+            response.totalPages = Math.ceil(regions.count / limit);
+        }
+
+        res.json(response);
     } catch (error) {
-        console.log(error)
-        res.status(500).json({ message: "server error", error: error.message });
+        console.log(error);
+        res.status(500).json({ message: error.message });
     }
 };
 

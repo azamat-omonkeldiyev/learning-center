@@ -7,7 +7,7 @@ const { Op } = require("sequelize");
 
 const getResources = async (req, res) => {
   try {
-    const { page, limit, sort, name, category_id, user_id } = req.query;
+      const { page, limit, sortField, sortOrder, name, category_id, user_id } = req.query;
 
     const queryOptions = {
       include: [
@@ -18,47 +18,46 @@ const getResources = async (req, res) => {
       order: [],
     };
 
-    if (page && limit) {
-      queryOptions.limit = parseInt(limit);
-      queryOptions.offset = (parseInt(page) - 1) * parseInt(limit);
-    }
+      if (page && limit) {
+          queryOptions.limit = parseInt(limit);
+          queryOptions.offset = (parseInt(page) - 1) * parseInt(limit);
+      }
 
-    if (sort) {
-      const [sortField, sortOrder] = sort.split(":");
-      queryOptions.order.push([
-        sortField || "createdAt",
-        sortOrder && sortOrder.toUpperCase() === "DESC" ? "DESC" : "ASC",
-      ]);
-    } else {
-      queryOptions.order.push(["createdAt", "ASC"]);
-    }
+      if (sortField && sortOrder) {
+          queryOptions.order.push([
+              sortField,
+              sortOrder.toUpperCase() === "DESC" ? "DESC" : "ASC",
+          ]);
+      } else {
+          queryOptions.order.push(["createdAt", "ASC"]);
+      }
 
-    if (name) {
-      queryOptions.where.name = { [Op.like]: `%${name}%` };
-    }
-    if (category_id) {
-      queryOptions.where.category_id = category_id;
-    }
-    if (user_id) {
-      queryOptions.where.user_id = user_id;
-    }
+      if (name) {
+          queryOptions.where.name = { [Op.like]: `%${name}%` };
+      }
+      if (category_id) {
+          queryOptions.where.category_id = category_id;
+      }
+      if (user_id) {
+          queryOptions.where.user_id = user_id;
+      }
 
-    const resources = await Resource.findAndCountAll(queryOptions);
+      const resources = await Resource.findAndCountAll(queryOptions);
 
-    const response = {
-      data: resources.rows,
-      total: resources.count,
-    };
+      const response = {
+          data: resources.rows,
+          total: resources.count,
+      };
 
-    if (page && limit) {
-      response.page = parseInt(page);
-      response.totalPages = Math.ceil(resources.count / limit);
-    }
+      if (page && limit) {
+          response.page = parseInt(page);
+          response.totalPages = Math.ceil(resources.count / limit);
+      }
 
-    res.json(response);
+      res.json(response);
   } catch (error) {
-    console.log(error);
-    res.status(500).json({ message: error.message });
+      console.log(error);
+      res.status(500).json({ message: error.message });
   }
 };
 

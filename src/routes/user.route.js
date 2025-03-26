@@ -246,12 +246,19 @@ router.get("/me",roleMiddleware(["admin", "superadmin", "user", "ceo"]), me);
  *           default: 10
  *         description: Number of results per page
  *       - in: query
- *         name: sort
+ *         name: sortField
+ *         schema:
+ *           type: string
+ *           enum: [fullname, createdAt]
+ *           default: fullname
+ *         description: Field to sort by
+ *       - in: query
+ *         name: sortOrder
  *         schema:
  *           type: string
  *           enum: [ASC, DESC]
  *           default: ASC
- *         description: Sort by name
+ *         description: Sort order
  *     responses:
  *       200:
  *         description: List of users with pagination

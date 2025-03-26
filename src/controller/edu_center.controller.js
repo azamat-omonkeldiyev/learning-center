@@ -74,15 +74,14 @@ const getEduCenters = async (req, res) => {
       queryOptions.offset = (parseInt(page) - 1) * parseInt(limit);
     }
 
-    if (sort) {
-      const [sortField, sortOrder] = sort.split(":");
-      queryOptions.order.push([
-        sortField || "createdAt",
-        sortOrder && sortOrder.toUpperCase() === "DESC" ? "DESC" : "ASC",
-      ]);
-    } else {
-      queryOptions.order.push(["createdAt", "ASC"]);
-    }
+      if (sortField && sortOrder) {
+          queryOptions.order.push([
+              sortField,
+              sortOrder.toUpperCase() === "DESC" ? "DESC" : "ASC",
+          ]);
+      } else {
+          queryOptions.order.push(["createdAt", "ASC"]);
+      }
 
     const educenters = await EduCenter.findAll(queryOptions);
 
@@ -102,10 +101,10 @@ const getEduCenters = async (req, res) => {
       response.totalPages = Math.ceil(total / limit);
     }
 
-    res.json(response);
+      res.json(response);
   } catch (error) {
-    console.log(error);
-    res.status(500).json({ message: error.message });
+      console.log(error);
+      res.status(500).json({ message: error.message });
   }
 };
 

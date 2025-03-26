@@ -26,11 +26,10 @@ const getComments = async (req, res) => {
             queryOptions.offset = (parseInt(page) - 1) * parseInt(limit);
         }
 
-        if (sort) {
-            const [sortField, sortOrder] = sort.split(":");
+        if (sortField && sortOrder) {
             queryOptions.order.push([
-                sortField || "createdAt",
-                sortOrder && sortOrder.toUpperCase() === "DESC" ? "DESC" : "ASC",
+                sortField,
+                sortOrder.toUpperCase() === "DESC" ? "DESC" : "ASC",
             ]);
         } else {
             queryOptions.order.push(["createdAt", "ASC"]);
