@@ -29,9 +29,6 @@ const router = express.Router();
  *         - role
  *         - region_id
  *       properties:
- *         id:
- *           type: string
- *           example: "64a9b9f4f08b5c001c8b4567"
  *         fullname:
  *           type: string
  *           example: "John Doe"
