@@ -84,6 +84,9 @@ const createBranch = async (req, res) => {
       return res.status(400).json({ message: error.details.map((detail) => detail.message) });
     }
 
+    const find = await EduCenter.findByPk(req.body.edu_id);
+    if (!find) return res.status(404).json({message:"edu-center not found"})
+
     let regionExists = await Region.findByPk(region_id);
     if(!regionExists) return res.status(404).json({message: "region id not found"});
 
@@ -119,7 +122,7 @@ const createBranch = async (req, res) => {
       }
     }
 
-    const branch = await Branch.create({ edu_id, ...rest,region_id });
+    const branch = await Branch.create({ edu_id,region_id, ...rest });
 
     let subjects_branch;
     if (subjects && subjects.length > 0) {

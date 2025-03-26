@@ -36,16 +36,6 @@ const branchValidationSchema = Joi.object({
             'string.empty': 'Address is required',
             'string.min': 'Address must be at least 5 characters long',
             'string.max': 'Address cannot exceed 255 characters'
-        }),
-    region_id: Joi.number()
-        .integer()
-        .positive()
-        .required()
-        .messages({
-            'number.base': 'Region ID must be a number',
-            'number.integer': 'Region ID must be an integer',
-            'number.positive': 'Region ID must be a positive number',
-            'any.required': 'Region ID is required'
         })
 });
 
