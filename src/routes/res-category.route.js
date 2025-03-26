@@ -9,7 +9,38 @@ const {
 } = require('../controller/res-category.controller');
 const roleMiddleware = require("../rolemiddleware/roleAuth");
 
-// Resource Category Routes
+// Swagger components
+/**
+ * @swagger
+ * components:
+ *   schemas:
+ *     ResCategory:
+ *       type: object
+ *       properties:
+ *         id:
+ *           type: integer
+ *           example: 1
+ *         name:
+ *           type: string
+ *           example: "Study Materials"
+ *         image:
+ *           type: string
+ *           format: uri
+ *           example: "http://example.com/study-materials.jpg"
+ *         createdAt:
+ *           type: string
+ *           format: date-time
+ *           example: "2024-03-26T12:00:00Z"
+ *         updatedAt:
+ *           type: string
+ *           format: date-time
+ *           example: "2024-03-26T12:30:00Z"
+ *
+ * tags:
+ *   - name: Resource Categories
+ *     description: API endpoints for managing resource categories
+ */
+
 /**
  * @swagger
  * /res-categories:
@@ -40,6 +71,12 @@ const roleMiddleware = require("../rolemiddleware/roleAuth");
  *     responses:
  *       200:
  *         description: List of Resource Categories retrieved successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/ResCategory'
  *       500:
  *         description: Server error
  */

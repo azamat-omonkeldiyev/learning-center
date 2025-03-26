@@ -12,6 +12,53 @@ const roleMiddleware = require("../rolemiddleware/roleAuth");
 // EduCenter Routes
 /**
  * @swagger
+ * components:
+ *   schemas:
+ *     EduCenter:
+ *       type: object
+ *       properties:
+ *         id:
+ *           type: string
+ *           format: uuid
+ *           example: "550e8400-e29b-41d4-a716-446655440000"
+ *         name:
+ *           type: string
+ *           example: "EduCenter A"
+ *         phone:
+ *           type: string
+ *           example: "+1234567890"
+ *         image:
+ *           type: string
+ *           format: uri
+ *           example: "http://example.com/educenter.jpg"
+ *         address:
+ *           type: string
+ *           example: "123 Main St"
+ *         region_id:
+ *           type: integer
+ *           example: 1
+ *         description:
+ *           type: string
+ *           example: "A leading education center"
+ *         subjects:
+ *           type: array
+ *           items:
+ *             type: integer
+ *           example: [1, 2, 3]
+ *         fields:
+ *           type: array
+ *           items:
+ *             type: integer
+ *           example: [4, 5]
+ *         createdAt:
+ *           type: string
+ *           format: date-time
+ *           example: "2024-03-26T12:00:00Z"
+ *         updatedAt:
+ *           type: string
+ *           format: date-time
+ *           example: "2024-03-26T12:30:00Z"
+ * 
  * /edu-centers:
  *   get:
  *     summary: Get all EduCenters 🏫
@@ -42,23 +89,32 @@ const roleMiddleware = require("../rolemiddleware/roleAuth");
  *         schema:
  *           type: integer
  *         description: Filter by region ID
- *       - in: query
- *         name: subject_id
- *         schema:
- *           type: integer
- *         description: Filter by subject ID (EduCenters related to this subject)
- *       - in: query
- *         name: field_id
- *         schema:
- *           type: integer
- *         description: Filter by field ID (EduCenters related to this field)
  *     responses:
  *       200:
  *         description: List of EduCenters retrieved successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 total:
+ *                   type: integer
+ *                   example: 10
+ *                 page:
+ *                   type: integer
+ *                   example: 1
+ *                 totalPages:
+ *                   type: integer
+ *                   example: 2
+ *                 data:
+ *                   type: array
+ *                   items:
+ *                     $ref: '#/components/schemas/EduCenter'
  *       500:
  *         description: Server error
  */
-router.get('/',roleMiddleware(["admin", "superadmin","ceo", "user"]), getEduCenters);
+
+router.get('/', roleMiddleware(["admin", "superadmin","ceo", "user"]), getEduCenters);
 
 /**
  * @swagger

@@ -17,9 +17,51 @@ const router = express.Router();
 
 /**
  * @swagger
- * tags:
- *   name: Users
- *   description: User management and authentication APIs
+ * components:
+ *   schemas:
+ *     User:
+ *       type: object
+ *       required:
+ *         - fullname
+ *         - email
+ *         - password
+ *         - phone
+ *         - role
+ *         - region_id
+ *       properties:
+ *         id:
+ *           type: string
+ *           example: "64a9b9f4f08b5c001c8b4567"
+ *         fullname:
+ *           type: string
+ *           example: "John Doe"
+ *         email:
+ *           type: string
+ *           example: "johndoe@example.com"
+ *         password:
+ *           type: string
+ *           example: "securepassword"
+ *         phone:
+ *           type: string
+ *           example: "+998901234567"
+ *         image:
+ *           type: string
+ *           example: "https://example.com/image.jpg"
+ *         role:
+ *           type: string
+ *           enum: ["admin", "user", "superadmin", "ceo"]
+ *           example: "user"
+ *         region_id:
+ *           type: integer
+ *           example: 1
+ *         createdAt:
+ *           type: string
+ *           format: date-time
+ *           example: "2023-03-22T12:30:45.678Z"
+ *         updatedAt:
+ *           type: string
+ *           format: date-time
+ *           example: "2023-03-23T15:00:12.345Z"
  */
 
 /**
@@ -33,40 +75,14 @@ const router = express.Router();
  *       content:
  *         application/json:
  *           schema:
- *             type: object
- *             required:
- *               - fullname
- *               - email
- *               - password
- *               - phone
- *               - image
- *               - role
- *               - region_id
- *             properties:
- *               fullname:
- *                 type: string
- *                 example: "John Doe"
- *               email:
- *                 type: string
- *                 example: "johndoe@example.com"
- *               password:
- *                 type: string
- *                 example: "securepassword"
- *               phone:
- *                 type: string
- *                 example: "+998901234567"
- *               image:
- *                 type: string
- *                 example: "https://example.com/image.jpg"
- *               role:
- *                 type: enum
- *                 example: "user"
- *               region_id:
- *                 type: integer
- *                 example: 1
+ *             $ref: '#/components/schemas/User'
  *     responses:
  *       201:
  *         description: User registered successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/User'
  *       400:
  *         description: Validation error or duplicate user
  */

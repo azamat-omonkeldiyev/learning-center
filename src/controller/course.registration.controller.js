@@ -87,8 +87,27 @@ const createEnrollment = async (req, res) => {
         .json({ message: error.details.map((detail) => detail.message) });
     }
 
-    const enrollment = await Enrollment.create(req.body);
+    const enrollment = await Enrollment.create({...req.body, user_id: req.userId});
     res.status(201).json(enrollment);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: error.message });
+  }
+};
+
+const getMyEnrollments = async (req, res) => {
+  try {
+    const user_id = req.session.user.id;
+
+    const enrollments = await Enrollment.findAll({
+      where: { user_id },
+      include: [
+        { model: EduCenter, attributes: ["id", "name"] },
+        { model: Branch, attributes: ["id", "name"] },
+      ],
+    });
+
+    res.json({ enrollments });
   } catch (error) {
     console.log(error);
     res.status(500).json({ message: error.message });
@@ -110,6 +129,10 @@ const updateEnrollment = async (req, res) => {
         .json({ message: error.details.map((detail) => detail.message) });
     }
 
+    if (req.userRole !== "admin" && req.userId !== enrollment.user_id) {
+      return res.status(403).json({ error: "You can only update your own enrollments" });
+    }
+
     await enrollment.update(req.body);
     res.json(enrollment);
   } catch (error) {
@@ -123,6 +146,10 @@ const deleteEnrollment = async (req, res) => {
     const enrollment = await Enrollment.findByPk(req.params.id);
     if (!enrollment)
       return res.status(404).json({ error: "Enrollment not found" });
+
+    if (req.userRole !== "admin" && req.userId !== enrollment.user_id) {
+      return res.status(403).json({ error: "You can only delete your own enrollments" });
+    }
 
     await enrollment.destroy();
     res.status(200).json({ message: "Deleted successfully" });
@@ -138,4 +165,5 @@ module.exports = {
   createEnrollment,
   updateEnrollment,
   deleteEnrollment,
+  getMyEnrollments
 };

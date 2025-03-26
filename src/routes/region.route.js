@@ -12,6 +12,33 @@ const router = express.Router();
 
 /**
  * @swagger
+ * components:
+ *   schemas:
+ *     Region:
+ *       type: object
+ *       properties:
+ *         id:
+ *           type: integer
+ *           example: 1
+ *         name:
+ *           type: string
+ *           example: "Tashkent"
+ *         createdAt:
+ *           type: string
+ *           format: date-time
+ *           example: "2024-03-26T12:00:00Z"
+ *         updatedAt:
+ *           type: string
+ *           format: date-time
+ *           example: "2024-03-26T12:30:00Z"
+ *
+ * tags:
+ *   - name: Regions
+ *     description: API endpoints for managing regions
+ */
+
+/**
+ * @swagger
  * /regions:
  *   post:
  *     summary: Create a new region ➕
@@ -21,16 +48,14 @@ const router = express.Router();
  *       content:
  *         application/json:
  *           schema:
- *             type: object
- *             required:
- *               - name
- *             properties:
- *               name:
- *                 type: string
- *                 example: "Tashkent"
+ *             $ref: '#/components/schemas/Region'
  *     responses:
  *       201:
  *         description: Region created successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Region'
  *       400:
  *         description: Invalid request data
  */

@@ -12,6 +12,30 @@ const roleMiddleware = require("../rolemiddleware/roleAuth");
 // Fields Routes
 /**
  * @swagger
+ * components:
+ *   schemas:
+ *     Field:
+ *       type: object
+ *       properties:
+ *         id:
+ *           type: integer
+ *           example: 1
+ *         name:
+ *           type: string
+ *           example: "Science"
+ *         image:
+ *           type: string
+ *           format: uri
+ *           example: "http://example.com/science.jpg"
+ *         createdAt:
+ *           type: string
+ *           format: date-time
+ *           example: "2024-03-26T12:00:00Z"
+ *         updatedAt:
+ *           type: string
+ *           format: date-time
+ *           example: "2024-03-26T12:30:00Z"
+ * 
  * /fields:
  *   get:
  *     summary: Get all Fields 🧠
@@ -40,10 +64,30 @@ const roleMiddleware = require("../rolemiddleware/roleAuth");
  *     responses:
  *       200:
  *         description: List of Fields retrieved successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 total:
+ *                   type: integer
+ *                   example: 10
+ *                 page:
+ *                   type: integer
+ *                   example: 1
+ *                 totalPages:
+ *                   type: integer
+ *                   example: 2
+ *                 data:
+ *                   type: array
+ *                   items:
+ *                     $ref: '#/components/schemas/Field'
  *       500:
  *         description: Server error
  */
-router.get('/',roleMiddleware(["admin", "superadmin", "user", "ceo"]), getFields);
+
+router.get('/', roleMiddleware(["admin", "superadmin", "user", "ceo"]), getFields);
+
 
 /**
  * @swagger

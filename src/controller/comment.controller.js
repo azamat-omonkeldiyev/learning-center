@@ -102,7 +102,7 @@ const createComment = async (req, res) => {
                 .json({ message: error.details.map((detail) => detail.message) });
         }
 
-        const comment = await Comment.create(req.body);
+        const comment = await Comment.create({...req.body,user_id:req.userId});
         res.status(201).json(comment);
     } catch (error) {
         console.log(error);

@@ -9,7 +9,52 @@ const {
 } = require('../controller/resource.controller');
 const roleMiddleware = require("../rolemiddleware/roleAuth");
 
-// Resource Routes
+/// Swagger components
+/**
+ * @swagger
+ * components:
+ *   schemas:
+ *     Resource:
+ *       type: object
+ *       properties:
+ *         id:
+ *           type: integer
+ *           example: 1
+ *         name:
+ *           type: string
+ *           example: "Study Guide"
+ *         description:
+ *           type: string
+ *           example: "A comprehensive study guide for students"
+ *         image:
+ *           type: string
+ *           format: uri
+ *           example: "http://example.com/study-guide.jpg"
+ *         file:
+ *           type: string
+ *           format: uri
+ *           example: "http://example.com/study-guide.pdf"
+ *         link:
+ *           type: string
+ *           format: uri
+ *           example: "http://example.com/study-guide-link"
+ *         category_id:
+ *           type: integer
+ *           example: 1
+ *         createdAt:
+ *           type: string
+ *           format: date-time
+ *           example: "2024-03-26T12:00:00Z"
+ *         updatedAt:
+ *           type: string
+ *           format: date-time
+ *           example: "2024-03-26T12:30:00Z"
+ *
+ * tags:
+ *   - name: Resources
+ *     description: API endpoints for managing resources
+ */
+
 /**
  * @swagger
  * /resources:
@@ -50,6 +95,12 @@ const roleMiddleware = require("../rolemiddleware/roleAuth");
  *     responses:
  *       200:
  *         description: List of Resources retrieved successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/Resource'
  *       500:
  *         description: Server error
  */
@@ -95,7 +146,6 @@ router.get('/:id',roleMiddleware(["admin", "superadmin", "user", "ceo"]), getRes
  *             link: "http://example.com/study-guide-link"
  *             description: "A comprehensive study guide for students"
  *             category_id: 1
- *             user_id: "550e8400-e29b-41d4-a716-446655440001"
  *     responses:
  *       201:
  *         description: Resource created successfully

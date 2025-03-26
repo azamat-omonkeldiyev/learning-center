@@ -1,14 +1,6 @@
 const Joi = require('joi');
 
 const enrollmentValidationSchema = Joi.object({
-    user_id: Joi.string()
-        .uuid()
-        .required()
-        .messages({
-            'string.base': 'User ID must be a string',
-            'string.empty': 'User ID is required',
-            'string.uuid': 'User ID must be a valid UUID'
-        }),
     date: Joi.date()
         .required()
         .messages({
@@ -17,20 +9,23 @@ const enrollmentValidationSchema = Joi.object({
         }),
     edu_id: Joi.string()
         .uuid()
-        .required()
+        .allow(null) // Edu ID bo‘lishi mumkin, lekin shart emas
         .messages({
             'string.base': 'EduCenter ID must be a string',
-            'string.empty': 'EduCenter ID is required',
             'string.uuid': 'EduCenter ID must be a valid UUID'
         }),
     branch_id: Joi.string()
         .uuid()
-        .required()
+        .allow(null) // Branch ID bo‘lishi mumkin, lekin shart emas
         .messages({
             'string.base': 'Branch ID must be a string',
-            'string.empty': 'Branch ID is required',
             'string.uuid': 'Branch ID must be a valid UUID'
         })
+}).custom((value, helpers) => {
+    if ((!value.edu_id && !value.branch_id) || (value.edu_id && value.branch_id)) {
+        return helpers.message("Either 'edu_id' or 'branch_id' must be provided, but not both");
+    }
+    return value;
 });
 
 module.exports = enrollmentValidationSchema;

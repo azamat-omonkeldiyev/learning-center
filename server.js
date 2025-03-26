@@ -13,6 +13,7 @@ const AdminRoute = require("./src/routes/admin.route");
 const ResCategoryRoute = require("./src/routes/res-category.route");
 const ResourceRoute = require("./src/routes/resource.route");
 const UploadRoute = require("./src/routes/multer.route");
+const myDataRoutes = require("./src/routes/my-all-data.route");
 
 const { swaggerUi, specs } = require("./src/config/swagger");
 // const uploadImageRoute = require("./src/route/multer.route");
@@ -35,6 +36,7 @@ app.use("/admin", AdminRoute);
 app.use("/res-categories",ResCategoryRoute );
 app.use("/resources",ResourceRoute );
 app.use("/upload", UploadRoute);
+app.use("/api", myDataRoutes);
 
 app.use("/image", express.static(path.join(__dirname, "src", "uploads")));
 connectDb();

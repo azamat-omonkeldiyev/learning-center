@@ -11,7 +11,7 @@ const getResources = async (req, res) => {
 
     const queryOptions = {
       include: [
-        { model: User, attributes: ["id", "name"] },
+        { model: User, attributes: ["id", "fullname"] },
         { model: resCategory, attributes: ["id", "name"] },
       ],
       where: {},
@@ -66,7 +66,7 @@ const getResource = async (req, res) => {
   try {
     const resource = await Resource.findByPk(req.params.id, {
       include: [
-        { model: User, attributes: ["id", "name"] },
+        { model: User, attributes: ["id", "fullname"] },
         { model: resCategory, attributes: ["id", "name"] },
       ],
     });
@@ -90,7 +90,7 @@ const createResource = async (req, res) => {
         .json({ message: error.details.map((detail) => detail.message) });
     }
 
-    const resource = await Resource.create(req.body);
+    const resource = await Resource.create({...req.body,user_id: req.userId});
     res.status(201).json(resource);
   } catch (error) {
     console.log(error);
