@@ -6,7 +6,6 @@ const Branch = require("../models/branch.model");
 const CommentValidationSchema = require("../validation/comment.validate");
 const { Op } = require("sequelize");
 
-// ✅ GET: All Comments (Filtered)
 const getComments = async (req, res) => {
     try {
         const { page, limit, sort, text, star, edu_id, branch_id, user_id } = req.query;
@@ -73,7 +72,6 @@ const getComments = async (req, res) => {
     }
 };
 
-// ✅ GET: Single Comment
 const getComment = async (req, res) => {
     try {
         const comment = await Comment.findByPk(req.params.id, {
@@ -92,7 +90,6 @@ const getComment = async (req, res) => {
     }
 };
 
-// ✅ POST: Create Comment
 const createComment = async (req, res) => {
     try {
         const { error } = CommentValidationSchema.validate(req.body, {
@@ -112,7 +109,6 @@ const createComment = async (req, res) => {
     }
 };
 
-// ✅ PUT: Update Comment (Only Owner or CEO)
 const updateComment = async (req, res) => {
     try {
         const comment = await Comment.findByPk(req.params.id);
@@ -139,7 +135,6 @@ const updateComment = async (req, res) => {
     }
 };
 
-// ✅ DELETE: Delete Comment (Only Owner or CEO)
 const deleteComment = async (req, res) => {
     try {
         const comment = await Comment.findByPk(req.params.id);

@@ -119,7 +119,7 @@ const createBranch = async (req, res) => {
       }
     }
 
-    const branch = await Branch.create({ edu_id,region_id, ...rest });
+    const branch = await Branch.create({ edu_id, ...rest,region_id });
 
     let subjects_branch;
     if (subjects && subjects.length > 0) {
@@ -144,7 +144,6 @@ const createBranch = async (req, res) => {
   }
 };
 
-// ✅ UPDATE BRANCH: Faqat CEO o‘zining branchini o‘zgartira oladi
 const updateBranch = async (req, res) => {
   try {
     const { error } = branchValidationSchema.fork(Object.keys(req.body), (schema) => schema.required()).validate(req.body, { abortEarly: false });
