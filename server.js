@@ -17,7 +17,6 @@ const myDataRoutes = require("./src/routes/my-all-data.route");
 const LikeRoute = require("./src/routes/like.route");
 
 const { swaggerUi, specs } = require("./src/config/swagger");
-// const uploadImageRoute = require("./src/route/multer.route");
 const path = require("path");
 
 const express = require("express");

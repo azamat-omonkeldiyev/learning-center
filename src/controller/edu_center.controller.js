@@ -148,7 +148,7 @@ const getEduCenter = async (req, res) => {
 
 const createEduCenter = async (req, res) => {
   try {
-    const { subjects, fields,branchCount, ...rest } = req.body;
+    const { subjects, fields,branchCount,region_id, ...rest } = req.body;
     console.log(req.body);
     const user_id = req.userId;
     console.log(rest);
@@ -157,6 +157,9 @@ const createEduCenter = async (req, res) => {
     if (error) {
       return res.status(400).json({ message: error.details.map((detail) => detail.message) });
     }
+
+    let regionExists = await Region.findByPk(region_id);
+    if(!regionExists) return res.status(404).json({message: "region id not found"});
 
     const existingEdu = await EduCenter.findOne({ where: { name: rest.name } });
     if (existingEdu) {
@@ -187,7 +190,7 @@ const createEduCenter = async (req, res) => {
       }
     }
 
-    const educenter = await EduCenter.create({ ...rest, branchCount: 0, CEO_id:user_id});
+    const educenter = await EduCenter.create({ region_id, ...rest, branchCount: 0, CEO_id:user_id});
 
     let subjects_educenter;
     if (subjects && subjects.length > 0) {
