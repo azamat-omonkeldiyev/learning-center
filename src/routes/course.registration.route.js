@@ -8,13 +8,12 @@ const {
     deleteEnrollment
 } = require('../controller/course.registration.controller');
 
-// Enrollment Routes
 /**
  * @swagger
  * /enrollments:
  *   get:
- *     summary: Get all Enrollments 📋
- *     tags: [Enrollments]
+ *     summary: Get all Course Registrations 📋
+ *     tags: [Course Registrations]
  *     parameters:
  *       - in: query
  *         name: page
@@ -27,23 +26,32 @@ const {
  *           type: integer
  *         description: Number of items per page
  *       - in: query
- *         name: sort
+ *         name: sortField
  *         schema:
  *           type: string
- *         description: Field to sort by (e.g., createdAt:DESC)
+ *           enum: [date, createdAt]
+ *           default: createdAt
+ *         description: Field to sort by
  *       - in: query
- *         name: user_id
+ *         name: sortOrder
  *         schema:
  *           type: string
- *         description: Filter by user ID
+ *           enum: [ASC, DESC]
+ *           default: ASC
+ *         description: Sort order
  *       - in: query
  *         name: edu_id
  *         schema:
  *           type: string
  *         description: Filter by EduCenter ID
+ *       - in: query
+ *         name: branch_id
+ *         schema:
+ *           type: string
+ *         description: Filter by Branch ID
  *     responses:
  *       200:
- *         description: List of Enrollments retrieved successfully
+ *         description: List of Course Registrations retrieved successfully
  *       500:
  *         description: Server error
  */

@@ -7,7 +7,7 @@ const { Op } = require("sequelize");
 
 const getComments = async (req, res) => {
     try {
-        const { page, limit, sort, text, star, edu_id, user_id } = req.query;
+        const { page, limit, sortField, sortOrder, text, star, edu_id, user_id } = req.query;
 
         const queryOptions = {
             include: [
@@ -23,11 +23,10 @@ const getComments = async (req, res) => {
             queryOptions.offset = (parseInt(page) - 1) * parseInt(limit);
         }
 
-        if (sort) {
-            const [sortField, sortOrder] = sort.split(":");
+        if (sortField && sortOrder) {
             queryOptions.order.push([
-                sortField || "createdAt",
-                sortOrder && sortOrder.toUpperCase() === "DESC" ? "DESC" : "ASC",
+                sortField,
+                sortOrder.toUpperCase() === "DESC" ? "DESC" : "ASC",
             ]);
         } else {
             queryOptions.order.push(["createdAt", "ASC"]);

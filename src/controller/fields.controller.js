@@ -5,49 +5,50 @@ const { Op } = require("sequelize");
 
 const getFields = async (req, res) => {
   try {
-    const { page, limit, sort, name } = req.query;
+      const { page, limit, sortField, sortOrder, name } = req.query;
 
-    const queryOptions = {
-      include: [{ model: EduCenter, attributes: ["id", "name"] }],
-      where: {},
-      order: [],
-    };
+      const queryOptions = {
+          include: [
+              { model: EduCenter, as: "eduCenters", attributes: ["id", "name"], through: { attributes: [] } },
+          ],
+          where: {},
+          order: [],
+      };
 
-    if (page && limit) {
-      queryOptions.limit = parseInt(limit);
-      queryOptions.offset = (parseInt(page) - 1) * parseInt(limit);
-    }
+      if (page && limit) {
+          queryOptions.limit = parseInt(limit);
+          queryOptions.offset = (parseInt(page) - 1) * parseInt(limit);
+      }
 
-    if (sort) {
-      const [sortField, sortOrder] = sort.split(":");
-      queryOptions.order.push([
-        sortField || "createdAt",
-        sortOrder && sortOrder.toUpperCase() === "DESC" ? "DESC" : "ASC",
-      ]);
-    } else {
-      queryOptions.order.push(["createdAt", "ASC"]);
-    }
+      if (sortField && sortOrder) {
+          queryOptions.order.push([
+              sortField,
+              sortOrder.toUpperCase() === "DESC" ? "DESC" : "ASC",
+          ]);
+      } else {
+          queryOptions.order.push(["createdAt", "ASC"]);
+      }
 
-    if (name) {
-      queryOptions.where.name = { [Op.like]: `%${name}%` };
-    }
+      if (name) {
+          queryOptions.where.name = { [Op.like]: `%${name}%` };
+      }
 
-    const fields = await Fields.findAndCountAll(queryOptions);
+      const fields = await Fields.findAndCountAll(queryOptions);
 
-    const response = {
-      data: fields.rows,
-      total: fields.count,
-    };
+      const response = {
+          data: fields.rows,
+          total: fields.count,
+      };
 
-    if (page && limit) {
-      response.page = parseInt(page);
-      response.totalPages = Math.ceil(fields.count / limit);
-    }
+      if (page && limit) {
+          response.page = parseInt(page);
+          response.totalPages = Math.ceil(fields.count / limit);
+      }
 
-    res.json(response);
+      res.json(response);
   } catch (error) {
-    console.log(error);
-    res.status(500).json({ message: error.message });
+      console.log(error);
+      res.status(500).json({ message: error.message });
   }
 };
 

@@ -53,6 +53,20 @@ router.post("/", createRegion);
  *         schema:
  *           type: integer
  *         description: "Number of records per page (default: 10)"
+ *       - in: query
+ *         name: sortField
+ *         schema:
+ *           type: string
+ *           enum: [name, createdAt]
+ *           default: createdAt
+ *         description: Field to sort by
+ *       - in: query
+ *         name: sortOrder
+ *         schema:
+ *           type: string
+ *           enum: [ASC, DESC]
+ *           default: ASC
+ *         description: Sort order
  *     responses:
  *       200:
  *         description: List of regions

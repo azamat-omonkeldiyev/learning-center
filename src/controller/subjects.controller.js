@@ -5,14 +5,14 @@ const { Op } = require('sequelize');
 
 const getSubjects = async (req, res) => {
     try {
-        const { page, limit, sort, name } = req.query;
+        const { page, limit, sortField, sortOrder, name } = req.query;
 
         const queryOptions = {
             include: [
-                { model: EduCenter, attributes: ['id', 'name'] }
+                { model: EduCenter, as: "eduCenters", attributes: ["id", "name"], through: { attributes: [] } },
             ],
             where: {},
-            order: []
+            order: [],
         };
 
         if (page && limit) {
@@ -20,11 +20,13 @@ const getSubjects = async (req, res) => {
             queryOptions.offset = (parseInt(page) - 1) * parseInt(limit);
         }
 
-        if (sort) {
-            const [sortField, sortOrder] = sort.split(':');
-            queryOptions.order.push([sortField || 'createdAt', sortOrder && sortOrder.toUpperCase() === 'DESC' ? 'DESC' : 'ASC']);
+        if (sortField && sortOrder) {
+            queryOptions.order.push([
+                sortField,
+                sortOrder.toUpperCase() === "DESC" ? "DESC" : "ASC",
+            ]);
         } else {
-            queryOptions.order.push(['createdAt', 'ASC']);
+            queryOptions.order.push(["createdAt", "ASC"]);
         }
 
         if (name) {
@@ -35,7 +37,7 @@ const getSubjects = async (req, res) => {
 
         const response = {
             data: subjects.rows,
-            total: subjects.count
+            total: subjects.count,
         };
 
         if (page && limit) {
@@ -45,7 +47,7 @@ const getSubjects = async (req, res) => {
 
         res.json(response);
     } catch (error) {
-        console.log(error)
+        console.log(error);
         res.status(500).json({ message: error.message });
     }
 };

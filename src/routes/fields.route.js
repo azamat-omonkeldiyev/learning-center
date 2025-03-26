@@ -8,12 +8,11 @@ const {
     deleteField
 } = require('../controller/fields.controller');
 
-// Fields Routes
 /**
  * @swagger
  * /fields:
  *   get:
- *     summary: Get all Fields 🧠
+ *     summary: Get all Fields 📘
  *     tags: [Fields]
  *     parameters:
  *       - in: query
@@ -27,10 +26,19 @@ const {
  *           type: integer
  *         description: Number of items per page
  *       - in: query
- *         name: sort
+ *         name: sortField
  *         schema:
  *           type: string
- *         description: Field to sort by (e.g., createdAt:DESC)
+ *           enum: [name, createdAt]
+ *           default: createdAt
+ *         description: Field to sort by
+ *       - in: query
+ *         name: sortOrder
+ *         schema:
+ *           type: string
+ *           enum: [ASC, DESC]
+ *           default: ASC
+ *         description: Sort order
  *       - in: query
  *         name: name
  *         schema:

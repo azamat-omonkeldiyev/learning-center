@@ -27,10 +27,19 @@ const {
  *           type: integer
  *         description: Number of items per page
  *       - in: query
- *         name: sort
+ *         name: sortField
  *         schema:
  *           type: string
- *         description: Field to sort by (e.g., createdAt:DESC)
+ *           enum: [createdAt, star]
+ *           default: createdAt
+ *         description: Field to sort by
+ *       - in: query
+ *         name: sortOrder
+ *         schema:
+ *           type: string
+ *           enum: [ASC, DESC]
+ *           default: ASC
+ *         description: Sort order
  *       - in: query
  *         name: text
  *         schema:
