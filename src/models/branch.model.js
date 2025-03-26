@@ -34,7 +34,16 @@ const Branch = db.define("branches", {
   },
 });
 
-Branch.belongsTo(EduCenter, { foreignKey: "edu_id",onDelete: "CASCADE" });
-EduCenter.hasMany(Branch, { foreignKey: "edu_id", onDelete: "CASCADE" });
+EduCenter.hasMany(Branch, {
+    foreignKey: "edu_id",
+    onDelete: "CASCADE",
+    as: "branches", 
+  });
+  
+Branch.belongsTo(EduCenter, {
+    foreignKey: "edu_id",
+    onDelete: "CASCADE",
+    as: "educenter",
+  });
 
 module.exports = Branch;

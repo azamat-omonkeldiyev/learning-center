@@ -7,10 +7,44 @@ const {
     updateComment,
     deleteComment
 } = require('../controller/comment.controller');
+const roleMiddleware = require("../rolemiddleware/roleAuth");
 
 // Comment Routes
 /**
  * @swagger
+ * components:
+ *   schemas:
+ *     Comment:
+ *       type: object
+ *       properties:
+ *         id:
+ *           type: integer
+ *           example: 1
+ *         text:
+ *           type: string
+ *           example: "Great learning center!"
+ *         star:
+ *           type: integer
+ *           minimum: 1
+ *           maximum: 5
+ *           example: 5
+ *         edu_id:
+ *           type: string
+ *           format: uuid
+ *           example: "550e8400-e29b-41d4-a716-446655440001"
+ *         user_id:
+ *           type: string
+ *           format: uuid
+ *           example: "550e8400-e29b-41d4-a716-446655440002"
+ *         createdAt:
+ *           type: string
+ *           format: date-time
+ *           example: "2024-03-26T12:00:00Z"
+ *         updatedAt:
+ *           type: string
+ *           format: date-time
+ *           example: "2024-03-26T12:30:00Z"
+ * 
  * /comments:
  *   get:
  *     summary: Get all Comments 💬
@@ -63,10 +97,30 @@ const {
  *     responses:
  *       200:
  *         description: List of Comments retrieved successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 total:
+ *                   type: integer
+ *                   example: 10
+ *                 page:
+ *                   type: integer
+ *                   example: 1
+ *                 totalPages:
+ *                   type: integer
+ *                   example: 2
+ *                 data:
+ *                   type: array
+ *                   items:
+ *                     $ref: '#/components/schemas/Comment'
  *       500:
  *         description: Server error
  */
-router.get('/', getComments);
+
+router.get('/', roleMiddleware(["admin", "superadmin", "user", "ceo"]), getComments);
+
 
 /**
  * @swagger
@@ -89,7 +143,7 @@ router.get('/', getComments);
  *       500:
  *         description: Server error
  */
-router.get('/:id', getComment);
+router.get('/:id',roleMiddleware(["admin", "superadmin", "user", "ceo"]), getComment);
 
 /**
  * @swagger
@@ -105,7 +159,6 @@ router.get('/:id', getComment);
  *             text: "Great learning center!"
  *             star: 5
  *             edu_id: "550e8400-e29b-41d4-a716-446655440001"
- *             user_id: "550e8400-e29b-41d4-a716-446655440002"
  *     responses:
  *       201:
  *         description: Comment created successfully
@@ -114,7 +167,7 @@ router.get('/:id', getComment);
  *       500:
  *         description: Server error
  */
-router.post('/', createComment);
+router.post('/',roleMiddleware(["admin", "superadmin", "user", "ceo"]), createComment);
 
 /**
  * @swagger
@@ -146,7 +199,7 @@ router.post('/', createComment);
  *       500:
  *         description: Server error
  */
-router.patch('/:id', updateComment);
+router.patch('/:id',roleMiddleware(["admin", "superadmin", "user", "ceo"]), updateComment);
 
 /**
  * @swagger
@@ -169,6 +222,6 @@ router.patch('/:id', updateComment);
  *       500:
  *         description: Server error
  */
-router.delete('/:id', deleteComment);
+router.delete('/:id',roleMiddleware(["admin", "superadmin", "user", "ceo"]), deleteComment);
 
 module.exports = router;

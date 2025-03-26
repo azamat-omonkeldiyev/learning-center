@@ -1,7 +1,6 @@
-const {db, DataTypes} = require('../config/db')
-
-const EduCenter = require('./edu_center.model')
-const Fields = require('./fields.model')
+const { db, DataTypes } = require("../config/db");
+const EduCenter = require("./edu_center.model");
+const Fields = require("./fields.model");
 
 const FieldsOfEdu = db.define("fieldsOfEdu", {
     id: {
@@ -17,9 +16,23 @@ const FieldsOfEdu = db.define("fieldsOfEdu", {
         type: DataTypes.INTEGER,
         allowNull: false,
     },
-})
+}, {
+    tableName: "fieldsOfEdu", 
+});
 
-FieldsOfEdu.belongsTo(EduCenter, {foreignKey: 'edu_id'})
-FieldsOfEdu.belongsTo(Fields, {foreignKey: 'field_id'})
+EduCenter.belongsToMany(Fields, { 
+    through: FieldsOfEdu, 
+    foreignKey: "edu_id",
+    otherKey: "field_id",
+    as: "fields"
+});
 
-module.exports = FieldsOfEdu
+Fields.belongsToMany(EduCenter, { 
+    through: FieldsOfEdu, 
+    foreignKey: "field_id",
+    otherKey: "edu_id",
+    as: "eduCenters"
+});
+
+
+module.exports = FieldsOfEdu;

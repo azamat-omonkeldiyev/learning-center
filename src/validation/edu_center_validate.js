@@ -12,7 +12,7 @@ const educenterValidationSchema = Joi.object({
             'string.max': 'Name cannot exceed 100 characters'
         }),
     phone: Joi.string()
-        .pattern(/^\+?[1-9]\d{1,14}$/)
+        .pattern(/^\+?[1-9]\d{7,14}$/)
         .required()
         .messages({
             'string.base': 'Phone must be a string',
@@ -56,14 +56,6 @@ const educenterValidationSchema = Joi.object({
             'number.integer': 'Branch count must be an integer',
             'number.min': 'Branch count cannot be negative',
             'any.required': 'Branch count is required'
-        }),
-    CEO_id: Joi.string()
-        .uuid()
-        .required()
-        .messages({
-            'string.base': 'CEO ID must be a string',
-            'string.empty': 'CEO ID is required',
-            'string.uuid': 'CEO ID must be a valid UUID'
         }),
     description: Joi.string()
         .min(10)

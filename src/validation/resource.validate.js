@@ -59,15 +59,6 @@ const ResourceValidationSchema = Joi.object({
             'number.integer': 'Category ID must be an integer',
             'number.positive': 'Category ID must be a positive number',
             'any.required': 'Category ID is required'
-        }),
-    user_id: Joi.string()
-        .uuid()
-        .required()
-        .messages({
-            'string.base': 'User ID must be a string',
-            'string.empty': 'User ID is required',
-            'string.uuid': 'User ID must be a valid UUID',
-            'any.required': 'User ID is required'
         })
 });
 

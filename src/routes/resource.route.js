@@ -7,8 +7,54 @@ const {
     updateResource,
     deleteResource
 } = require('../controller/resource.controller');
+const roleMiddleware = require("../rolemiddleware/roleAuth");
 
-// Resource Routes
+/// Swagger components
+/**
+ * @swagger
+ * components:
+ *   schemas:
+ *     Resource:
+ *       type: object
+ *       properties:
+ *         id:
+ *           type: integer
+ *           example: 1
+ *         name:
+ *           type: string
+ *           example: "Study Guide"
+ *         description:
+ *           type: string
+ *           example: "A comprehensive study guide for students"
+ *         image:
+ *           type: string
+ *           format: uri
+ *           example: "http://example.com/study-guide.jpg"
+ *         file:
+ *           type: string
+ *           format: uri
+ *           example: "http://example.com/study-guide.pdf"
+ *         link:
+ *           type: string
+ *           format: uri
+ *           example: "http://example.com/study-guide-link"
+ *         category_id:
+ *           type: integer
+ *           example: 1
+ *         createdAt:
+ *           type: string
+ *           format: date-time
+ *           example: "2024-03-26T12:00:00Z"
+ *         updatedAt:
+ *           type: string
+ *           format: date-time
+ *           example: "2024-03-26T12:30:00Z"
+ *
+ * tags:
+ *   - name: Resources
+ *     description: API endpoints for managing resources
+ */
+
 /**
  * @swagger
  * /resources:
@@ -58,10 +104,16 @@ const {
  *     responses:
  *       200:
  *         description: List of Resources retrieved successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/Resource'
  *       500:
  *         description: Server error
  */
-router.get('/', getResources);
+router.get('/',roleMiddleware(["admin", "superadmin", "user", "ceo"]), getResources);
 
 /**
  * @swagger
@@ -84,7 +136,7 @@ router.get('/', getResources);
  *       500:
  *         description: Server error
  */
-router.get('/:id', getResource);
+router.get('/:id',roleMiddleware(["admin", "superadmin", "user", "ceo"]), getResource);
 
 /**
  * @swagger
@@ -103,7 +155,6 @@ router.get('/:id', getResource);
  *             link: "http://example.com/study-guide-link"
  *             description: "A comprehensive study guide for students"
  *             category_id: 1
- *             user_id: "550e8400-e29b-41d4-a716-446655440001"
  *     responses:
  *       201:
  *         description: Resource created successfully
@@ -112,7 +163,7 @@ router.get('/:id', getResource);
  *       500:
  *         description: Server error
  */
-router.post('/', createResource);
+router.post('/',roleMiddleware(["admin", "superadmin", "user", "ceo"]), createResource);
 
 /**
  * @swagger
@@ -145,7 +196,7 @@ router.post('/', createResource);
  *       500:
  *         description: Server error
  */
-router.patch('/:id', updateResource);
+router.patch('/:id',roleMiddleware(["admin", "superadmin", "user", "ceo"]), updateResource);
 
 /**
  * @swagger
@@ -168,6 +219,6 @@ router.patch('/:id', updateResource);
  *       500:
  *         description: Server error
  */
-router.delete('/:id', deleteResource);
+router.delete('/:id',roleMiddleware(["admin", "superadmin", "user", "ceo"]), deleteResource);
 
 module.exports = router;

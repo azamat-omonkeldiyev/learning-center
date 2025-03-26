@@ -9,6 +9,7 @@ const getResources = async (req, res) => {
   try {
       const { page, limit, sortField, sortOrder, name, category_id, user_id } = req.query;
 
+<<<<<<< HEAD
       const queryOptions = {
           include: [
               { model: User, attributes: ["id", "name"] },
@@ -17,6 +18,16 @@ const getResources = async (req, res) => {
           where: {},
           order: [],
       };
+=======
+    const queryOptions = {
+      include: [
+        { model: User, attributes: ["id", "fullname"] },
+        { model: resCategory, attributes: ["id", "name"] },
+      ],
+      where: {},
+      order: [],
+    };
+>>>>>>> 0bf504b8e0af465783a396931ee4209b0a32cc3c
 
       if (page && limit) {
           queryOptions.limit = parseInt(limit);
@@ -65,7 +76,7 @@ const getResource = async (req, res) => {
   try {
     const resource = await Resource.findByPk(req.params.id, {
       include: [
-        { model: User, attributes: ["id", "name"] },
+        { model: User, attributes: ["id", "fullname"] },
         { model: resCategory, attributes: ["id", "name"] },
       ],
     });
@@ -89,7 +100,7 @@ const createResource = async (req, res) => {
         .json({ message: error.details.map((detail) => detail.message) });
     }
 
-    const resource = await Resource.create(req.body);
+    const resource = await Resource.create({...req.body,user_id: req.userId});
     res.status(201).json(resource);
   } catch (error) {
     console.log(error);
@@ -102,17 +113,18 @@ const updateResource = async (req, res) => {
     const resource = await Resource.findByPk(req.params.id);
     if (!resource) return res.status(404).json({ error: "Resource not found" });
 
-    const { error } = resourceValidationSchema.validate(req.body, {
-      abortEarly: false,
-    });
+    // ✅ Admin bo‘lmasa, faqat o‘z resursini o‘zgartira oladi
+    if (req.userRole !== "admin" && resource.user_id !== req.userId) {
+      return res.status(403).json({ error: "You can only update your own resources" });
+    }
+
+    const { error } = resourceValidationSchema.validate(req.body, { abortEarly: false });
     if (error) {
-      return res
-        .status(400)
-        .json({ message: error.details.map((detail) => detail.message) });
+      return res.status(400).json({ message: error.details.map((detail) => detail.message) });
     }
 
     await resource.update(req.body);
-    res.json(resource);
+    res.json({ message: "Resource updated successfully", resource });
   } catch (error) {
     console.log(error);
     res.status(500).json({ message: error.message });
@@ -124,13 +136,19 @@ const deleteResource = async (req, res) => {
     const resource = await Resource.findByPk(req.params.id);
     if (!resource) return res.status(404).json({ error: "Resource not found" });
 
+    // ✅ Admin bo‘lmasa, faqat o‘z resursini o‘chira oladi
+    if (req.userRole !== "admin" && resource.user_id !== req.userId) {
+      return res.status(403).json({ error: "You can only delete your own resources" });
+    }
+
     await resource.destroy();
-    res.status(200).json({ message: "Deleted successfully" });
+    res.status(200).json({ message: "Resource deleted successfully" });
   } catch (error) {
     console.log(error);
     res.status(500).json({ message: error.message });
   }
 };
+
 
 module.exports = {
   getResources,

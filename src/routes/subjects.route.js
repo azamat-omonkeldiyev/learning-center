@@ -7,6 +7,39 @@ const {
     updateSubject,
     deleteSubject
 } = require('../controller/subjects.controller');
+const roleMiddleware = require("../rolemiddleware/roleAuth");
+
+// Swagger components
+/**
+ * @swagger
+ * components:
+ *   schemas:
+ *     Subject:
+ *       type: object
+ *       properties:
+ *         id:
+ *           type: integer
+ *           example: 1
+ *         name:
+ *           type: string
+ *           example: "Mathematics"
+ *         image:
+ *           type: string
+ *           format: uri
+ *           example: "http://example.com/math.jpg"
+ *         createdAt:
+ *           type: string
+ *           format: date-time
+ *           example: "2024-03-26T12:00:00Z"
+ *         updatedAt:
+ *           type: string
+ *           format: date-time
+ *           example: "2024-03-26T12:30:00Z"
+ *
+ * tags:
+ *   - name: Subjects
+ *     description: API endpoints for managing subjects
+ */
 
 /**
  * @swagger
@@ -47,10 +80,16 @@ const {
  *     responses:
  *       200:
  *         description: List of Subjects retrieved successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/Subject'
  *       500:
  *         description: Server error
  */
-router.get('/', getSubjects);
+router.get('/',roleMiddleware(["admin", "superadmin", "user", "ceo"]), getSubjects);
 
 /**
  * @swagger
@@ -73,7 +112,7 @@ router.get('/', getSubjects);
  *       500:
  *         description: Server error
  */
-router.get('/:id', getSubject);
+router.get('/:id',roleMiddleware(["admin", "superadmin", "user", "ceo"]), getSubject);
 
 /**
  * @swagger
@@ -96,7 +135,7 @@ router.get('/:id', getSubject);
  *       500:
  *         description: Server error
  */
-router.post('/', createSubject);
+router.post('/',roleMiddleware(["admin"]), createSubject);
 
 /**
  * @swagger
@@ -128,7 +167,7 @@ router.post('/', createSubject);
  *       500:
  *         description: Server error
  */
-router.patch('/:id', updateSubject);
+router.patch('/:id',roleMiddleware(["admin", "superadmin"]), updateSubject);
 
 /**
  * @swagger
@@ -151,6 +190,6 @@ router.patch('/:id', updateSubject);
  *       500:
  *         description: Server error
  */
-router.delete('/:id', deleteSubject);
+router.delete('/:id',roleMiddleware(["admin"]), deleteSubject);
 
 module.exports = router;

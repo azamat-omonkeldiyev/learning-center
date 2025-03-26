@@ -7,6 +7,7 @@ const getFields = async (req, res) => {
   try {
       const { page, limit, sortField, sortOrder, name } = req.query;
 
+<<<<<<< HEAD
       const queryOptions = {
           include: [
               { model: EduCenter, as: "eduCenters", attributes: ["id", "name"], through: { attributes: [] } },
@@ -14,6 +15,12 @@ const getFields = async (req, res) => {
           where: {},
           order: [],
       };
+=======
+    const queryOptions = {
+      where: {},
+      order: [],
+    };
+>>>>>>> 0bf504b8e0af465783a396931ee4209b0a32cc3c
 
       if (page && limit) {
           queryOptions.limit = parseInt(limit);

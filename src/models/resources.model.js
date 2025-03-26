@@ -41,8 +41,8 @@ const Resource = db.define("resources", {
 Resource.belongsTo(User, { foreignKey: "user_id", onDelete: "CASCADE" });
 User.hasMany(Resource, { foreignKey: "user_id", onDelete: "CASCADE" });
 
-Resource.belongsTo(resCategory, { foreignKey: "edu_id", onDelete: "CASCADE" });
-resCategory.hasMany(Resource, { foreignKey: "edu_id", onDelete: "CASCADE" });
+Resource.belongsTo(resCategory, { foreignKey: "category_id", onDelete: "CASCADE" });
+resCategory.hasMany(Resource, { foreignKey: "category_id", onDelete: "CASCADE" });
 
 
 module.exports = Resource

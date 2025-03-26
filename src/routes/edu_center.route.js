@@ -7,10 +7,58 @@ const {
     updateEduCenter,
     deleteEduCenter
 } = require('../controller/edu_center.controller');
+const roleMiddleware = require("../rolemiddleware/roleAuth");
 
 /**
  * @swagger
- * /educenters:
+ * components:
+ *   schemas:
+ *     EduCenter:
+ *       type: object
+ *       properties:
+ *         id:
+ *           type: string
+ *           format: uuid
+ *           example: "550e8400-e29b-41d4-a716-446655440000"
+ *         name:
+ *           type: string
+ *           example: "EduCenter A"
+ *         phone:
+ *           type: string
+ *           example: "+1234567890"
+ *         image:
+ *           type: string
+ *           format: uri
+ *           example: "http://example.com/educenter.jpg"
+ *         address:
+ *           type: string
+ *           example: "123 Main St"
+ *         region_id:
+ *           type: integer
+ *           example: 1
+ *         description:
+ *           type: string
+ *           example: "A leading education center"
+ *         subjects:
+ *           type: array
+ *           items:
+ *             type: integer
+ *           example: [1, 2, 3]
+ *         fields:
+ *           type: array
+ *           items:
+ *             type: integer
+ *           example: [4, 5]
+ *         createdAt:
+ *           type: string
+ *           format: date-time
+ *           example: "2024-03-26T12:00:00Z"
+ *         updatedAt:
+ *           type: string
+ *           format: date-time
+ *           example: "2024-03-26T12:30:00Z"
+ * 
+ * /edu-centers:
  *   get:
  *     summary: Get all EduCenters 🏫
  *     tags: [EduCenters]
@@ -47,14 +95,33 @@ const {
  *     responses:
  *       200:
  *         description: List of EduCenters retrieved successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 total:
+ *                   type: integer
+ *                   example: 10
+ *                 page:
+ *                   type: integer
+ *                   example: 1
+ *                 totalPages:
+ *                   type: integer
+ *                   example: 2
+ *                 data:
+ *                   type: array
+ *                   items:
+ *                     $ref: '#/components/schemas/EduCenter'
  *       500:
  *         description: Server error
  */
-router.get('/', getEduCenters);
+
+router.get('/', roleMiddleware(["admin", "superadmin","ceo", "user"]), getEduCenters);
 
 /**
  * @swagger
- * /educenters/{id}:
+ * /edu-centers/{id}:
  *   get:
  *     summary: Get an EduCenter by ID 🔍
  *     tags: [EduCenters]
@@ -74,11 +141,11 @@ router.get('/', getEduCenters);
  *       500:
  *         description: Server error
  */
-router.get('/:id', getEduCenter);
+router.get('/:id',roleMiddleware(["admin", "superadmin","ceo", "user"]), getEduCenter);
 
 /**
  * @swagger
- * /educenters:
+ * /edu-centers:
  *   post:
  *     summary: Create a new EduCenter ➕
  *     tags: [EduCenters]
@@ -93,8 +160,9 @@ router.get('/:id', getEduCenter);
  *             address: "123 Main St"
  *             region_id: 1
  *             branchCount: 3
- *             CEO_id: "550e8400-e29b-41d4-a716-446655440001"
  *             description: "A leading education center"
+ *             subjects: [1, 2, 3]  # REQUIRED
+ *             fields: [4, 5]       # REQUIRED
  *     responses:
  *       201:
  *         description: EduCenter created successfully
@@ -102,12 +170,15 @@ router.get('/:id', getEduCenter);
  *         description: Validation failed
  *       500:
  *         description: Server error
+ *     description: |
+ *       - `subjects` **required** → At least one subject ID must be provided.
+ *       - `fields` **required** → At least one field ID must be provided.
  */
-router.post('/', createEduCenter);
+router.post('/',roleMiddleware(["admin","ceo"]), createEduCenter);
 
 /**
  * @swagger
- * /educenters/{id}:
+ * /edu-centers/{id}:
  *   patch:
  *     summary: Update an EduCenter ✏️
  *     tags: [EduCenters]
@@ -127,6 +198,8 @@ router.post('/', createEduCenter);
  *             name: "Updated EduCenter A"
  *             phone: "+1234567890"
  *             address: "456 Main St"
+ *             subjects: [2, 3]   # Optional, but must be an array
+ *             fields: [5, 6]     # Optional, but must be an array
  *     responses:
  *       200:
  *         description: EduCenter updated successfully
@@ -136,12 +209,15 @@ router.post('/', createEduCenter);
  *         description: EduCenter not found
  *       500:
  *         description: Server error
+ *     description: |
+ *       - Send only the fields you want to update.
+ *       - If updating `subjects` or `fields`, send the **new** array of IDs.
  */
-router.patch('/:id', updateEduCenter);
+router.patch('/:id',roleMiddleware(["admin", "superadmin","ceo"]), updateEduCenter);
 
 /**
  * @swagger
- * /educenters/{id}:
+ * /edu-centers/{id}:
  *   delete:
  *     summary: Delete an EduCenter 🗑️
  *     tags: [EduCenters]
@@ -161,6 +237,6 @@ router.patch('/:id', updateEduCenter);
  *       500:
  *         description: Server error
  */
-router.delete('/:id', deleteEduCenter);
+router.delete('/:id',roleMiddleware(["admin","ceo"]), deleteEduCenter);
 
 module.exports = router;

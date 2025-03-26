@@ -19,7 +19,18 @@ const SubjectsOfEdu = db.define("subjectsOfEdu", {
     },
 })
 
-SubjectsOfEdu.belongsTo(EduCenter, {foreignKey: 'edu_id'})
-SubjectsOfEdu.belongsTo(Subjects, {foreignKey: 'subject_id'})
+EduCenter.belongsToMany(Subjects, {
+    through: SubjectsOfEdu,
+    foreignKey: "edu_id",
+    otherKey: "subject_id",
+    as: "subjects",
+  });
+  
+Subjects.belongsToMany(EduCenter, {
+    through: SubjectsOfEdu,
+    foreignKey: "subject_id",
+    otherKey: "edu_id",
+    as: "eduCenters",
+  });
 
 module.exports = SubjectsOfEdu
