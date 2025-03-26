@@ -9,6 +9,7 @@ const educenterValidationSchema = require("../validation/edu_center_validate");
 const { Op } = require("sequelize");
 const User = require("../models/user.model");
 const Region = require("../models/region.model");
+const Like = require("../models/like.model");
 
 const getEduCenters = async (req, res) => {
   try {
@@ -24,7 +25,7 @@ const getEduCenters = async (req, res) => {
 
     const includeOptions = [
       { model: Branch, attributes: ["id", "name"], as: "branches" },
-      { model: Subjects, attributes: ["id", "name"], as: "subjects" },
+      { model: Subjects, attributes: ["id", "name"], as: "subjects", through: { attributes: [] } },
       { model: Fields, attributes: ["id", "name"], as: "fields", through: { attributes: [] } },
       { 
         model: Comment, 
@@ -74,19 +75,20 @@ const getEduCenters = async (req, res) => {
       queryOptions.offset = (parseInt(page) - 1) * parseInt(limit);
     }
 
-      if (sortField && sortOrder) {
-          queryOptions.order.push([
-              sortField,
-              sortOrder.toUpperCase() === "DESC" ? "DESC" : "ASC",
-          ]);
-      } else {
-          queryOptions.order.push(["createdAt", "ASC"]);
-      }
+    if (sort) {
+      const [sortField, sortOrder] = sort.split(":");
+      queryOptions.order.push([
+        sortField || "createdAt",
+        sortOrder && sortOrder.toUpperCase() === "DESC" ? "DESC" : "ASC",
+      ]);
+    } else {
+      queryOptions.order.push(["createdAt", "ASC"]);
+    }
 
-    const educenters = await EduCenter.findAll(queryOptions);
+    let educenters = await EduCenter.findAll(queryOptions);
 
     educenters = await Promise.all(educenters.map(async (edu) => {
-      const branchCount = await Branch.count({ where: { edu_center_id: edu.id } });
+      const branchCount = await Branch.count({ where: { edu_id: edu.id } });
       const likeCount = await Like.count({ where: { edu_id: edu.id } });
       return { ...edu.toJSON(), branchCount,likeCount }; 
     }));
@@ -101,10 +103,10 @@ const getEduCenters = async (req, res) => {
       response.totalPages = Math.ceil(total / limit);
     }
 
-      res.json(response);
+    res.json(response);
   } catch (error) {
-      console.log(error);
-      res.status(500).json({ message: error.message });
+    console.log(error);
+    res.status(500).json({ message: error.message });
   }
 };
 

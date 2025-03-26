@@ -12,11 +12,11 @@ const Like = db.define("likes", {
     },
     edu_id: {
         type: DataTypes.UUID,
-        allowNull: false,
+        allowNull: true,
     },
     branch_id: {
         type: DataTypes.UUID,
-        allowNull: false,
+        allowNull: true,
     },
     user_id: {
         type: DataTypes.UUID,

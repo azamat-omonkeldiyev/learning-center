@@ -17,8 +17,6 @@ const router = express.Router();
  *   post:
  *     summary: Add a like ❤️
  *     tags: [Likes]
- *     security:
- *       - BearerAuth: []
  *     requestBody:
  *       required: true
  *       content:
@@ -52,8 +50,6 @@ router.post("/", roleMiddleware(["admin", "superadmin", "user", "ceo"]), createL
  *   delete:
  *     summary: Remove a like ❌
  *     tags: [Likes]
- *     security:
- *       - BearerAuth: []
  *     parameters:
  *       - in: path
  *         name: id

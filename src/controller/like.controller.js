@@ -1,3 +1,5 @@
+const Branch = require("../models/branch.model");
+const EduCenter = require("../models/edu_center.model");
 const Like = require("../models/like.model");
 const { Op } = require("sequelize");
 

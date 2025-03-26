@@ -28,7 +28,7 @@ app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(specs));
 app.use("/users", UserRoute);
 app.use("/regions", RegionRoute);
 app.use("/edu-centers", LCroute);
-app.use("/registration", RegistrationRoute);
+app.use("/enrollments", RegistrationRoute);
 app.use("/branches", BranchRoute);
 app.use("/fields", FieldsRoute);
 app.use("/subjects", SubjectsRoute);
