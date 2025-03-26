@@ -87,6 +87,15 @@ const createEnrollment = async (req, res) => {
         .json({ message: error.details.map((detail) => detail.message) });
     }
 
+    const eduAydi = await EduCenter.findByPk(req.body.edu_id)
+    if(!eduAydi){
+      return res.status(404).json({message: "Edu center id not found"})
+    }
+    const branchAydi = await Branch.findByPk(req.body.branch_id)
+    if(!branchAydi){
+      return res.status(404).json({message: "Branch id not found"})
+    }
+
     const enrollment = await Enrollment.create({...req.body, user_id: req.userId});
     res.status(201).json(enrollment);
   } catch (error) {
