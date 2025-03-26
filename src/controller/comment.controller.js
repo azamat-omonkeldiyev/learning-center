@@ -13,7 +13,7 @@ const getComments = async (req, res) => {
 
         const queryOptions = {
             include: [
-                { model: User, attributes: ["id", "name"] },
+                { model: User, attributes: ["id", "fullname"] },
                 { model: EduCenter, attributes: ["id", "name"] },
                 { model: Branch, attributes: ["id", "name"] }
             ],
@@ -25,6 +25,9 @@ const getComments = async (req, res) => {
             queryOptions.limit = parseInt(limit);
             queryOptions.offset = (parseInt(page) - 1) * parseInt(limit);
         }
+
+        let sortField = "createdAt"; // Default tartiblash maydoni
+        let sortOrder = "ASC"; 
 
         if (sortField && sortOrder) {
             queryOptions.order.push([

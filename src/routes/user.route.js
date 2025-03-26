@@ -51,14 +51,6 @@ const router = express.Router();
  *         region_id:
  *           type: integer
  *           example: 1
- *         createdAt:
- *           type: string
- *           format: date-time
- *           example: "2023-03-22T12:30:45.678Z"
- *         updatedAt:
- *           type: string
- *           format: date-time
- *           example: "2023-03-23T15:00:12.345Z"
  */
 
 /**

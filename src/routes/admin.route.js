@@ -34,7 +34,7 @@ const router = express.Router();
  *           example: "admin@example.com"
  *         phone:
  *           type: string
- *           example: "912345678"
+ *           example: "+998912345678"
  *         password:
  *           type: string
  *           example: "SecurePassword123!"
@@ -42,6 +42,10 @@ const router = express.Router();
  *           type: string
  *           enum: [admin, superadmin]
  *           example: "admin"
+ *         image:
+ *           type: string
+ *           format: uri
+ *           example: "http://example.com/admin.jpg"
  *         region_id:
  *           type: integer
  *           example: 1
@@ -53,8 +57,6 @@ const router = express.Router();
  *   post:
  *     summary: Create a new admin
  *     tags: [AdminControl]
- *     security:
- *       - BearerAuth: []
  *     requestBody:
  *       required: true
  *       content:
@@ -83,8 +85,6 @@ router.post("/", roleMiddleware(["admin"]), createAdmin);
  *   delete:
  *     summary: Delete an admin by ID
  *     tags: [AdminControl]
- *     security:
- *       - BearerAuth: []
  *     parameters:
  *       - in: path
  *         name: id

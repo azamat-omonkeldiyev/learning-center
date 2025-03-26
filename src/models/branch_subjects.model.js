@@ -35,14 +35,14 @@ Branch.belongsToMany(Subject, {
     through: BranchSubject, 
     foreignKey: "branch_id",
     otherKey: "subject_id",
-    as: "subjects"
+    as: "subjects2"
 });
 
 Subject.belongsToMany(Branch, { 
     through: BranchSubject, 
     foreignKey: "subject_id",
     otherKey: "branch_id",
-    as: "branches"
+    as: "branches2"
 });
 
 module.exports = BranchSubject;

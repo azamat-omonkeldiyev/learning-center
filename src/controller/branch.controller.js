@@ -7,7 +7,6 @@ const BranchSubject = require("../models/branch_subjects.model");
 const BranchField = require("../models/branch_fields.model");
 const Subjects = require("../models/subject.model");
 const Fields = require("../models/fields.model");
-const FieldsOfEdu = require("../models/edu_center_fields.model");
 
 const getBranches = async (req, res) => {
   try {
@@ -15,10 +14,10 @@ const getBranches = async (req, res) => {
 
     const queryOptions = {
       include: [
-        { model: EduCenter, attributes: ["id", "name"] },
+        { model: EduCenter, attributes: ["id", "name"], as: "educenter" },
         { model: Enrollment, attributes: ["id", "date"] },
-        { model: Subjects, through: { attributes: [] }, as: "subjects" },
-        { model: FieldsOfEdu, through: { attributes: [] }, as: "fields" },
+        { model: Subjects, through: { attributes: [] }, as: "subjects2" },
+        { model: Fields, through: { attributes: [] }, as: "fields2" },
       ],
       where: {},
       order: [],

@@ -66,6 +66,7 @@ const register = async (req, res) => {
       fullname,
       region_id,
       email,
+      role,
       phone,
       password: hash,
     });

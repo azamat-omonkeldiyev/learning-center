@@ -36,14 +36,14 @@ Branch.belongsToMany(Field, {
     through: BranchField, 
     foreignKey: "branch_id",
     otherKey: "field_id",
-    as: "fields"
+    as: "fields2"
 });
 
 Field.belongsToMany(Branch, { 
     through: BranchField, 
     foreignKey: "field_id",
     otherKey: "branch_id",
-    as: "branches"
+    as: "branches2"
 });
 
 module.exports = BranchField;
