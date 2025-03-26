@@ -159,7 +159,6 @@ router.get('/:id',roleMiddleware(["admin", "superadmin","ceo", "user"]), getEduC
  *             image: "http://example.com/educenter.jpg"
  *             address: "123 Main St"
  *             region_id: 1
- *             branchCount: 3
  *             description: "A leading education center"
  *             subjects: [1, 2, 3]  # REQUIRED
  *             fields: [4, 5]       # REQUIRED

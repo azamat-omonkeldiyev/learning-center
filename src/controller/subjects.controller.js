@@ -75,6 +75,9 @@ const createSubject = async (req, res) => {
             return res.status(400).json({ message: error.details.map(detail => detail.message) });
         }
 
+        let SubjectsExists = await Subjects.findOne({where: {name: req.body.name}});
+        if(SubjectsExists) return res.status(400).json({message: "subject already created"})
+
         const subject = await Subjects.create(req.body);
         res.status(201).json(subject);
     } catch (error) {

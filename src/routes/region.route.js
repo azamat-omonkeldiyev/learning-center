@@ -17,20 +17,9 @@ const router = express.Router();
  *     Region:
  *       type: object
  *       properties:
- *         id:
- *           type: integer
- *           example: 1
  *         name:
  *           type: string
  *           example: "Tashkent"
- *         createdAt:
- *           type: string
- *           format: date-time
- *           example: "2024-03-26T12:00:00Z"
- *         updatedAt:
- *           type: string
- *           format: date-time
- *           example: "2024-03-26T12:30:00Z"
  *
  * tags:
  *   - name: Regions

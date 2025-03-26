@@ -32,7 +32,7 @@ Enrollment.belongsTo(EduCenter, { foreignKey: "edu_id", onDelete: "CASCADE" });
 EduCenter.hasMany(Enrollment, { foreignKey: "edu_id", onDelete: "CASCADE" });
 
 Enrollment.belongsTo(Branch, { foreignKey: "branch_id", onDelete: "CASCADE" });
-Branch.hasMany(EduCenter, { foreignKey: "branch_id", onDelete: "CASCADE" });
+Branch.hasMany(Enrollment, { foreignKey: "branch_id", onDelete: "CASCADE" });
 
 Enrollment.belongsTo(User, {foreignKey: "user_id", onDelete: "CASCADE"});
 User.hasMany(Enrollment, { foreignKey: "user_id", onDelete: "CASCADE"});

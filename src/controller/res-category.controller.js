@@ -80,6 +80,9 @@ const createResCategory = async (req, res) => {
                 .json({ message: error.details.map((detail) => detail.message) });
         }
 
+        let categoryExists = await resCategory.findOne({where: {name: req.body.name}});
+        if(categoryExists) return res.status(400).json({message: "resCategory already created"})
+
         const category = await resCategory.create(req.body);
         res.status(201).json(category);
     } catch (error) {
