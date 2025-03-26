@@ -67,31 +67,48 @@ const roleMiddleware = require("../rolemiddleware/roleAuth");
  *         name: page
  *         schema:
  *           type: integer
- *         description: Page number for pagination
+ *           default: 1
+ *         description: Page number for pagination (default is 1)
  *       - in: query
  *         name: limit
  *         schema:
  *           type: integer
- *         description: Number of items per page
+ *           default: 10
+ *         description: Number of items per page (default is 10)
  *       - in: query
  *         name: sortField
  *         schema:
  *           type: string
  *           enum: [name, createdAt]
  *           default: createdAt
- *         description: Field to sort by
+ *         description: Field to sort by (default is createdAt)
  *       - in: query
  *         name: sortOrder
  *         schema:
  *           type: string
  *           enum: [ASC, DESC]
  *           default: ASC
- *         description: Sort order
+ *         description: Sort order (default is ASC)
  *       - in: query
  *         name: name
  *         schema:
  *           type: string
  *         description: Filter by name (partial match)
+ *       - in: query
+ *         name: region_id
+ *         schema:
+ *           type: integer
+ *         description: Filter by region ID
+ *       - in: query
+ *         name: subject_id
+ *         schema:
+ *           type: integer
+ *         description: Filter by subject ID
+ *       - in: query
+ *         name: field_id
+ *         schema:
+ *           type: integer
+ *         description: Filter by field ID
  *     responses:
  *       200:
  *         description: List of EduCenters retrieved successfully
@@ -116,7 +133,6 @@ const roleMiddleware = require("../rolemiddleware/roleAuth");
  *       500:
  *         description: Server error
  */
-
 router.get('/', roleMiddleware(["admin", "superadmin","ceo", "user"]), getEduCenters);
 
 /**

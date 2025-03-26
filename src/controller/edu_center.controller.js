@@ -13,15 +13,11 @@ const Like = require("../models/like.model");
 
 const getEduCenters = async (req, res) => {
   try {
-    const { page, limit, sortField, sortOrder, name, region_id, subject_id, field_id } = req.query;
+    const { page = 1, limit = 10, sortField = "createdAt", sortOrder = "ASC", name, region_id, subject_id, field_id } = req.query;
 
     const whereClause = {};
-    if (name) {
-      whereClause.name = { [Op.like]: `%${name}%` };
-    }
-    if (region_id) {
-      whereClause.region_id = region_id;
-    }
+    if (name) whereClause.name = { [Op.like]: `%${name}%` };
+    if (region_id) whereClause.region_id = region_id;
 
     const includeOptions = [
       { model: Branch, attributes: ["id", "name"], as: "branches" },
@@ -65,27 +61,16 @@ const getEduCenters = async (req, res) => {
     const queryOptions = {
       include: includeOptions,
       where: whereClause,
-      order: [],
+      order: [[sortField, sortOrder.toUpperCase() === "DESC" ? "DESC" : "ASC"]],
       distinct: true,
+      limit: parseInt(limit),
+      offset: (parseInt(page) - 1) * parseInt(limit),
     };
 
-    if (page && limit) {
-      queryOptions.limit = parseInt(limit);
-      queryOptions.offset = (parseInt(page) - 1) * parseInt(limit);
-    }
+    let educentersData = await EduCenter.findAll(queryOptions);
 
-    if (sortField && sortOrder) {
-      queryOptions.order.push([
-        sortField,
-        sortOrder.toUpperCase() === "DESC" ? "DESC" : "ASC",
-      ]);
-    } else {
-      queryOptions.order.push(["createdAt", "ASC"]);
-    }
-
-    let educenters = await EduCenter.findAll(queryOptions);
-
-    educenters = await Promise.all(educenters.map(async (edu) => {
+    // let emas, const ishlatilgan, o'zgaruvchiga qayta qiymat berish yo'q
+    const educenters = await Promise.all(educentersData.map(async (edu) => {
       const branchCount = await Branch.count({ where: { edu_id: edu.id } });
       const likeCount = await Like.count({ where: { edu_id: edu.id } });
       const comments = edu.comments || [];
@@ -95,19 +80,15 @@ const getEduCenters = async (req, res) => {
       return { ...edu.toJSON(), branchCount, likeCount, averageStar };
     }));
 
-    const response = {
+    res.json({
       data: educenters,
       total,
-    };
+      page: parseInt(page),
+      totalPages: Math.ceil(total / limit),
+    });
 
-    if (page && limit) {
-      response.page = parseInt(page);
-      response.totalPages = Math.ceil(total / limit);
-    }
-
-    res.json(response);
   } catch (error) {
-    console.log(error);
+    console.error(error);
     res.status(500).json({ message: error.message });
   }
 };
