@@ -100,6 +100,9 @@ router.post("/register", register);
  *               password:
  *                 type: string
  *                 example: "securepassword"
+ *               ip_id:
+ *                 type: string
+ *                 example: "123.11.00"
  *     responses:
  *       200:
  *         description: Login successful, returns access and refresh tokens

@@ -6,7 +6,9 @@ const userValidationSchema = require("../validation/user.validate");
 const { totp } = require("otplib");
 const { sendEmail, sendSms } = require("./../sent-otp-funcs/sent-otp-funcs");
 const Region = require("../models/region.model");
-const Comment = require('../models/comment.model')
+const Comment = require('../models/comment.model');
+const DeviceDetector = require("device-detector-js");
+const deviceDetector = new DeviceDetector();
 
 totp.options = { step: 1000, digits: 6 };
 
@@ -145,7 +147,7 @@ const deleteAdmin = async (req, res) => {
 
 const login = async (req, res) => {
   try {
-    let { fullname, password } = req.body;
+    let { fullname, password, ip_id } = req.body;
     if (!fullname || !password) {
       return res
         .status(400)
@@ -153,6 +155,7 @@ const login = async (req, res) => {
     }
 
     let user = await User.findOne({ where: { fullname } });
+    let device = deviceDetector.parse(req.headers["user-agent"]);
 
     if (
       !user &&
@@ -175,6 +178,9 @@ const login = async (req, res) => {
       return res.status(400).json({ message: "User not found" });
     }
 
+    let userSession = await Session.findOne({ where: { user_id: user.id } });
+    let ip = await Session.findOne({ where: { ip_id } });
+
     // Parolni tekshirish
     let isMatch = bcrypt.compareSync(password, user.password);
     if (!isMatch) {
@@ -184,7 +190,17 @@ const login = async (req, res) => {
     let access_token = genToken(user);
     let refresh_token = genRefreshToken(user);
 
+    if (!ip || !userSession) {
+      let newSession = await Session.create({
+        user_id: user.id,
+        ip_id,
+        device_data: device,
+      });
+      return res.json({ access_token,refresh_token,newSession });
+    }
+
     res.json({ access_token, refresh_token });
+
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: error.message });
@@ -353,6 +369,7 @@ const refresh = async (req, res) => {
 
 // Update User
 const { Op } = require("sequelize");
+const Session = require("../models/session.model");
 
 const updateUser = async (req, res) => {
   try {

@@ -15,6 +15,7 @@ const ResourceRoute = require("./src/routes/resource.route");
 const UploadRoute = require("./src/routes/multer.route");
 const myDataRoutes = require("./src/routes/my-all-data.route");
 const LikeRoute = require("./src/routes/like.route");
+const SessionRoute = require("./src/routes/session.route");
 
 const { swaggerUi, specs } = require("./src/config/swagger");
 const path = require("path");
@@ -38,6 +39,7 @@ app.use("/resources",ResourceRoute );
 app.use("/upload", UploadRoute);
 app.use("/api", myDataRoutes);
 app.use("/likes",LikeRoute);
+app.use("/sessions", SessionRoute);
 
 app.use("/image", express.static(path.join(__dirname, "src", "uploads")));
 connectDb();
