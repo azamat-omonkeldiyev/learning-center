@@ -13,7 +13,7 @@ const Like = require("../models/like.model");
 
 const getEduCenters = async (req, res) => {
   try {
-    const { page, limit, sort, name, region_id, subject_id, field_id } = req.query;
+    const { page, limit, sortField, sortOrder, name, region_id, subject_id, field_id } = req.query;
 
     const whereClause = {};
     if (name) {
@@ -33,7 +33,7 @@ const getEduCenters = async (req, res) => {
         as: "comments",
         include: [{ model: User, attributes: ["id", "fullname"], as: "user" }]
       },
-      {model: Region, attributes: ["name"]}
+      { model: Region, attributes: ["name"] }
     ];
 
     if (subject_id) {
@@ -69,17 +69,15 @@ const getEduCenters = async (req, res) => {
       distinct: true,
     };
 
-
     if (page && limit) {
       queryOptions.limit = parseInt(limit);
       queryOptions.offset = (parseInt(page) - 1) * parseInt(limit);
     }
 
-    if (sort) {
-      const [sortField, sortOrder] = sort.split(":");
+    if (sortField && sortOrder) {
       queryOptions.order.push([
-        sortField || "createdAt",
-        sortOrder && sortOrder.toUpperCase() === "DESC" ? "DESC" : "ASC",
+        sortField,
+        sortOrder.toUpperCase() === "DESC" ? "DESC" : "ASC",
       ]);
     } else {
       queryOptions.order.push(["createdAt", "ASC"]);
@@ -90,12 +88,16 @@ const getEduCenters = async (req, res) => {
     educenters = await Promise.all(educenters.map(async (edu) => {
       const branchCount = await Branch.count({ where: { edu_id: edu.id } });
       const likeCount = await Like.count({ where: { edu_id: edu.id } });
-      return { ...edu.toJSON(), branchCount,likeCount }; 
+      const comments = edu.comments || [];
+      const averageStar = comments.length > 0
+        ? (comments.reduce((sum, comment) => sum + comment.star, 0) / comments.length).toFixed(1)
+        : 0;
+      return { ...edu.toJSON(), branchCount, likeCount, averageStar };
     }));
 
     const response = {
       data: educenters,
-      total, 
+      total,
     };
 
     if (page && limit) {
@@ -110,30 +112,34 @@ const getEduCenters = async (req, res) => {
   }
 };
 
-
 const getEduCenter = async (req, res) => {
   try {
     const educenter = await EduCenter.findByPk(req.params.id, {
       include: [
-        { model: Branch,as: "branches", attributes: ["id", "name"] },
+        { model: Branch, as: "branches", attributes: ["id", "name"] },
         { model: Subjects, as: "subjects", attributes: ["id", "name"] },
-        { model: Fields, attributes: ["id", "name"], as: "fields",through: { attributes: [] } },
+        { model: Fields, attributes: ["id", "name"], as: "fields", through: { attributes: [] } },
         { 
           model: Comment, 
           attributes: ["id", "text", "star", "user_id"], 
           as: "comments",
           include: [{ model: User, attributes: ["id", "fullname"], as: "user" }]
         },
-        {model: Region, attributes: ["name"]}
+        { model: Region, attributes: ["name"] }
       ],
     });
-    if (!educenter)
+    if (!educenter) {
       return res.status(404).json({ error: "EduCenter not found" });
+    }
 
-    const branchCount = await Branch.count({ where: { edu_center_id: educenter.id } });
+    const branchCount = await Branch.count({ where: { edu_id: educenter.id } });
     const likeCount = await Like.count({ where: { edu_id: educenter.id } });
+    const comments = educenter.comments || [];
+    const averageStar = comments.length > 0
+      ? (comments.reduce((sum, comment) => sum + comment.star, 0) / comments.length).toFixed(1)
+      : 0;
 
-    res.json({ ...educenter.toJSON(), branchCount, likeCount });
+    res.json({ ...educenter.toJSON(), branchCount, likeCount, averageStar });
   } catch (error) {
     console.log(error);
     res.status(500).json({ message: error.message });
