@@ -61,6 +61,25 @@ router.get('/',roleMiddleware(["admin"]), getEnrollments);
 
 /**
  * @swagger
+ * /enrollments/my-enrollments:
+ *   get:
+ *     summary: Get a Personal Enrollment
+ *     tags: [Enrollments]
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: Enrollment list retrieved successfully
+ *       401:
+ *         description: Not authorized
+ *       500:
+ *         description: Server error
+ */
+
+router.get("/my-enrollments", roleMiddleware(["user", "admin","superadmin", "ceo"]), getMyEnrollments);
+
+/**
+ * @swagger
  * components:
  *   schemas:
  *     Enrollment:
@@ -173,25 +192,6 @@ router.get('/:id',roleMiddleware(["admin", "superadmin", "user", "ceo"]), getEnr
  *         description: Server error
  */
 router.post('/',roleMiddleware(["admin", "superadmin", "user", "ceo"]), createEnrollment);
-
-/**
- * @swagger
- * /enrollments/my-enrollments:
- *   get:
- *     summary: Get a Personal Enrollment
- *     tags: [Enrollments]
- *     security:
- *       - bearerAuth: []
- *     responses:
- *       200:
- *         description: Enrollment list retrieved successfully
- *       401:
- *         description: Not authorized
- *       500:
- *         description: Server error
- */
-
-router.get("/my-enrollments", roleMiddleware(["user", "admin","superadmin", "ceo"]), getMyEnrollments);
 
 
 /**

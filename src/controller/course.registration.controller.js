@@ -59,6 +59,7 @@ const getEnrollments = async (req, res) => {
 
 const getEnrollment = async (req, res) => {
   try {
+    console.log("salom")
     const enrollment = await Enrollment.findByPk(req.params.id, {
       include: [
         { model: EduCenter, attributes: ["id", "name"] },
@@ -96,7 +97,8 @@ const createEnrollment = async (req, res) => {
 
 const getMyEnrollments = async (req, res) => {
   try {
-    const user_id = req.session.user.id;
+    const user_id = req.userId;
+    console.log("SAlom")
 
     const enrollments = await Enrollment.findAll({
       where: { user_id },

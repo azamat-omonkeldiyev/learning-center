@@ -9,7 +9,8 @@ const {
   getUserById,
   updateUser,
   deleteUser,
-  me
+  me,
+  resetPassword
 } = require("./../controller/user.controller");
 const roleMiddleware = require("../rolemiddleware/roleAuth");
 
@@ -334,5 +335,79 @@ router.patch("/:id",roleMiddleware(["admin", "superadmin", "user", "ceo"]), upda
  *         description: User not found
  */
 router.delete("/:id",roleMiddleware(["admin", "user", "ceo"]), deleteUser);
+
+/**
+ * @swagger
+ * /users/resetpassword:
+ *   post:
+ *     summary: Reset user password 🔑
+ *     tags: [Reset password]
+ *     description: Allows a user to reset their password. Requires authentication and specific roles (admin, user, ceo, or superadmin).
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - newpassword
+ *             properties:
+ *               newpassword:
+ *                 type: string
+ *                 description: The new password for the user (minimum 8 characters)
+ *                 example: newSecurePassword123
+ *     responses:
+ *       200:
+ *         description: Password reset successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: Password reset successfully
+ *       400:
+ *         description: Bad request (e.g., missing or invalid password)
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: Your password should be at least 8 characters long
+ *       401:
+ *         description: Unauthorized (e.g., invalid token or insufficient role)
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: Unauthorized
+ *       404:
+ *         description: User not found
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: User not found
+ *       500:
+ *         description: Server error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *                   example: Internal server error
+ */
+router.post("/resetpassword", roleMiddleware(["admin", "user", "ceo", "superadmin"]), resetPassword)
 
 module.exports = router;

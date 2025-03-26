@@ -22,8 +22,8 @@ const enrollmentValidationSchema = Joi.object({
             'string.uuid': 'Branch ID must be a valid UUID'
         })
 }).custom((value, helpers) => {
-    if ((!value.edu_id && !value.branch_id) || (value.edu_id && value.branch_id)) {
-        return helpers.message("Either 'edu_id' or 'branch_id' must be provided, but not both");
+    if ((!value.edu_id && !value.branch_id)) {
+        return helpers.message(" 'edu_id' or 'branch_id' must be provided");
     }
     return value;
 });

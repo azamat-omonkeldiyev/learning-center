@@ -6,6 +6,7 @@ const userValidationSchema = require("../validation/user.validate");
 const { totp } = require("otplib");
 const { sendEmail, sendSms } = require("./../sent-otp-funcs/sent-otp-funcs");
 const Region = require("../models/region.model");
+const Comment = require('../models/comment.model')
 
 totp.options = { step: 1000, digits: 6 };
 
@@ -426,6 +427,34 @@ const deleteUser = async (req, res) => {
   }
 };
 
+const resetPassword = async (req, res) => {
+  try{
+    const {newpassword} = req.body
+    if(!newpassword){
+      return res.status(400).json({message: "Please provide you new password password"})
+    }
+    if(typeof newpassword !== "string"){
+      return res.status(400).json({message: "Password must be a string"})
+    }
+    if(newpassword.length < 8){
+      return res.status(400).json({message: "Your password should be at least 8 characters long"})
+    }
+    let user_id = req.userId
+
+    let user = await User.findByPk(user_id)
+    if(!user){
+      return res.status(404).json({message: "User not found"})
+    }
+    const hashed = await bcrypt.hash(newpassword, 10)
+    user.password = hashed
+    await user.save()
+    res.status(200).json({message: "Password reset successfully"})
+  }catch(error){
+    console.log(error)
+    res.status(500).json({error: error.message})
+  }
+}
+
 module.exports = {
   login,
   refresh,
@@ -439,4 +468,5 @@ module.exports = {
   me,
   createAdmin,
   deleteAdmin,
+  resetPassword
 };

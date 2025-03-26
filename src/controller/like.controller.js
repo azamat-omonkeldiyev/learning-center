@@ -8,8 +8,8 @@ const createLike = async (req, res) => {
         const { edu_id, branch_id } = req.body;
         const user_id = req.userId;
 
-        if ((!edu_id && !branch_id) || (edu_id && branch_id)) {
-            return res.status(400).json({ message: "Only one of edu_id or branch_id must be provided!" });
+        if ((!edu_id && !branch_id)) {
+            return res.status(400).json({ message: "edu_id or branch_id must be provided!" });
         };
         if (edu_id) {
             const eduExists = await EduCenter.findByPk(edu_id);
