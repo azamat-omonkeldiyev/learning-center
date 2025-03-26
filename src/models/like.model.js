@@ -30,8 +30,8 @@ User.hasMany(Like, { foreignKey: "user_id", onDelete: "CASCADE" });
 Like.belongsTo(EduCenter, { foreignKey: "edu_id", onDelete: "CASCADE" });
 EduCenter.hasMany(Like, { foreignKey: "edu_id", onDelete: "CASCADE" });
 
-Like.belongsTo(Branch, { foreignKey: "edu_id", onDelete: "CASCADE" });
-Branch.hasMany(Like, { foreignKey: "edu_id", onDelete: "CASCADE" });
+Like.belongsTo(Branch, { foreignKey: "branch_id", onDelete: "CASCADE" });
+Branch.hasMany(Like, { foreignKey: "branch_id", onDelete: "CASCADE" });
 
 
 module.exports = Like

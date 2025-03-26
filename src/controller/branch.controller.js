@@ -7,6 +7,7 @@ const BranchSubject = require("../models/branch_subjects.model");
 const BranchField = require("../models/branch_fields.model");
 const Subjects = require("../models/subject.model");
 const Fields = require("../models/fields.model");
+const Region = require("../models/region.model");
 
 const getBranches = async (req, res) => {
   try {
@@ -75,13 +76,16 @@ const getBranch = async (req, res) => {
 // ✅ CREATE BRANCH: CEO faqat o‘zining EduCenteriga branch qo‘sha oladi
 const createBranch = async (req, res) => {
   try {
-    const { fields, subjects, edu_id, ...rest } = req.body;
+    const { fields, subjects, edu_id,region_id, ...rest } = req.body;
 
     const { error } = branchValidationSchema.validate(rest, { abortEarly: false });
     if (error) {
       console.log("salom")
       return res.status(400).json({ message: error.details.map((detail) => detail.message) });
     }
+
+    let regionExists = await Region.findByPk(region_id);
+    if(!regionExists) return res.status(404).json({message: "region id not found"});
 
     if (req.userRole === "ceo") {
       const userEdu = await EduCenter.findOne({ where: { id: edu_id, user_id: req.userId } });
@@ -115,7 +119,7 @@ const createBranch = async (req, res) => {
       }
     }
 
-    const branch = await Branch.create({ edu_id, ...rest });
+    const branch = await Branch.create({ edu_id,region_id, ...rest });
 
     let subjects_branch;
     if (subjects && subjects.length > 0) {
