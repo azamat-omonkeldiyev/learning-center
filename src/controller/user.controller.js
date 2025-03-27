@@ -9,6 +9,7 @@ const Region = require("../models/region.model");
 const Comment = require('../models/comment.model');
 const DeviceDetector = require("device-detector-js");
 const deviceDetector = new DeviceDetector();
+const logger = require('../config/logger')
 
 totp.options = { step: 1000, digits: 6 };
 
@@ -32,9 +33,14 @@ function genRefreshToken(user) {
 // Register with phone User
 const register = async (req, res) => {
   try {
+    logger.info("registering user", {
+      body: req.body
+    })
     const { error } = userValidationSchema.validate(req.body);
     if (error) {
-      console.log(error)
+      logger.warn("user registration failed: validation error", {
+        error: error.details[0].message
+      })
       return res.status(400).json({ error: error.details[0].message });
     }
 
@@ -42,22 +48,33 @@ const register = async (req, res) => {
 
     let userEmail = await User.findOne({ where: { email } });
     if (userEmail) {
+      logger.warn("user registration failed: email already exists", {
+        email
+      })
       return res.status(400).json({ message: "Email already exists" });
     }
 
     let userPhone = await User.findOne({ where: { phone } });
     if (userPhone) {
-      return res.status(400).json({ message: "Phone already exists" });
+      logger.warn("user registration failed: phone already exists", {phone})
+      return res.status(400).json({ message: "Phone already exists"});
     }
 
     let usernameFound = await User.findOne({ where: { fullname } });
     if (usernameFound) {
+      logger.warn("User registration failed: Fullname already exists", {
+        fullname
+      });
       return res.status(400).json({
         message: "Fullname already exists. Please change your username..",
       });
     }
 
     if (!["user", "ceo"].includes(role)) {
+      logger.warn("User registration failed: Invalid role", {
+        role,
+        userId: req.userId || "unauthenticated",
+      });
       return res.status(400).json({ message: "Invalid role" });
     };
 
@@ -77,17 +94,30 @@ const register = async (req, res) => {
       password: hash,
     });
 
+    logger.info("User registered successfully", {
+      userId: newUser.id,
+      email,
+      role,
+    });
+
     res.json(newUser);
   } catch (err) {
-    console.log(err);
-    res.status(500).json({ error: err.message });
+    throw err
   }
 };
 
 const createAdmin = async (req, res) => {
   try {
+    logger.info("Creating admin", {
+      body: { ...req.body, password: "[REDACTED]" },
+      userId: req.userId || "unauthenticated",
+    });
     const { error } = userValidationSchema.validate(req.body);
     if (error) {
+      logger.warn("Admin creation failed: Validation error", {
+        error: error.details[0].message,
+        userId: req.userId || "unauthenticated",
+      });
       return res.status(400).json({ error: error.details[0].message });
     }
 
@@ -95,6 +125,10 @@ const createAdmin = async (req, res) => {
       req.body;
 
     if (!["admin", "superadmin"].includes(role)) {
+      logger.warn("Admin creation failed: Invalid role", {
+        role,
+        userId: req.userId || "unauthenticated",
+      });
       return res.status(400).json({ message: "Invalid role" });
     }
 
@@ -123,32 +157,55 @@ const createAdmin = async (req, res) => {
       password: hash,
       role,
     });
+    logger.info("Admin created successfully", {
+      adminId: newAdmin.id,
+      email,
+      role,
+      userId: req.userId || "unauthenticated",
+    });
 
     res.status(201).json(newAdmin);
   } catch (err) {
-    console.log(err);
-    res.status(500).json({ error: err.message });
+    throw err
   }
 };
 
 const deleteAdmin = async (req, res) => {
   try {
+    logger.info("Deleting admin", {
+      adminId: req.params.id,
+      userId: req.userId || "unauthenticated",
+    });
     const user = await User.findByPk(req.params.id);
     if (!user) {
+      logger.warn("Admin deletion failed: Admin not found", {
+        adminId: req.params.id,
+        userId: req.userId || "unauthenticated",
+      });
       return res.status(404).json({ error: "Admin not found" });
     }
+    logger.info("Admin deleted successfully", {
+      adminId: req.params.id,
+      userId: req.userId || "unauthenticated",
+    });
     await user.destroy();
     res.status(200).json({ message: "Admin deleted successfully" });
   } catch (err) {
-    console.log(err);
-    res.status(500).json({ error: err.message });
+    throw err
   }
 };
 
 const login = async (req, res) => {
   try {
+    logger.info("User login attempt", {
+      body: { ...req.body, password: "[REDACTED]" },
+      userId: req.userId || "unauthenticated",
+    });
     let { fullname, password, ip_id } = req.body;
     if (!fullname || !password) {
+      logger.warn("Login failed: Missing fullname or password", {
+        userId: req.userId || "unauthenticated",
+      });
       return res
         .status(400)
         .json({ message: "Please enter fullname and password..." });
@@ -173,8 +230,16 @@ const login = async (req, res) => {
         role: process.env.ADMIN_ROLE,
       });
     }
+    logger.info("Default admin created during login", {
+      userId: user.id,
+      role: user.role,
+    });
 
     if (!user) {
+      logger.warn("Login failed: User not found", {
+        fullname,
+        userId: req.userId || "unauthenticated",
+      });
       return res.status(400).json({ message: "User not found" });
     }
 
@@ -184,6 +249,10 @@ const login = async (req, res) => {
     // Parolni tekshirish
     let isMatch = bcrypt.compareSync(password, user.password);
     if (!isMatch) {
+      logger.warn("Login failed: Invalid password", {
+        fullname,
+        userId: req.userId || "unauthenticated",
+      });
       return res.status(400).json({ message: "Invalid password" });
     }
 
@@ -196,19 +265,28 @@ const login = async (req, res) => {
         ip_id,
         device_data: device,
       });
+      logger.info("User logged in successfully with new session", {
+        userId: user.id,
+        sessionId: newSession.id,
+      });
       return res.json({ access_token,refresh_token,newSession });
     }
-
+    logger.info("User logged in successfully", {
+      userId: user.id,
+    });
     res.json({ access_token, refresh_token });
 
   } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: error.message });
+    throw err
   }
 };
 
 const sendOtp = async (req, res) => {
   try {
+    logger.info("Sending OTP", {
+      body: req.body,
+      userId: req.userId || "unauthenticated",
+    });
     let { email, phone } = req.body;
     if (!email || !phone) {
       return res
@@ -238,18 +316,26 @@ const sendOtp = async (req, res) => {
 
     // await sendSms(phone,token);
     await sendEmail(email, token);
+    logger.info("OTP sent successfully", {
+      email,
+      phone,
+      userId: req.userId || "unauthenticated",
+    });
     return res.json({
       message: `The otp is sent to your email and phone.[${token}]`,
     });
   } catch (error) {
-    console.log(error);
-    res.status(500).json({ err: error.message });
+    throw error
   }
 };
 
 const verify = async (req, res) => {
   let { email, otp } = req.body;
   try {
+    logger.info("Verifying OTP", {
+      body: req.body,
+      userId: req.userId || "unauthenticated",
+    });
     if (email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email))
       return res
         .status(400)
@@ -264,17 +350,24 @@ const verify = async (req, res) => {
       token: otp,
       secret: email + process.env.TOTP_SECRET,
     });
-    console.log(otp, email);
+    logger.info("OTP verification completed", {
+      email,
+      verified: match,
+      userId: req.userId || "unauthenticated",
+    });
     res.json({ verified: match });
   } catch (error) {
-    console.log(err);
-    res.status(500).json({ error: error.message });
+    throw error
   }
 };
 
 // Get All Users
 const getUsers = async (req, res) => {
   try {
+    logger.info("Fetching users", {
+      query: req.query,
+      userId: req.userId || "unauthenticated",
+    });
       const { page, limit, sortField, sortOrder, region_id } = req.query;
 
       const queryOptions = {
@@ -315,44 +408,61 @@ const getUsers = async (req, res) => {
           response.page = parseInt(page);
           response.totalPages = Math.ceil(users.count / limit);
       }
-
+      logger.info("Users fetched successfully", {
+        total: users.count,
+        userId: req.userId || "unauthenticated",
+      });
       res.json(response);
   } catch (error) {
-      console.log(error);
-      res.status(500).json({ message: error.message });
+    throw error
   }
 };
 
 // Get User by ID
 const getUserById = async (req, res) => {
   try {
+    logger.info("Fetching user by ID", {
+      userId: req.params.id,
+      requesterId: req.userId || "unauthenticated",
+    });
     const user = await User.findByPk(req.params.id, {
       include: { model: Region },
     });
     if (!user) {
       return res.status(404).json({ error: "User not found" });
     }
+    logger.info("User fetched successfully", {
+      userId: req.params.id,
+      requesterId: req.userId || "unauthenticated",
+    });
     res.status(200).json(user);
   } catch (err) {
-    console.log(err);
-    res.status(500).json({ error: err.message });
+    throw err
   }
 };
 
 // Me
 const me = async (req, res) => {
   try {
+    logger.info("Fetching user profile (me)", {
+      userId: req.userId,
+    });
     console.log(req.userId);
     let data = await User.findByPk(req.userId, { include: Region });
+    logger.info("User profile fetched successfully", {
+      userId: req.userId,
+    });
     res.json(data);
   } catch (error) {
-    console.log(error);
-    res.status(500).json({ message: error.message });
+    throw error
   }
 };
 // get refresh token
 const refresh = async (req, res) => {
   try {
+    logger.info("Refreshing token", {
+      userId: req.userId || "unauthenticated",
+    });
     let { refresh_token } = req.body;
 
     if (!refresh_token)
@@ -360,12 +470,18 @@ const refresh = async (req, res) => {
 
     let data = jwt.verify(refresh_token, "secret_boshqa");
     let token = genToken(data.id);
+    logger.info("Token refreshed successfully", {
+      userId: data.id,
+    });
     res.json({ token });
   } catch (error) {
-    console.log(error);
-    res.status(400).json({ message: "Invalid refresh token" });
+    logger.warn("Token refresh failed: Invalid refresh token", {
+      userId: req.userId || "unauthenticated",
+    });
+    return res.status(400).json({ message: "Invalid refresh token" });
   }
-};
+}
+
 
 // Update User
 const { Op } = require("sequelize");
@@ -420,11 +536,13 @@ const updateUser = async (req, res) => {
     }
 
     await user.update(req.body, { fields: Object.keys(req.body) });
-
+    logger.info("User updated successfully", {
+      userId: req.params.id,
+      requesterId: req.userId || "unauthenticated",
+    });
     res.status(200).json(user);
   } catch (err) {
-    console.error(err);
-    res.status(500).json({ error: err.message });
+    throw err
   }
 };
 
@@ -436,15 +554,21 @@ const deleteUser = async (req, res) => {
       return res.status(404).json({ error: "User not found" });
     }
     await user.destroy();
+    logger.info("User deleted successfully", {
+      userId: req.params.id,
+      requesterId: req.userId || "unauthenticated",
+    });
     res.status(200).json({ message: "User deleted successfully" });
   } catch (err) {
-    console.log(err);
-    res.status(500).json({ error: err.message });
+    throw err
   }
 };
 
 const resetPassword = async (req, res) => {
   try{
+    logger.info("Resetting password", {
+      userId: req.userId,
+    });
     const {newpassword} = req.body
     if(!newpassword){
       return res.status(400).json({message: "Please provide you new password password"})
@@ -464,10 +588,12 @@ const resetPassword = async (req, res) => {
     const hashed = await bcrypt.hash(newpassword, 10)
     user.password = hashed
     await user.save()
+    logger.info("Password reset successfully", {
+      userId: req.userId,
+    });
     res.status(200).json({message: "Password reset successfully"})
   }catch(error){
-    console.log(error)
-    res.status(500).json({error: error.message})
+    throw err
   }
 }
 

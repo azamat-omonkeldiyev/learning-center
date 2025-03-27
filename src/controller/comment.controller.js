@@ -2,12 +2,16 @@ const Comment = require("../models/comment.model");
 const User = require("../models/user.model");
 const EduCenter = require("../models/edu_center.model");
 const Branch = require("../models/branch.model");
-
+const logger = require('../config/logger')
 const CommentValidationSchema = require("../validation/comment.validate");
 const { Op } = require("sequelize");
 
 const getComments = async (req, res) => {
     try {
+        logger.info("Fetching comments", {
+            query: req.query,
+            userId: req.userId || "unauthenticated",
+          });
         const { page, limit, sort, text, star, edu_id, branch_id, user_id } = req.query;
 
         const queryOptions = {
@@ -64,16 +68,22 @@ const getComments = async (req, res) => {
             response.page = parseInt(page);
             response.totalPages = Math.ceil(comments.count / limit);
         }
-
+        logger.info("Comments fetched successfully", {
+            total: comments.count,
+            userId: req.userId || "unauthenticated",
+          });
         res.json(response);
     } catch (error) {
-        console.log(error);
-        res.status(500).json({ message: error.message });
+        throw error
     }
 };
 
 const getComment = async (req, res) => {
     try {
+        logger.info("Fetching comment by ID", {
+            commentId: req.params.id,
+            userId: req.userId || "unauthenticated",
+          });
         const comment = await Comment.findByPk(req.params.id, {
             include: [
                 { model: User, attributes: ["id", "name"] },
@@ -82,20 +92,30 @@ const getComment = async (req, res) => {
             ],
         });
         if (!comment) return res.status(404).json({ error: "Comment not found" });
-
+        logger.info("Comment fetched successfully", {
+            commentId: req.params.id,
+            userId: req.userId || "unauthenticated",
+          });
         res.json(comment);
     } catch (error) {
-        console.log(error);
-        res.status(500).json({ message: error.message });
+        throw error
     }
 };
 
 const createComment = async (req, res) => {
     try {
+        logger.info("Creating comment", {
+            body: req.body,
+            userId: req.userId || "unauthenticated",
+          });
         const { error } = CommentValidationSchema.validate(req.body, {
             abortEarly: false,
         });
         if (error) {
+            logger.warn("Comment creation failed: Validation error", {
+                error: error.details.map((detail) => detail.message),
+                userId: req.userId || "unauthenticated",
+              });
             return res
                 .status(400)
                 .json({ message: error.details.map((detail) => detail.message) });
@@ -105,15 +125,23 @@ const createComment = async (req, res) => {
         if (!find) return res.status(404).json({message:"edu-center not found"})
 
         const comment = await Comment.create({...req.body,user_id:req.userId});
+        logger.info("Comment created successfully", {
+            commentId: comment.id,
+            userId: req.userId || "unauthenticated",
+          });
         res.status(201).json(comment);
     } catch (error) {
-        console.log(error);
-        res.status(500).json({ message: error.message });
+        throw error
     }
 };
 
 const updateComment = async (req, res) => {
     try {
+        logger.info("Updating comment", {
+            commentId: req.params.id,
+            body: req.body,
+            userId: req.userId || "unauthenticated",
+          });
         const comment = await Comment.findByPk(req.params.id);
         if (!comment) return res.status(404).json({ error: "Comment not found" });
 
@@ -125,33 +153,52 @@ const updateComment = async (req, res) => {
             abortEarly: false,
         });
         if (error) {
+            logger.warn("Comment update failed: Validation error", {
+                error: error.details.map((detail) => detail.message),
+                userId: req.userId || "unauthenticated",
+              });
             return res
                 .status(400)
                 .json({ message: error.details.map((detail) => detail.message) });
         }
 
         await comment.update(req.body);
+        logger.info("Comment updated successfully", {
+            commentId: req.params.id,
+            userId: req.userId || "unauthenticated",
+          });
         res.json(comment);
     } catch (error) {
-        console.log(error);
-        res.status(500).json({ message: error.message });
+        throw error
     }
 };
 
 const deleteComment = async (req, res) => {
     try {
+        logger.info("Deleting comment", {
+            commentId: req.params.id,
+            userId: req.userId || "unauthenticated",
+          });
         const comment = await Comment.findByPk(req.params.id);
         if (!comment) return res.status(404).json({ error: "Comment not found" });
 
         if (req.userRole !== "admin" && req.userId !== comment.user_id) {
+            logger.warn("Comment deletion failed: Unauthorized", {
+                commentId: req.params.id,
+                userId: req.userId,
+                userRole: req.userRole,
+              });
             return res.status(403).json({ error: "You can only delete your own comments" });
         }
 
         await comment.destroy();
+        logger.info("Comment deleted successfully", {
+            commentId: req.params.id,
+            userId: req.userId || "unauthenticated",
+          });
         res.status(200).json({ message: "Deleted successfully" });
     } catch (error) {
-        console.log(error);
-        res.status(500).json({ message: error.message });
+        throw error
     }
 };
 

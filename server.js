@@ -21,8 +21,13 @@ const { swaggerUi, specs } = require("./src/config/swagger");
 const path = require("path");
 
 const express = require("express");
+const requestLogger = require('./src/rolemiddleware/requestLogger')
+const errorLogger = require('./src/rolemiddleware/errorLogger')
+
 const app = express();
 app.use(express.json());
+
+app.use(requestLogger)
 
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(specs));
 app.use("/users", UserRoute);
@@ -42,6 +47,9 @@ app.use("/likes",LikeRoute);
 app.use("/sessions", SessionRoute);
 
 app.use("/image", express.static(path.join(__dirname, "src", "uploads")));
+
+app.use(errorLogger)
+
 connectDb();
 
 const PORT = process.env.PORT || 3000;

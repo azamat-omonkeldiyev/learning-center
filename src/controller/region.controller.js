@@ -1,8 +1,13 @@
 const Region = require("./../models/region.model");
+const logger = require('../config/logger')
 
 //  Yangi region qo'shish (Create)
 const createRegion = async (req, res) => {
     try {
+        logger.info("Creating region", {
+            body: req.body,
+            userId: req.userId || "unauthenticated",
+          });
         const { name } = req.body;
         if (!name) return res.status(400).json({ message: "Region name is required" });
 
@@ -10,16 +15,24 @@ const createRegion = async (req, res) => {
         if(RegionExists) return res.status(400).json({message: "region already created"})
 
         const region = await Region.create({ name });
+        logger.info("Region created successfully", {
+            regionId: region.id,
+            name: region.name,
+            userId: req.userId || "unauthenticated",
+          });
         res.status(201).json({ region });
     } catch (error) {
-        console.log(error)
-        res.status(500).json({ message: "server error", error: error.message });
+        throw error
     }
 };
 
 //  Barcha regionlarni olish (Read All + Pagination)
 const getAllRegions = async (req, res) => {
     try {
+        logger.info("Fetching regions", {
+            query: req.query,
+            userId: req.userId || "unauthenticated",
+          });
         const { page, limit, sortField, sortOrder } = req.query;
 
         const queryOptions = {
@@ -51,32 +64,45 @@ const getAllRegions = async (req, res) => {
             response.page = parseInt(page);
             response.totalPages = Math.ceil(regions.count / limit);
         }
-
+        logger.info("Regions fetched successfully", {
+            total: regions.count,
+            userId: req.userId || "unauthenticated",
+          });
         res.json(response);
     } catch (error) {
-        console.log(error);
-        res.status(500).json({ message: error.message });
+        throw error
     }
 };
 
 //  ID bo‘yicha regionni olish (Read One)
 const getRegionById = async (req, res) => {
     try {
+        logger.info("Fetching region by ID", {
+            regionId: req.params.id,
+            userId: req.userId || "unauthenticated",
+          });
         const { id } = req.params;
 
         const region = await Region.findByPk(id);
         if (!region) return res.status(404).json({ message: "Region not found" });
-
+        logger.info("Region fetched successfully", {
+            regionId: id,
+            userId: req.userId || "unauthenticated",
+          });
         res.status(200).json(region);
     } catch (error) {
-        console.log(error)
-        res.status(500).json({ error: error.message });
+        throw error
     }
 };
 
 //  Regionni yangilash (Update)
 const updateRegion = async (req, res) => {
     try {
+        logger.info("Updating region", {
+            regionId: req.params.id,
+            body: req.body,
+            userId: req.userId || "unauthenticated",
+          });
         const { id } = req.params;
         const { name } = req.body;
 
@@ -85,26 +111,35 @@ const updateRegion = async (req, res) => {
 
         region.name = name || region.name;
         await region.save();
-
+        logger.info("Region updated successfully", {
+            regionId: id,
+            userId: req.userId || "unauthenticated",
+          });
         res.status(200).json({ region });
     } catch (error) {
-        console.log(error)
-        res.status(500).json({ error: error.message });
+        throw error
     }
 };
 
 //  Regionni o'chirish (Delete)
 const deleteRegion = async (req, res) => {
     try {
+        logger.info("Deleting region", {
+            regionId: req.params.id,
+            userId: req.userId || "unauthenticated",
+          });
         const { id } = req.params;
         const region = await Region.findByPk(id);
         if (!region) return res.status(404).json({ message: "Region not found" });
 
         await region.destroy();
+        logger.info("Region deleted successfully", {
+            regionId: id,
+            userId: req.userId || "unauthenticated",
+          });
         res.status(200).json({ message: "Region deleted" });
     } catch (error) {
-        console.log(error)
-        res.status(500).json({  error: error.message });
+        throw error
     }
 };
 

@@ -10,9 +10,14 @@ const { Op } = require("sequelize");
 const User = require("../models/user.model");
 const Region = require("../models/region.model");
 const Like = require("../models/like.model");
+const logger = require('../config/logger')
 
 const getEduCenters = async (req, res) => {
   try {
+    logger.info("Fetching education centers", {
+      query: req.query,
+      userId: req.userId || "unauthenticated",
+    });
     const { page = 1, limit = 10, sortField = "createdAt", sortOrder = "ASC", name, region_id, subject_id, field_id } = req.query;
 
     const whereClause = {};
@@ -79,7 +84,10 @@ const getEduCenters = async (req, res) => {
         : 0;
       return { ...edu.toJSON(), branchCount, likeCount, averageStar };
     }));
-
+    logger.info("Education centers fetched successfully", {
+      total,
+      userId: req.userId || "unauthenticated",
+    });
     res.json({
       data: educenters,
       total,
@@ -88,13 +96,16 @@ const getEduCenters = async (req, res) => {
     });
 
   } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: error.message });
+    throw error
   }
 };
 
 const getEduCenter = async (req, res) => {
   try {
+    logger.info("Fetching education center by ID", {
+      eduCenterId: req.params.id,
+      userId: req.userId || "unauthenticated",
+    });
     const educenter = await EduCenter.findByPk(req.params.id, {
       include: [
         { model: Branch, as: "branches",
@@ -124,16 +135,22 @@ const getEduCenter = async (req, res) => {
     const averageStar = comments.length > 0
       ? (comments.reduce((sum, comment) => sum + comment.star, 0) / comments.length).toFixed(1)
       : 0;
-
+      logger.info("Education center fetched successfully", {
+        eduCenterId: req.params.id,
+        userId: req.userId || "unauthenticated",
+      });
     res.json({ ...educenter.toJSON(), branchCount, likeCount, averageStar });
   } catch (error) {
-    console.log(error);
-    res.status(500).json({ message: error.message });
+    throw error
   }
 };
 
 const createEduCenter = async (req, res) => {
   try {
+    logger.info("Creating education center", {
+      body: req.body,
+      userId: req.userId || "unauthenticated",
+    });
     const { subjects, fields,branchCount,region_id, ...rest } = req.body;
     console.log(req.body);
     const user_id = req.userId;
@@ -195,7 +212,11 @@ const createEduCenter = async (req, res) => {
       }));
       await FieldsOfEdu.bulkCreate(fields_educenter);
     }
-
+    logger.info("Education center created successfully", {
+      eduCenterId: educenter.id,
+      name: educenter.name,
+      userId: req.userId || "unauthenticated",
+    });
     res.status(201).json({ 
       educenter,
       subjects: subjects_educenter,
@@ -203,14 +224,18 @@ const createEduCenter = async (req, res) => {
      });
 
   } catch (error) {
-    console.log(error);
-    res.status(500).json({ message: "Internal server error" });
+    throw error
   }
 };
 
 
 const updateEduCenter = async (req, res) => {
   try {
+    logger.info("Updating education center", {
+      eduCenterId: req.params.id,
+      body: req.body,
+      userId: req.userId || "unauthenticated",
+    });
     const { error } = educenterValidationSchema.fork(Object.keys(req.body), (schema) =>
       schema.required()
     ).validate(req.body, { abortEarly: false });
@@ -258,19 +283,29 @@ const updateEduCenter = async (req, res) => {
 
     // **Faqat yuborilgan maydonlarni yangilash**
     await educenter.update(req.body, { fields: Object.keys(req.body) });
-
+    logger.info("Education center updated successfully", {
+      eduCenterId: req.params.id,
+      userId: req.userId || "unauthenticated",
+    });
     res.status(200).json({ message: "EduCenter updated successfully", educenter });
 
   } catch (error) {
-    console.log(error);
-    res.status(500).json({ message: error.message });
+    throw error
   }
 };
 
 const deleteEduCenter = async (req, res) => {
   try {
+    logger.info("Deleting education center", {
+      eduCenterId: req.params.id,
+      userId: req.userId || "unauthenticated",
+    });
     const educenter = await EduCenter.findByPk(req.params.id);
     if (!educenter) {
+      logger.warn("Education center deletion failed: EduCenter not found", {
+        eduCenterId: req.params.id,
+        userId: req.userId || "unauthenticated",
+      });
       return res.status(404).json({ error: "EduCenter not found" });
     }
 
@@ -281,7 +316,10 @@ const deleteEduCenter = async (req, res) => {
 
     // **Asosiy ta’lim markazini o‘chirish**
     await educenter.destroy();
-
+    logger.info("Education center deleted successfully", {
+      eduCenterId: req.params.id,
+      userId: req.userId || "unauthenticated",
+    });
     res.status(200).json({ message: "EduCenter deleted successfully" });
 
   } catch (error) {

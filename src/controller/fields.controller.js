@@ -2,9 +2,14 @@ const Fields = require("../models/fields.model");
 const EduCenter = require("../models/edu_center.model");
 const fieldsValidationSchema = require("../validation/fields.validate");
 const { Op } = require("sequelize");
+const logger = require('../config/logger')
 
 const getFields = async (req, res) => {
   try {
+    logger.info("Fetching fields", {
+      query: req.query,
+      userId: req.userId || "unauthenticated",
+    });
       const { page, limit, sortField, sortOrder, name } = req.query;
 
     const queryOptions = {
@@ -41,30 +46,42 @@ const getFields = async (req, res) => {
           response.page = parseInt(page);
           response.totalPages = Math.ceil(fields.count / limit);
       }
-
+      logger.info("Fields fetched successfully", {
+        total: fields.count,
+        userId: req.userId || "unauthenticated",
+      });
       res.json(response);
   } catch (error) {
-      console.log(error);
-      res.status(500).json({ message: error.message });
+    throw error
   }
 };
 
 const getField = async (req, res) => {
   try {
+    logger.info("Fetching field by ID", {
+      fieldId: req.params.id,
+      userId: req.userId || "unauthenticated",
+    });
     const field = await Fields.findByPk(req.params.id, {
       include: [{ model: EduCenter, attributes: ["id", "name"] }],
     });
     if (!field) return res.status(404).json({ error: "Field not found" });
-
+    logger.info("Field fetched successfully", {
+      fieldId: req.params.id,
+      userId: req.userId || "unauthenticated",
+    });
     res.json(field);
   } catch (error) {
-    console.log(error);
-    res.status(500).json({ message: error.message });
+    throw error
   }
 };
 
 const createField = async (req, res) => {
   try {
+    logger.info("Creating field", {
+      body: req.body,
+      userId: req.userId || "unauthenticated",
+    });
     const { error } = fieldsValidationSchema.validate(req.body, {
       abortEarly: false,
     });
@@ -78,15 +95,24 @@ const createField = async (req, res) => {
     if(fieldExists) return res.status(400).json({message: "field already created"})
 
     const field = await Fields.create(req.body);
+    logger.info("Field created successfully", {
+      fieldId: field.id,
+      name: field.name,
+      userId: req.userId || "unauthenticated",
+    });
     res.status(201).json(field);
   } catch (error) {
-    console.log(error);
-    res.status(500).json({ message: error.message });
+    throw error
   }
 };
 
 const updateField = async (req, res) => {
   try {
+    logger.info("Updating field", {
+      fieldId: req.params.id,
+      body: req.body,
+      userId: req.userId || "unauthenticated",
+    });
     const field = await Fields.findByPk(req.params.id);
     if (!field) return res.status(404).json({ error: "Field not found" });
 
@@ -100,23 +126,33 @@ const updateField = async (req, res) => {
     }
 
     await field.update(req.body);
+    logger.info("Field updated successfully", {
+      fieldId: req.params.id,
+      userId: req.userId || "unauthenticated",
+    });
     res.json(field);
   } catch (error) {
-    console.log(error);
-    res.status(500).json({ message: error.message });
+    throw error
   }
 };
 
 const deleteField = async (req, res) => {
   try {
+    logger.info("Deleting field", {
+      fieldId: req.params.id,
+      userId: req.userId || "unauthenticated",
+    });
     const field = await Fields.findByPk(req.params.id);
     if (!field) return res.status(404).json({ error: "Field not found" });
 
     await field.destroy();
+    logger.info("Field deleted successfully", {
+      fieldId: req.params.id,
+      userId: req.userId || "unauthenticated",
+    });
     res.status(200).json({ message: "Deleted successfully" });
   } catch (error) {
-    console.log(error);
-    res.status(500).json({ message: error.message });
+    throw error
   }
 };
 

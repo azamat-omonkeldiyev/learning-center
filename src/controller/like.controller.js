@@ -2,9 +2,14 @@ const Branch = require("../models/branch.model");
 const EduCenter = require("../models/edu_center.model");
 const Like = require("../models/like.model");
 const { Op } = require("sequelize");
+const logger = require('../config/logger')
 
 const createLike = async (req, res) => {
     try {
+        logger.info("Creating like", {
+            body: req.body,
+            userId: req.userId || "unauthenticated",
+          });
         const { edu_id, branch_id } = req.body;
         const user_id = req.userId;
 
@@ -33,15 +38,24 @@ const createLike = async (req, res) => {
         }
 
         const newLike = await Like.create({ user_id, edu_id, branch_id });
+        logger.info("Like created successfully", {
+            likeId: newLike.id,
+            userId: user_id,
+            eduId: edu_id,
+            branchId: branch_id,
+          });
         res.status(201).json({ like: newLike });
     } catch (error) {
-        console.error(error);
-        res.status(500).json({ message: "Server error" });
+        throw error
     }
 };
 
 const deleteLike = async (req, res) => {
     try {
+        logger.info("Deleting like", {
+            likeId: req.params.id,
+            userId: req.userId || "unauthenticated",
+          });
         const like_id = req.params.id;
         const user_id = req.userId;
         const user_role = req.userRole;
@@ -56,10 +70,13 @@ const deleteLike = async (req, res) => {
         }
 
         await like.destroy();
+        logger.info("Like deleted successfully", {
+            likeId: like_id,
+            userId: req.userId || "unauthenticated",
+          });
         res.status(200).json({ message: "Like deleted successfully!" });
     } catch (error) {
-        console.error(error);
-        res.status(500).json({ message: "Server error" });
+        throw error
     }
 };
 
