@@ -359,7 +359,7 @@ const refresh = async (req, res) => {
       return res.status(400).json({ message: "refresh_token is not provided" });
 
     let data = jwt.verify(refresh_token, "secret_boshqa");
-    let token = genToken(data.id);
+    let token = genToken(data);
     res.json({ token });
   } catch (error) {
     console.log(error);

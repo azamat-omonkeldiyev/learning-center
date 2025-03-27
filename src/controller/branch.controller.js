@@ -17,8 +17,8 @@ const getBranches = async (req, res) => {
       include: [
         { model: EduCenter, attributes: ["id", "name"], as: "educenter" },
         { model: Enrollment, attributes: ["id", "date"] },
-        { model: Subjects, through: { attributes: [] }, as: "subjects2" },
-        { model: Fields, through: { attributes: [] }, as: "fields2" },
+        { model: Subjects,attributes: ["id", "name"], through: { attributes: [] }, as: "subjects2" },
+        { model: Fields, attributes: ["id", "name"], through: { attributes: [] }, as: "fields2" },
       ],
       where: {},
       order: [],
