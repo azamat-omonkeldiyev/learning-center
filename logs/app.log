@@ -1,91 +1,179 @@
-{"body":{},"level":"info","message":"Incoming request","method":"GET","query":{"sortField":"createdAt","sortOrder":"ASC"},"timestamp":"2025-03-27 16:28:42","url":"/branches?sortField=createdAt&sortOrder=ASC","userId":"unauthenticated"}
-{"level":"info","message":"Fetching branches","query":{"sortField":"createdAt","sortOrder":"ASC"},"timestamp":"2025-03-27 16:28:42","userId":"unauthenticated"}
-{"level":"info","message":"Branches fetched successfully","timestamp":"2025-03-27 16:28:42","total":4,"userId":"unauthenticated"}
-{"duration":"39ms","level":"info","message":"Response sent","method":"GET","status":200,"timestamp":"2025-03-27 16:28:42","url":"/?sortField=createdAt&sortOrder=ASC","userId":"unauthenticated"}
-{"body":{},"level":"info","message":"Incoming request","method":"GET","query":{"sortField":"createdAt","sortOrder":"ASC"},"timestamp":"2025-03-27 16:28:45","url":"/branches?sortField=createdAt&sortOrder=ASC","userId":"unauthenticated"}
-{"level":"info","message":"Fetching branches","query":{"sortField":"createdAt","sortOrder":"ASC"},"timestamp":"2025-03-27 16:28:45","userId":"unauthenticated"}
-{"level":"info","message":"Branches fetched successfully","timestamp":"2025-03-27 16:28:45","total":4,"userId":"unauthenticated"}
-{"duration":"45ms","level":"info","message":"Response sent","method":"GET","status":200,"timestamp":"2025-03-27 16:28:45","url":"/?sortField=createdAt&sortOrder=ASC","userId":"unauthenticated"}
-{"body":{},"level":"info","message":"Incoming request","method":"GET","query":{"sortField":"createdAt","sortOrder":"ASC"},"timestamp":"2025-03-27 16:28:46","url":"/branches?sortField=createdAt&sortOrder=ASC","userId":"unauthenticated"}
-{"level":"info","message":"Fetching branches","query":{"sortField":"createdAt","sortOrder":"ASC"},"timestamp":"2025-03-27 16:28:46","userId":"unauthenticated"}
-{"level":"info","message":"Branches fetched successfully","timestamp":"2025-03-27 16:28:46","total":4,"userId":"unauthenticated"}
-{"duration":"27ms","level":"info","message":"Response sent","method":"GET","status":200,"timestamp":"2025-03-27 16:28:46","url":"/?sortField=createdAt&sortOrder=ASC","userId":"unauthenticated"}
-{"body":{},"level":"info","message":"Incoming request","method":"GET","query":{"sortField":"createdAt","sortOrder":"ASC"},"timestamp":"2025-03-27 16:28:46","url":"/branches?sortField=createdAt&sortOrder=ASC","userId":"unauthenticated"}
-{"level":"info","message":"Fetching branches","query":{"sortField":"createdAt","sortOrder":"ASC"},"timestamp":"2025-03-27 16:28:46","userId":"unauthenticated"}
-{"level":"info","message":"Branches fetched successfully","timestamp":"2025-03-27 16:28:46","total":4,"userId":"unauthenticated"}
-{"duration":"51ms","level":"info","message":"Response sent","method":"GET","status":200,"timestamp":"2025-03-27 16:28:46","url":"/?sortField=createdAt&sortOrder=ASC","userId":"unauthenticated"}
-{"body":{},"level":"info","message":"Incoming request","method":"GET","query":{"sortField":"createdAt","sortOrder":"ASC"},"timestamp":"2025-03-27 16:28:47","url":"/branches?sortField=createdAt&sortOrder=ASC","userId":"unauthenticated"}
-{"level":"info","message":"Fetching branches","query":{"sortField":"createdAt","sortOrder":"ASC"},"timestamp":"2025-03-27 16:28:47","userId":"unauthenticated"}
-{"level":"info","message":"Branches fetched successfully","timestamp":"2025-03-27 16:28:47","total":4,"userId":"unauthenticated"}
-{"duration":"18ms","level":"info","message":"Response sent","method":"GET","status":200,"timestamp":"2025-03-27 16:28:47","url":"/?sortField=createdAt&sortOrder=ASC","userId":"unauthenticated"}
-{"body":{},"level":"info","message":"Incoming request","method":"GET","query":{"sortField":"createdAt","sortOrder":"ASC"},"timestamp":"2025-03-27 16:28:47","url":"/branches?sortField=createdAt&sortOrder=ASC","userId":"unauthenticated"}
-{"level":"info","message":"Fetching branches","query":{"sortField":"createdAt","sortOrder":"ASC"},"timestamp":"2025-03-27 16:28:47","userId":"unauthenticated"}
-{"level":"info","message":"Branches fetched successfully","timestamp":"2025-03-27 16:28:47","total":4,"userId":"unauthenticated"}
-{"duration":"17ms","level":"info","message":"Response sent","method":"GET","status":200,"timestamp":"2025-03-27 16:28:47","url":"/?sortField=createdAt&sortOrder=ASC","userId":"unauthenticated"}
-{"body":{},"level":"info","message":"Incoming request","method":"GET","query":{"sortField":"createdAt","sortOrder":"ASC"},"timestamp":"2025-03-27 16:28:48","url":"/branches?sortField=createdAt&sortOrder=ASC","userId":"unauthenticated"}
-{"level":"info","message":"Fetching branches","query":{"sortField":"createdAt","sortOrder":"ASC"},"timestamp":"2025-03-27 16:28:48","userId":"unauthenticated"}
-{"level":"info","message":"Branches fetched successfully","timestamp":"2025-03-27 16:28:48","total":4,"userId":"unauthenticated"}
-{"duration":"18ms","level":"info","message":"Response sent","method":"GET","status":200,"timestamp":"2025-03-27 16:28:48","url":"/?sortField=createdAt&sortOrder=ASC","userId":"unauthenticated"}
-{"body":{},"level":"info","message":"Incoming request","method":"GET","query":{"sortField":"createdAt","sortOrder":"ASC"},"timestamp":"2025-03-27 16:28:48","url":"/branches?sortField=createdAt&sortOrder=ASC","userId":"unauthenticated"}
-{"level":"info","message":"Fetching branches","query":{"sortField":"createdAt","sortOrder":"ASC"},"timestamp":"2025-03-27 16:28:48","userId":"unauthenticated"}
-{"level":"info","message":"Branches fetched successfully","timestamp":"2025-03-27 16:28:48","total":4,"userId":"unauthenticated"}
-{"duration":"17ms","level":"info","message":"Response sent","method":"GET","status":200,"timestamp":"2025-03-27 16:28:48","url":"/?sortField=createdAt&sortOrder=ASC","userId":"unauthenticated"}
-{"body":{"name":"JIzzax5"},"level":"info","message":"Incoming request","method":"POST","query":{},"timestamp":"2025-03-27 16:28:57","url":"/regions","userId":"unauthenticated"}
-{"duration":"1ms","level":"info","message":"Response sent","method":"POST","status":400,"timestamp":"2025-03-27 16:28:57","url":"/","userId":"unauthenticated"}
-{"body":{},"level":"info","message":"Incoming request","method":"GET","query":{"sortField":"createdAt","sortOrder":"ASC"},"timestamp":"2025-03-27 16:29:02","url":"/regions?sortField=createdAt&sortOrder=ASC","userId":"unauthenticated"}
-{"level":"info","message":"Fetching regions","query":{"sortField":"createdAt","sortOrder":"ASC"},"timestamp":"2025-03-27 16:29:02","userId":"unauthenticated"}
-{"level":"info","message":"Regions fetched successfully","timestamp":"2025-03-27 16:29:02","total":7,"userId":"unauthenticated"}
-{"duration":"31ms","level":"info","message":"Response sent","method":"GET","status":200,"timestamp":"2025-03-27 16:29:02","url":"/?sortField=createdAt&sortOrder=ASC","userId":"unauthenticated"}
-{"body":{},"level":"info","message":"Incoming request","method":"GET","query":{},"timestamp":"2025-03-27 16:29:13","url":"/regions/2","userId":"unauthenticated"}
-{"level":"info","message":"Fetching region by ID","regionId":"2","timestamp":"2025-03-27 16:29:13","userId":"unauthenticated"}
-{"level":"info","message":"Region fetched successfully","regionId":"2","timestamp":"2025-03-27 16:29:13","userId":"unauthenticated"}
-{"duration":"28ms","level":"info","message":"Response sent","method":"GET","status":200,"timestamp":"2025-03-27 16:29:13","url":"/2","userId":"unauthenticated"}
-{"body":{},"level":"info","message":"Incoming request","method":"GET","query":{"sortField":"createdAt","sortOrder":"ASC"},"timestamp":"2025-03-27 16:29:19","url":"/res-categories?sortField=createdAt&sortOrder=ASC","userId":"unauthenticated"}
-{"level":"info","message":"Fetching resource categories","query":{"sortField":"createdAt","sortOrder":"ASC"},"timestamp":"2025-03-27 16:29:19","userId":"unauthenticated"}
-{"level":"info","message":"Resource categories fetched successfully","timestamp":"2025-03-27 16:29:19","total":13,"userId":"unauthenticated"}
-{"duration":"28ms","level":"info","message":"Response sent","method":"GET","status":200,"timestamp":"2025-03-27 16:29:19","url":"/?sortField=createdAt&sortOrder=ASC","userId":"unauthenticated"}
-{"body":{},"level":"info","message":"Incoming request","method":"GET","query":{"sortField":"createdAt","sortOrder":"ASC"},"timestamp":"2025-03-27 16:31:21","url":"/comments?sortField=createdAt&sortOrder=ASC","userId":"unauthenticated"}
-{"level":"info","message":"Fetching comments","query":{"sortField":"createdAt","sortOrder":"ASC"},"timestamp":"2025-03-27 16:31:21","userId":"unauthenticated"}
-{"level":"info","message":"Comments fetched successfully","timestamp":"2025-03-27 16:31:21","total":0,"userId":"unauthenticated"}
-{"duration":"50ms","level":"info","message":"Response sent","method":"GET","status":200,"timestamp":"2025-03-27 16:31:21","url":"/?sortField=createdAt&sortOrder=ASC","userId":"unauthenticated"}
-{"body":{},"level":"info","message":"Incoming request","method":"GET","query":{},"timestamp":"2025-03-27 16:35:22","url":"/sessions","userId":"unauthenticated"}
-{"duration":"1ms","level":"info","message":"Response sent","method":"GET","status":400,"timestamp":"2025-03-27 16:35:22","url":"/","userId":"unauthenticated"}
-{"body":{},"level":"info","message":"Incoming request","method":"GET","query":{},"timestamp":"2025-03-27 16:35:24","url":"/sessions","userId":"unauthenticated"}
-{"duration":"2ms","level":"info","message":"Response sent","method":"GET","status":400,"timestamp":"2025-03-27 16:35:24","url":"/","userId":"unauthenticated"}
-{"body":{"fullname":"Azamat Omonkeldiyev","ip_id":"123.11.00","password":"azamat1234"},"level":"info","message":"Incoming request","method":"POST","query":{},"timestamp":"2025-03-27 16:36:05","url":"/users/login","userId":"unauthenticated"}
-{"body":{"fullname":"Azamat Omonkeldiyev","ip_id":"123.11.00","password":"[REDACTED]"},"level":"info","message":"User login attempt","timestamp":"2025-03-27 16:36:05","userId":"unauthenticated"}
-{"level":"info","message":"Default admin created during login","role":"admin","timestamp":"2025-03-27 16:36:06","userId":"edbf0ec3-d393-499f-abcb-9fb2137d0349"}
-{"level":"info","message":"User logged in successfully","timestamp":"2025-03-27 16:36:06","userId":"edbf0ec3-d393-499f-abcb-9fb2137d0349"}
-{"duration":"1301ms","level":"info","message":"Response sent","method":"POST","status":200,"timestamp":"2025-03-27 16:36:06","url":"/login","userId":"unauthenticated"}
-{"body":{"fullname":"Azamat Omonkeldiyev","ip_id":"2342344","password":"azamat1234"},"level":"info","message":"Incoming request","method":"POST","query":{},"timestamp":"2025-03-27 16:36:15","url":"/users/login","userId":"unauthenticated"}
-{"body":{"fullname":"Azamat Omonkeldiyev","ip_id":"2342344","password":"[REDACTED]"},"level":"info","message":"User login attempt","timestamp":"2025-03-27 16:36:15","userId":"unauthenticated"}
-{"level":"info","message":"Default admin created during login","role":"admin","timestamp":"2025-03-27 16:36:16","userId":"edbf0ec3-d393-499f-abcb-9fb2137d0349"}
-{"level":"info","message":"User logged in successfully with new session","sessionId":2,"timestamp":"2025-03-27 16:36:16","userId":"edbf0ec3-d393-499f-abcb-9fb2137d0349"}
-{"duration":"904ms","level":"info","message":"Response sent","method":"POST","status":200,"timestamp":"2025-03-27 16:36:16","url":"/login","userId":"unauthenticated"}
-{"body":{},"level":"info","message":"Incoming request","method":"GET","query":{},"timestamp":"2025-03-27 16:36:45","url":"/sessions","userId":"unauthenticated"}
-{"duration":"53ms","level":"info","message":"Response sent","method":"GET","status":200,"timestamp":"2025-03-27 16:36:45","url":"/","userId":"edbf0ec3-d393-499f-abcb-9fb2137d0349"}
-{"body":{},"level":"info","message":"Incoming request","method":"GET","query":{},"timestamp":"2025-03-27 16:37:05","url":"/users/me","userId":"unauthenticated"}
-{"level":"info","message":"Fetching user profile (me)","timestamp":"2025-03-27 16:37:05","userId":"edbf0ec3-d393-499f-abcb-9fb2137d0349"}
-{"level":"info","message":"User profile fetched successfully","timestamp":"2025-03-27 16:37:05","userId":"edbf0ec3-d393-499f-abcb-9fb2137d0349"}
-{"duration":"31ms","level":"info","message":"Response sent","method":"GET","status":200,"timestamp":"2025-03-27 16:37:05","url":"/me","userId":"edbf0ec3-d393-499f-abcb-9fb2137d0349"}
-{"body":{"fullname":"Azamat Omonkeldiyev","ip_id":"2342344","password":"azamat1234"},"level":"info","message":"Incoming request","method":"POST","query":{},"timestamp":"2025-03-27 16:39:18","url":"/users/login","userId":"unauthenticated"}
-{"body":{"fullname":"Azamat Omonkeldiyev","ip_id":"2342344","password":"[REDACTED]"},"level":"info","message":"User login attempt","timestamp":"2025-03-27 16:39:18","userId":"unauthenticated"}
-{"level":"info","message":"Default admin created during login","role":"admin","timestamp":"2025-03-27 16:39:19","userId":"edbf0ec3-d393-499f-abcb-9fb2137d0349"}
-{"level":"info","message":"User logged in successfully","timestamp":"2025-03-27 16:39:19","userId":"edbf0ec3-d393-499f-abcb-9fb2137d0349"}
-{"duration":"241ms","level":"info","message":"Response sent","method":"POST","status":200,"timestamp":"2025-03-27 16:39:19","url":"/login","userId":"unauthenticated"}
-{"body":{},"level":"info","message":"Incoming request","method":"DELETE","query":{},"timestamp":"2025-03-27 16:39:49","url":"/sessions/2","userId":"unauthenticated"}
-{"duration":"55ms","level":"info","message":"Response sent","method":"DELETE","status":200,"timestamp":"2025-03-27 16:39:49","url":"/2","userId":"edbf0ec3-d393-499f-abcb-9fb2137d0349"}
-{"body":{},"level":"info","message":"Incoming request","method":"GET","query":{},"timestamp":"2025-03-27 16:40:03","url":"/users/me","userId":"unauthenticated"}
-{"level":"info","message":"Fetching user profile (me)","timestamp":"2025-03-27 16:40:03","userId":"edbf0ec3-d393-499f-abcb-9fb2137d0349"}
-{"level":"info","message":"User profile fetched successfully","timestamp":"2025-03-27 16:40:03","userId":"edbf0ec3-d393-499f-abcb-9fb2137d0349"}
-{"duration":"38ms","level":"info","message":"Response sent","method":"GET","status":200,"timestamp":"2025-03-27 16:40:03","url":"/me","userId":"edbf0ec3-d393-499f-abcb-9fb2137d0349"}
-{"body":{},"level":"info","message":"Incoming request","method":"GET","query":{},"timestamp":"2025-03-27 16:40:08","url":"/users/me","userId":"unauthenticated"}
-{"level":"info","message":"Fetching user profile (me)","timestamp":"2025-03-27 16:40:08","userId":"edbf0ec3-d393-499f-abcb-9fb2137d0349"}
-{"level":"info","message":"User profile fetched successfully","timestamp":"2025-03-27 16:40:08","userId":"edbf0ec3-d393-499f-abcb-9fb2137d0349"}
-{"duration":"40ms","level":"info","message":"Response sent","method":"GET","status":200,"timestamp":"2025-03-27 16:40:08","url":"/me","userId":"edbf0ec3-d393-499f-abcb-9fb2137d0349"}
-{"body":{},"level":"info","message":"Incoming request","method":"GET","query":{},"timestamp":"2025-03-27 16:40:46","url":"/sessions","userId":"unauthenticated"}
-{"duration":"23ms","level":"info","message":"Response sent","method":"GET","status":200,"timestamp":"2025-03-27 16:40:46","url":"/","userId":"edbf0ec3-d393-499f-abcb-9fb2137d0349"}
-{"body":{},"level":"info","message":"Incoming request","method":"GET","query":{},"timestamp":"2025-03-27 16:41:38","url":"/users/me","userId":"unauthenticated"}
-{"level":"info","message":"Fetching user profile (me)","timestamp":"2025-03-27 16:41:38","userId":"edbf0ec3-d393-499f-abcb-9fb2137d0349"}
-{"level":"info","message":"User profile fetched successfully","timestamp":"2025-03-27 16:41:38","userId":"edbf0ec3-d393-499f-abcb-9fb2137d0349"}
-{"duration":"52ms","level":"info","message":"Response sent","method":"GET","status":200,"timestamp":"2025-03-27 16:41:38","url":"/me","userId":"edbf0ec3-d393-499f-abcb-9fb2137d0349"}
+{"body":{},"level":"info","message":"Incoming request","method":"GET","query":{},"timestamp":"2025-03-27 17:14:43","url":"/api-docs/","userId":"unauthenticated"}
+{"body":{},"level":"info","message":"Incoming request","method":"GET","query":{},"timestamp":"2025-03-27 17:14:43","url":"/api-docs/swagger-ui-bundle.js","userId":"unauthenticated"}
+{"body":{},"level":"info","message":"Incoming request","method":"GET","query":{},"timestamp":"2025-03-27 17:14:43","url":"/api-docs/swagger-ui.css","userId":"unauthenticated"}
+{"body":{},"level":"info","message":"Incoming request","method":"GET","query":{},"timestamp":"2025-03-27 17:14:43","url":"/api-docs/swagger-ui-standalone-preset.js","userId":"unauthenticated"}
+{"body":{},"level":"info","message":"Incoming request","method":"GET","query":{},"timestamp":"2025-03-27 17:14:43","url":"/api-docs/swagger-ui-init.js","userId":"unauthenticated"}
+{"body":{},"level":"info","message":"Incoming request","method":"GET","query":{},"timestamp":"2025-03-27 17:14:43","url":"/api-docs/favicon-32x32.png","userId":"unauthenticated"}
+{"body":{"email":"johndoe@example.com","fullname":"John Doe","image":"https://example.com/image.jpg","password":"securepassword","phone":"+998901234567","region_id":1,"role":"user"},"level":"info","message":"Incoming request","method":"POST","query":{},"timestamp":"2025-03-27 17:15:16","url":"/users/register","userId":"unauthenticated"}
+{"body":{"email":"johndoe@example.com","fullname":"John Doe","image":"https://example.com/image.jpg","password":"securepassword","phone":"+998901234567","region_id":1,"role":"user"},"level":"info","message":"registering user","timestamp":"2025-03-27 17:15:16"}
+{"fullname":"John Doe","level":"warn","message":"User registration failed: Fullname already exists","timestamp":"2025-03-27 17:15:16"}
+{"duration":"37ms","level":"info","message":"Response sent","method":"POST","status":400,"timestamp":"2025-03-27 17:15:16","url":"/register","userId":"unauthenticated"}
+{"body":{},"level":"info","message":"Incoming request","method":"GET","query":{},"timestamp":"2025-03-27 17:16:48","url":"/api-docs/","userId":"unauthenticated"}
+{"body":{},"level":"info","message":"Incoming request","method":"GET","query":{},"timestamp":"2025-03-27 17:16:48","url":"/api-docs/swagger-ui.css","userId":"unauthenticated"}
+{"body":{},"level":"info","message":"Incoming request","method":"GET","query":{},"timestamp":"2025-03-27 17:16:48","url":"/api-docs/swagger-ui-standalone-preset.js","userId":"unauthenticated"}
+{"body":{},"level":"info","message":"Incoming request","method":"GET","query":{},"timestamp":"2025-03-27 17:16:48","url":"/api-docs/swagger-ui-bundle.js","userId":"unauthenticated"}
+{"body":{},"level":"info","message":"Incoming request","method":"GET","query":{},"timestamp":"2025-03-27 17:16:48","url":"/api-docs/swagger-ui-init.js","userId":"unauthenticated"}
+{"body":{"fullname":"Azamat Omonkeldiyev","ip_id":"123.11.00","password":"azamat1234"},"level":"info","message":"Incoming request","method":"POST","query":{},"timestamp":"2025-03-27 17:19:54","url":"/users/login","userId":"unauthenticated"}
+{"body":{"fullname":"Azamat Omonkeldiyev","ip_id":"123.11.00","password":"[REDACTED]"},"level":"info","message":"User login attempt","timestamp":"2025-03-27 17:19:54","userId":"unauthenticated"}
+{"level":"info","message":"Default admin created during login","role":"admin","timestamp":"2025-03-27 17:19:54","userId":"edbf0ec3-d393-499f-abcb-9fb2137d0349"}
+{"level":"info","message":"User logged in successfully","timestamp":"2025-03-27 17:19:54","userId":"edbf0ec3-d393-499f-abcb-9fb2137d0349"}
+{"duration":"714ms","level":"info","message":"Response sent","method":"POST","status":200,"timestamp":"2025-03-27 17:19:54","url":"/login","userId":"unauthenticated"}
+{"body":{},"level":"info","message":"Incoming request","method":"GET","query":{},"timestamp":"2025-03-27 17:22:58","url":"/api-docs/","userId":"unauthenticated"}
+{"body":{},"level":"info","message":"Incoming request","method":"GET","query":{},"timestamp":"2025-03-27 17:22:58","url":"/api-docs/swagger-ui.css","userId":"unauthenticated"}
+{"body":{},"level":"info","message":"Incoming request","method":"GET","query":{},"timestamp":"2025-03-27 17:22:58","url":"/api-docs/swagger-ui-bundle.js","userId":"unauthenticated"}
+{"body":{},"level":"info","message":"Incoming request","method":"GET","query":{},"timestamp":"2025-03-27 17:22:58","url":"/api-docs/swagger-ui-standalone-preset.js","userId":"unauthenticated"}
+{"body":{},"level":"info","message":"Incoming request","method":"GET","query":{},"timestamp":"2025-03-27 17:22:58","url":"/api-docs/swagger-ui-init.js","userId":"unauthenticated"}
+{"body":{},"level":"info","message":"Incoming request","method":"GET","query":{},"timestamp":"2025-03-27 17:22:59","url":"/api-docs/favicon-32x32.png","userId":"unauthenticated"}
+{"body":{},"level":"info","message":"Incoming request","method":"GET","query":{},"timestamp":"2025-03-27 17:26:05","url":"/api-docs/","userId":"unauthenticated"}
+{"body":{},"level":"info","message":"Incoming request","method":"GET","query":{},"timestamp":"2025-03-27 17:26:05","url":"/api-docs/swagger-ui.css","userId":"unauthenticated"}
+{"body":{},"level":"info","message":"Incoming request","method":"GET","query":{},"timestamp":"2025-03-27 17:26:05","url":"/api-docs/swagger-ui-bundle.js","userId":"unauthenticated"}
+{"body":{},"level":"info","message":"Incoming request","method":"GET","query":{},"timestamp":"2025-03-27 17:26:05","url":"/api-docs/swagger-ui-standalone-preset.js","userId":"unauthenticated"}
+{"body":{},"level":"info","message":"Incoming request","method":"GET","query":{},"timestamp":"2025-03-27 17:26:05","url":"/api-docs/swagger-ui-init.js","userId":"unauthenticated"}
+{"body":{},"level":"info","message":"Incoming request","method":"GET","query":{},"timestamp":"2025-03-27 17:26:05","url":"/api-docs/favicon-32x32.png","userId":"unauthenticated"}
+{"body":{},"level":"info","message":"Incoming request","method":"GET","query":{},"timestamp":"2025-03-27 17:29:47","url":"/api-docs/","userId":"unauthenticated"}
+{"body":{},"level":"info","message":"Incoming request","method":"GET","query":{},"timestamp":"2025-03-27 17:29:47","url":"/api-docs/swagger-ui.css","userId":"unauthenticated"}
+{"body":{},"level":"info","message":"Incoming request","method":"GET","query":{},"timestamp":"2025-03-27 17:29:47","url":"/api-docs/swagger-ui-init.js","userId":"unauthenticated"}
+{"body":{},"level":"info","message":"Incoming request","method":"GET","query":{},"timestamp":"2025-03-27 17:29:47","url":"/api-docs/swagger-ui-bundle.js","userId":"unauthenticated"}
+{"body":{},"level":"info","message":"Incoming request","method":"GET","query":{},"timestamp":"2025-03-27 17:29:47","url":"/api-docs/swagger-ui-standalone-preset.js","userId":"unauthenticated"}
+{"body":{},"level":"info","message":"Incoming request","method":"GET","query":{},"timestamp":"2025-03-27 17:29:47","url":"/api-docs/favicon-32x32.png","userId":"unauthenticated"}
+{"body":{},"level":"info","message":"Incoming request","method":"GET","query":{},"timestamp":"2025-03-27 17:30:00","url":"/api-docs/","userId":"unauthenticated"}
+{"body":{},"level":"info","message":"Incoming request","method":"GET","query":{},"timestamp":"2025-03-27 17:30:00","url":"/api-docs/swagger-ui.css","userId":"unauthenticated"}
+{"body":{},"level":"info","message":"Incoming request","method":"GET","query":{},"timestamp":"2025-03-27 17:30:00","url":"/api-docs/swagger-ui-bundle.js","userId":"unauthenticated"}
+{"body":{},"level":"info","message":"Incoming request","method":"GET","query":{},"timestamp":"2025-03-27 17:30:00","url":"/api-docs/swagger-ui-standalone-preset.js","userId":"unauthenticated"}
+{"body":{},"level":"info","message":"Incoming request","method":"GET","query":{},"timestamp":"2025-03-27 17:30:00","url":"/api-docs/swagger-ui-init.js","userId":"unauthenticated"}
+{"body":{},"level":"info","message":"Incoming request","method":"GET","query":{},"timestamp":"2025-03-27 17:30:00","url":"/api-docs/favicon-32x32.png","userId":"unauthenticated"}
+{"body":{"fullname":"John Doe","ip_id":"123.11.00","password":"securepassword"},"level":"info","message":"Incoming request","method":"POST","query":{},"timestamp":"2025-03-27 17:30:23","url":"/users/login","userId":"unauthenticated"}
+{"body":{"fullname":"John Doe","ip_id":"123.11.00","password":"[REDACTED]"},"level":"info","message":"User login attempt","timestamp":"2025-03-27 17:30:23","userId":"unauthenticated"}
+{"level":"info","message":"Default admin created during login","role":"admin","timestamp":"2025-03-27 17:30:24","userId":"50b8b0f5-a83a-4b54-a984-cf9ee991399b"}
+{"fullname":"John Doe","level":"warn","message":"Login failed: Invalid password","timestamp":"2025-03-27 17:30:24","userId":"unauthenticated"}
+{"duration":"766ms","level":"info","message":"Response sent","method":"POST","status":400,"timestamp":"2025-03-27 17:30:24","url":"/login","userId":"unauthenticated"}
+{"body":{"fullname":"Azamat Omonkeldiyev","ip_id":"123.11.00","password":"azamat1234"},"level":"info","message":"Incoming request","method":"POST","query":{},"timestamp":"2025-03-27 17:31:03","url":"/users/login","userId":"unauthenticated"}
+{"body":{"fullname":"Azamat Omonkeldiyev","ip_id":"123.11.00","password":"[REDACTED]"},"level":"info","message":"User login attempt","timestamp":"2025-03-27 17:31:03","userId":"unauthenticated"}
+{"level":"info","message":"Default admin created during login","role":"admin","timestamp":"2025-03-27 17:31:03","userId":"edbf0ec3-d393-499f-abcb-9fb2137d0349"}
+{"level":"info","message":"User logged in successfully","timestamp":"2025-03-27 17:31:04","userId":"edbf0ec3-d393-499f-abcb-9fb2137d0349"}
+{"duration":"461ms","level":"info","message":"Response sent","method":"POST","status":200,"timestamp":"2025-03-27 17:31:04","url":"/login","userId":"unauthenticated"}
+{"body":{"my_ip":"192.168.1.1"},"level":"info","message":"Incoming request","method":"POST","query":{},"timestamp":"2025-03-27 17:33:09","url":"/users/me","userId":"unauthenticated"}
+{"body":{"my_ip":"192.168.1.1"},"level":"info","message":"Incoming request","method":"POST","query":{},"timestamp":"2025-03-27 17:33:37","url":"/users/me","userId":"unauthenticated"}
+{"body":{"my_ip":"192.168.1.1"},"level":"info","message":"Incoming request","method":"POST","query":{},"timestamp":"2025-03-27 17:33:39","url":"/users/me","userId":"unauthenticated"}
+{"body":{"my_ip":"192.168.1.1"},"level":"info","message":"Incoming request","method":"POST","query":{},"timestamp":"2025-03-27 17:33:40","url":"/users/me","userId":"unauthenticated"}
+{"body":{"my_ip":"192.168.1.1"},"level":"info","message":"Incoming request","method":"POST","query":{},"timestamp":"2025-03-27 17:33:40","url":"/users/me","userId":"unauthenticated"}
+{"body":{},"level":"info","message":"Incoming request","method":"GET","query":{},"timestamp":"2025-03-27 17:33:43","url":"/api-docs/","userId":"unauthenticated"}
+{"body":{},"level":"info","message":"Incoming request","method":"GET","query":{},"timestamp":"2025-03-27 17:33:43","url":"/api-docs/swagger-ui.css","userId":"unauthenticated"}
+{"body":{},"level":"info","message":"Incoming request","method":"GET","query":{},"timestamp":"2025-03-27 17:33:43","url":"/api-docs/swagger-ui-standalone-preset.js","userId":"unauthenticated"}
+{"body":{},"level":"info","message":"Incoming request","method":"GET","query":{},"timestamp":"2025-03-27 17:33:43","url":"/api-docs/swagger-ui-bundle.js","userId":"unauthenticated"}
+{"body":{},"level":"info","message":"Incoming request","method":"GET","query":{},"timestamp":"2025-03-27 17:33:43","url":"/api-docs/swagger-ui-init.js","userId":"unauthenticated"}
+{"body":{},"level":"info","message":"Incoming request","method":"GET","query":{},"timestamp":"2025-03-27 17:33:44","url":"/api-docs/favicon-32x32.png","userId":"unauthenticated"}
+{"body":{"my_ip":"192.168.1.1"},"level":"info","message":"Incoming request","method":"POST","query":{},"timestamp":"2025-03-27 17:34:10","url":"/users/me","userId":"unauthenticated"}
+{"body":{"my_ip":"192.168.1.1"},"level":"info","message":"Incoming request","method":"POST","query":{},"timestamp":"2025-03-27 17:35:03","url":"/users/me","userId":"unauthenticated"}
+{"body":{},"level":"info","message":"Incoming request","method":"GET","query":{},"timestamp":"2025-03-27 17:35:10","url":"/api-docs/","userId":"unauthenticated"}
+{"body":{},"level":"info","message":"Incoming request","method":"GET","query":{},"timestamp":"2025-03-27 17:35:10","url":"/api-docs/swagger-ui.css","userId":"unauthenticated"}
+{"body":{},"level":"info","message":"Incoming request","method":"GET","query":{},"timestamp":"2025-03-27 17:35:10","url":"/api-docs/swagger-ui-bundle.js","userId":"unauthenticated"}
+{"body":{},"level":"info","message":"Incoming request","method":"GET","query":{},"timestamp":"2025-03-27 17:35:10","url":"/api-docs/swagger-ui-standalone-preset.js","userId":"unauthenticated"}
+{"body":{},"level":"info","message":"Incoming request","method":"GET","query":{},"timestamp":"2025-03-27 17:35:10","url":"/api-docs/swagger-ui-init.js","userId":"unauthenticated"}
+{"body":{},"level":"info","message":"Incoming request","method":"GET","query":{},"timestamp":"2025-03-27 17:35:10","url":"/api-docs/favicon-32x32.png","userId":"unauthenticated"}
+{"body":{"my_ip":"192.168.1.1"},"level":"info","message":"Incoming request","method":"POST","query":{},"timestamp":"2025-03-27 17:35:32","url":"/users/me","userId":"unauthenticated"}
+{"body":{"my_ip":"192.168.1.1"},"level":"info","message":"Incoming request","method":"POST","query":{},"timestamp":"2025-03-27 17:36:44","url":"/users/me","userId":"unauthenticated"}
+{"body":{"my_ip":"192.168.1.1"},"level":"info","message":"Incoming request","method":"POST","query":{},"timestamp":"2025-03-27 17:37:25","url":"/users/me","userId":"unauthenticated"}
+{"level":"info","message":"Fetching user profile (me)","timestamp":"2025-03-27 17:37:25","userId":"edbf0ec3-d393-499f-abcb-9fb2137d0349"}
+{"duration":"35ms","level":"info","message":"Response sent","method":"POST","status":404,"timestamp":"2025-03-27 17:37:25","url":"/me","userId":"edbf0ec3-d393-499f-abcb-9fb2137d0349"}
+{"body":{"my_ip":"123.11.00"},"level":"info","message":"Incoming request","method":"POST","query":{},"timestamp":"2025-03-27 17:37:38","url":"/users/me","userId":"unauthenticated"}
+{"level":"info","message":"Fetching user profile (me)","timestamp":"2025-03-27 17:37:38","userId":"edbf0ec3-d393-499f-abcb-9fb2137d0349"}
+{"level":"info","message":"User profile fetched successfully","timestamp":"2025-03-27 17:37:38","userId":"edbf0ec3-d393-499f-abcb-9fb2137d0349"}
+{"duration":"67ms","level":"info","message":"Response sent","method":"POST","status":200,"timestamp":"2025-03-27 17:37:38","url":"/me","userId":"edbf0ec3-d393-499f-abcb-9fb2137d0349"}
+{"body":{},"level":"info","message":"Incoming request","method":"POST","query":{},"timestamp":"2025-03-27 17:37:54","url":"/users/me","userId":"unauthenticated"}
+{"level":"info","message":"Fetching user profile (me)","timestamp":"2025-03-27 17:37:54","userId":"edbf0ec3-d393-499f-abcb-9fb2137d0349"}
+{"duration":"3ms","level":"info","message":"Response sent","method":"POST","status":400,"timestamp":"2025-03-27 17:37:54","url":"/me","userId":"edbf0ec3-d393-499f-abcb-9fb2137d0349"}
+{"body":{"my_ip":"192.168.1.1"},"level":"info","message":"Incoming request","method":"POST","query":{},"timestamp":"2025-03-27 17:38:12","url":"/users/me","userId":"unauthenticated"}
+{"level":"info","message":"Fetching user profile (me)","timestamp":"2025-03-27 17:38:12","userId":"edbf0ec3-d393-499f-abcb-9fb2137d0349"}
+{"duration":"42ms","level":"info","message":"Response sent","method":"POST","status":404,"timestamp":"2025-03-27 17:38:13","url":"/me","userId":"edbf0ec3-d393-499f-abcb-9fb2137d0349"}
+{"body":{"my_ip":"123.11.00"},"level":"info","message":"Incoming request","method":"POST","query":{},"timestamp":"2025-03-27 17:38:28","url":"/users/me","userId":"unauthenticated"}
+{"level":"info","message":"Fetching user profile (me)","timestamp":"2025-03-27 17:38:28","userId":"edbf0ec3-d393-499f-abcb-9fb2137d0349"}
+{"level":"info","message":"User profile fetched successfully","timestamp":"2025-03-27 17:38:28","userId":"edbf0ec3-d393-499f-abcb-9fb2137d0349"}
+{"duration":"30ms","level":"info","message":"Response sent","method":"POST","status":200,"timestamp":"2025-03-27 17:38:28","url":"/me","userId":"edbf0ec3-d393-499f-abcb-9fb2137d0349"}
+{"body":{"my_ip":"123.11.001"},"level":"info","message":"Incoming request","method":"POST","query":{},"timestamp":"2025-03-27 17:43:54","url":"/users/me","userId":"unauthenticated"}
+{"level":"info","message":"Fetching user profile (me)","timestamp":"2025-03-27 17:43:54","userId":"edbf0ec3-d393-499f-abcb-9fb2137d0349"}
+{"duration":"20ms","level":"info","message":"Response sent","method":"POST","status":404,"timestamp":"2025-03-27 17:43:54","url":"/me","userId":"edbf0ec3-d393-499f-abcb-9fb2137d0349"}
+{"body":{"my_ip":"123.11.00"},"level":"info","message":"Incoming request","method":"POST","query":{},"timestamp":"2025-03-27 17:43:59","url":"/users/me","userId":"unauthenticated"}
+{"level":"info","message":"Fetching user profile (me)","timestamp":"2025-03-27 17:43:59","userId":"edbf0ec3-d393-499f-abcb-9fb2137d0349"}
+{"level":"info","message":"User profile fetched successfully","timestamp":"2025-03-27 17:43:59","userId":"edbf0ec3-d393-499f-abcb-9fb2137d0349"}
+{"duration":"15ms","level":"info","message":"Response sent","method":"POST","status":200,"timestamp":"2025-03-27 17:43:59","url":"/me","userId":"edbf0ec3-d393-499f-abcb-9fb2137d0349"}
+{"body":{"email":"azamatomonkeldiyev@gmail.com","phone":"901234567"},"level":"info","message":"Incoming request","method":"POST","query":{},"timestamp":"2025-03-27 17:46:07","url":"/users/send-otp","userId":"unauthenticated"}
+{"body":{"email":"azamatomonkeldiyev@gmail.com","phone":"901234567"},"level":"info","message":"Sending OTP","timestamp":"2025-03-27 17:46:07","userId":"unauthenticated"}
+{"email":"azamatomonkeldiyev@gmail.com","level":"info","message":"OTP sent successfully","phone":"901234567","timestamp":"2025-03-27 17:46:12","userId":"unauthenticated"}
+{"duration":"5385ms","level":"info","message":"Response sent","method":"POST","status":200,"timestamp":"2025-03-27 17:46:12","url":"/send-otp","userId":"unauthenticated"}
+{"body":{},"level":"info","message":"Incoming request","method":"GET","query":{},"timestamp":"2025-03-27 17:47:15","url":"/api/my-profile/export","userId":"unauthenticated"}
+{"duration":"2ms","level":"info","message":"Response sent","method":"GET","status":401,"timestamp":"2025-03-27 17:47:15","url":"/my-profile/export","userId":"unauthenticated"}
+{"body":{"fullname":"Azamat Omonkeldiyev","ip_id":"123.11.00","password":"azamat1234"},"level":"info","message":"Incoming request","method":"POST","query":{},"timestamp":"2025-03-27 17:48:35","url":"/users/login","userId":"unauthenticated"}
+{"body":{"fullname":"Azamat Omonkeldiyev","ip_id":"123.11.00","password":"[REDACTED]"},"level":"info","message":"User login attempt","timestamp":"2025-03-27 17:48:35","userId":"unauthenticated"}
+{"level":"info","message":"Default admin created during login","role":"admin","timestamp":"2025-03-27 17:48:35","userId":"edbf0ec3-d393-499f-abcb-9fb2137d0349"}
+{"level":"info","message":"User logged in successfully","timestamp":"2025-03-27 17:48:35","userId":"edbf0ec3-d393-499f-abcb-9fb2137d0349"}
+{"duration":"395ms","level":"info","message":"Response sent","method":"POST","status":200,"timestamp":"2025-03-27 17:48:35","url":"/login","userId":"unauthenticated"}
+{"body":{},"level":"info","message":"Incoming request","method":"GET","query":{},"timestamp":"2025-03-27 17:49:06","url":"/api/my-profile/export","userId":"unauthenticated"}
+{"body":{"fullname":"Azamat Omonkeldiyev","ip_id":"123.11.00","password":"azamat1234"},"level":"info","message":"Incoming request","method":"POST","query":{},"timestamp":"2025-03-27 17:51:13","url":"/users/login","userId":"unauthenticated"}
+{"body":{"fullname":"Azamat Omonkeldiyev","ip_id":"123.11.00","password":"[REDACTED]"},"level":"info","message":"User login attempt","timestamp":"2025-03-27 17:51:13","userId":"unauthenticated"}
+{"level":"info","message":"Default admin created during login","role":"admin","timestamp":"2025-03-27 17:51:13","userId":"edbf0ec3-d393-499f-abcb-9fb2137d0349"}
+{"level":"info","message":"User logged in successfully","timestamp":"2025-03-27 17:51:13","userId":"edbf0ec3-d393-499f-abcb-9fb2137d0349"}
+{"duration":"265ms","level":"info","message":"Response sent","method":"POST","status":200,"timestamp":"2025-03-27 17:51:13","url":"/login","userId":"unauthenticated"}
+{"body":{"email":"azamatomonkeldiyev@gmail.com","phone":"901234567"},"level":"info","message":"Incoming request","method":"POST","query":{},"timestamp":"2025-03-27 17:54:26","url":"/users/send-otp","userId":"unauthenticated"}
+{"body":{"email":"azamatomonkeldiyev@gmail.com","phone":"901234567"},"level":"info","message":"Sending OTP","timestamp":"2025-03-27 17:54:26","userId":"unauthenticated"}
+{"email":"azamatomonkeldiyev@gmail.com","level":"info","message":"OTP sent successfully","phone":"901234567","timestamp":"2025-03-27 17:54:29","userId":"unauthenticated"}
+{"duration":"2820ms","level":"info","message":"Response sent","method":"POST","status":200,"timestamp":"2025-03-27 17:54:29","url":"/send-otp","userId":"unauthenticated"}
+{"body":{"email":"azamatomonklediyev@gmail.com","otp":"123456"},"level":"info","message":"Incoming request","method":"POST","query":{},"timestamp":"2025-03-27 17:54:55","url":"/users/verify-otp","userId":"unauthenticated"}
+{"body":{"email":"azamatomonklediyev@gmail.com","otp":"123456"},"level":"info","message":"Verifying OTP","timestamp":"2025-03-27 17:54:55","userId":"unauthenticated"}
+{"email":"azamatomonklediyev@gmail.com","level":"info","message":"OTP verification completed","timestamp":"2025-03-27 17:54:55","userId":"unauthenticated","verified":false}
+{"duration":"8ms","level":"info","message":"Response sent","method":"POST","status":200,"timestamp":"2025-03-27 17:54:55","url":"/verify-otp","userId":"unauthenticated"}
+{"body":{"email":"azamatomonklediyev@gmail.com","otp":"836482"},"level":"info","message":"Incoming request","method":"POST","query":{},"timestamp":"2025-03-27 17:55:12","url":"/users/verify-otp","userId":"unauthenticated"}
+{"body":{"email":"azamatomonklediyev@gmail.com","otp":"836482"},"level":"info","message":"Verifying OTP","timestamp":"2025-03-27 17:55:12","userId":"unauthenticated"}
+{"email":"azamatomonklediyev@gmail.com","level":"info","message":"OTP verification completed","timestamp":"2025-03-27 17:55:12","userId":"unauthenticated","verified":false}
+{"duration":"24ms","level":"info","message":"Response sent","method":"POST","status":200,"timestamp":"2025-03-27 17:55:12","url":"/verify-otp","userId":"unauthenticated"}
+{"body":{"email":"azamatomonklediyev@gmail.com","otp":"836482"},"level":"info","message":"Incoming request","method":"POST","query":{},"timestamp":"2025-03-27 17:55:15","url":"/users/verify-otp","userId":"unauthenticated"}
+{"body":{"email":"azamatomonklediyev@gmail.com","otp":"836482"},"level":"info","message":"Verifying OTP","timestamp":"2025-03-27 17:55:15","userId":"unauthenticated"}
+{"email":"azamatomonklediyev@gmail.com","level":"info","message":"OTP verification completed","timestamp":"2025-03-27 17:55:15","userId":"unauthenticated","verified":false}
+{"duration":"4ms","level":"info","message":"Response sent","method":"POST","status":200,"timestamp":"2025-03-27 17:55:15","url":"/verify-otp","userId":"unauthenticated"}
+{"body":{"email":"azamatomonkeldiyev@gmail.com","otp":"836482"},"level":"info","message":"Incoming request","method":"POST","query":{},"timestamp":"2025-03-27 17:55:22","url":"/users/verify-otp","userId":"unauthenticated"}
+{"body":{"email":"azamatomonkeldiyev@gmail.com","otp":"836482"},"level":"info","message":"Verifying OTP","timestamp":"2025-03-27 17:55:22","userId":"unauthenticated"}
+{"email":"azamatomonkeldiyev@gmail.com","level":"info","message":"OTP verification completed","timestamp":"2025-03-27 17:55:22","userId":"unauthenticated","verified":true}
+{"duration":"3ms","level":"info","message":"Response sent","method":"POST","status":200,"timestamp":"2025-03-27 17:55:22","url":"/verify-otp","userId":"unauthenticated"}
+{"body":{"my_ip":"192.168.1.1"},"level":"info","message":"Incoming request","method":"POST","query":{},"timestamp":"2025-03-27 17:55:39","url":"/users/me","userId":"unauthenticated"}
+{"level":"info","message":"Fetching user profile (me)","timestamp":"2025-03-27 17:55:39","userId":"edbf0ec3-d393-499f-abcb-9fb2137d0349"}
+{"duration":"9ms","level":"info","message":"Response sent","method":"POST","status":404,"timestamp":"2025-03-27 17:55:39","url":"/me","userId":"edbf0ec3-d393-499f-abcb-9fb2137d0349"}
+{"body":{"my_ip":"123.11.00"},"level":"info","message":"Incoming request","method":"POST","query":{},"timestamp":"2025-03-27 17:55:55","url":"/users/me","userId":"unauthenticated"}
+{"level":"info","message":"Fetching user profile (me)","timestamp":"2025-03-27 17:55:55","userId":"edbf0ec3-d393-499f-abcb-9fb2137d0349"}
+{"level":"info","message":"User profile fetched successfully","timestamp":"2025-03-27 17:55:55","userId":"edbf0ec3-d393-499f-abcb-9fb2137d0349"}
+{"duration":"20ms","level":"info","message":"Response sent","method":"POST","status":200,"timestamp":"2025-03-27 17:55:55","url":"/me","userId":"edbf0ec3-d393-499f-abcb-9fb2137d0349"}
+{"body":{},"level":"info","message":"Incoming request","method":"GET","query":{},"timestamp":"2025-03-27 17:56:11","url":"/api/my-edu-centers/export","userId":"unauthenticated"}
+{"duration":"7ms","level":"info","message":"Response sent","method":"GET","status":500,"timestamp":"2025-03-27 17:56:11","url":"/my-edu-centers/export","userId":"edbf0ec3-d393-499f-abcb-9fb2137d0349"}
+{"body":{},"level":"info","message":"Incoming request","method":"GET","query":{},"timestamp":"2025-03-27 17:56:20","url":"/api/my-edu-centers/export","userId":"unauthenticated"}
+{"duration":"2ms","level":"info","message":"Response sent","method":"GET","status":500,"timestamp":"2025-03-27 17:56:20","url":"/my-edu-centers/export","userId":"edbf0ec3-d393-499f-abcb-9fb2137d0349"}
+{"body":{},"level":"info","message":"Incoming request","method":"GET","query":{},"timestamp":"2025-03-27 17:57:22","url":"/api/my-edu-centers/export","userId":"unauthenticated"}
+{"body":{},"level":"info","message":"Incoming request","method":"GET","query":{},"timestamp":"2025-03-27 17:57:29","url":"/api/my-resources/export","userId":"unauthenticated"}
+{"body":{},"level":"info","message":"Incoming request","method":"GET","query":{},"timestamp":"2025-03-27 17:57:42","url":"/api/my-enrollments/export","userId":"unauthenticated"}
+{"duration":"6ms","level":"info","message":"Response sent","method":"GET","status":500,"timestamp":"2025-03-27 17:57:42","url":"/my-enrollments/export","userId":"edbf0ec3-d393-499f-abcb-9fb2137d0349"}
+{"body":{},"level":"info","message":"Incoming request","method":"GET","query":{},"timestamp":"2025-03-27 17:58:14","url":"/api/my-enrollments/export","userId":"unauthenticated"}
+{"body":{},"level":"info","message":"Incoming request","method":"DELETE","query":{},"timestamp":"2025-03-27 18:03:22","url":"/fields/1","userId":"unauthenticated"}
+{"fieldId":"1","level":"info","message":"Deleting field","timestamp":"2025-03-27 18:03:22","userId":"edbf0ec3-d393-499f-abcb-9fb2137d0349"}
+{"fieldId":"1","level":"info","message":"Field deleted successfully","timestamp":"2025-03-27 18:03:22","userId":"edbf0ec3-d393-499f-abcb-9fb2137d0349"}
+{"duration":"54ms","level":"info","message":"Response sent","method":"DELETE","status":200,"timestamp":"2025-03-27 18:03:22","url":"/1","userId":"edbf0ec3-d393-499f-abcb-9fb2137d0349"}
+{"body":{},"level":"info","message":"Incoming request","method":"GET","query":{"limit":"10","page":"1","sortField":"createdAt","sortOrder":"ASC"},"timestamp":"2025-03-27 18:03:54","url":"/edu-centers?page=1&limit=10&sortField=createdAt&sortOrder=ASC","userId":"unauthenticated"}
+{"level":"info","message":"Fetching education centers","query":{"limit":"10","page":"1","sortField":"createdAt","sortOrder":"ASC"},"timestamp":"2025-03-27 18:03:54","userId":"unauthenticated"}
+{"level":"info","message":"Education centers fetched successfully","timestamp":"2025-03-27 18:03:55","total":5,"userId":"unauthenticated"}
+{"duration":"75ms","level":"info","message":"Response sent","method":"GET","status":200,"timestamp":"2025-03-27 18:03:55","url":"/?page=1&limit=10&sortField=createdAt&sortOrder=ASC","userId":"unauthenticated"}
+{"body":{},"level":"info","message":"Incoming request","method":"DELETE","query":{},"timestamp":"2025-03-27 18:04:13","url":"/edu-centers/70c11fc0-4cc2-4960-86f4-b3263ae6d3c9","userId":"unauthenticated"}
+{"eduCenterId":"70c11fc0-4cc2-4960-86f4-b3263ae6d3c9","level":"info","message":"Deleting education center","timestamp":"2025-03-27 18:04:13","userId":"edbf0ec3-d393-499f-abcb-9fb2137d0349"}
+{"eduCenterId":"70c11fc0-4cc2-4960-86f4-b3263ae6d3c9","level":"warn","message":"Education center deletion failed: EduCenter not found","timestamp":"2025-03-27 18:04:13","userId":"edbf0ec3-d393-499f-abcb-9fb2137d0349"}
+{"duration":"15ms","level":"info","message":"Response sent","method":"DELETE","status":404,"timestamp":"2025-03-27 18:04:13","url":"/70c11fc0-4cc2-4960-86f4-b3263ae6d3c9","userId":"edbf0ec3-d393-499f-abcb-9fb2137d0349"}
+{"body":{},"level":"info","message":"Incoming request","method":"DELETE","query":{},"timestamp":"2025-03-27 18:04:19","url":"/edu-centers/70c11fc0-4cc2-4960-86f4-b3263ae6d3c8","userId":"unauthenticated"}
+{"eduCenterId":"70c11fc0-4cc2-4960-86f4-b3263ae6d3c8","level":"info","message":"Deleting education center","timestamp":"2025-03-27 18:04:19","userId":"edbf0ec3-d393-499f-abcb-9fb2137d0349"}
+{"eduCenterId":"70c11fc0-4cc2-4960-86f4-b3263ae6d3c8","level":"info","message":"Education center deleted successfully","timestamp":"2025-03-27 18:04:19","userId":"edbf0ec3-d393-499f-abcb-9fb2137d0349"}
+{"duration":"78ms","level":"info","message":"Response sent","method":"DELETE","status":200,"timestamp":"2025-03-27 18:04:19","url":"/70c11fc0-4cc2-4960-86f4-b3263ae6d3c8","userId":"edbf0ec3-d393-499f-abcb-9fb2137d0349"}
+{"body":{},"level":"info","message":"Incoming request","method":"GET","query":{"limit":"10","page":"1","sortField":"createdAt","sortOrder":"ASC"},"timestamp":"2025-03-27 18:04:28","url":"/edu-centers?page=1&limit=10&sortField=createdAt&sortOrder=ASC","userId":"unauthenticated"}
+{"level":"info","message":"Fetching education centers","query":{"limit":"10","page":"1","sortField":"createdAt","sortOrder":"ASC"},"timestamp":"2025-03-27 18:04:28","userId":"unauthenticated"}
+{"level":"info","message":"Education centers fetched successfully","timestamp":"2025-03-27 18:04:28","total":4,"userId":"unauthenticated"}
+{"duration":"66ms","level":"info","message":"Response sent","method":"GET","status":200,"timestamp":"2025-03-27 18:04:28","url":"/?page=1&limit=10&sortField=createdAt&sortOrder=ASC","userId":"unauthenticated"}
+{"body":{"email":"azamatomonkeldiyev@gmail.com","phone":"93177806"},"level":"info","message":"Incoming request","method":"POST","query":{},"timestamp":"2025-03-27 18:07:27","url":"/users/send-otp","userId":"unauthenticated"}
+{"body":{"email":"azamatomonkeldiyev@gmail.com","phone":"93177806"},"level":"info","message":"Sending OTP","timestamp":"2025-03-27 18:07:27","userId":"unauthenticated"}
+{"duration":"6ms","level":"info","message":"Response sent","method":"POST","status":400,"timestamp":"2025-03-27 18:07:27","url":"/send-otp","userId":"unauthenticated"}
+{"body":{"email":"azamatomonkeldiyev@gmail.com","phone":"933177806"},"level":"info","message":"Incoming request","method":"POST","query":{},"timestamp":"2025-03-27 18:07:43","url":"/users/send-otp","userId":"unauthenticated"}
+{"body":{"email":"azamatomonkeldiyev@gmail.com","phone":"933177806"},"level":"info","message":"Sending OTP","timestamp":"2025-03-27 18:07:43","userId":"unauthenticated"}
+{"email":"azamatomonkeldiyev@gmail.com","level":"info","message":"OTP sent successfully","phone":"933177806","timestamp":"2025-03-27 18:07:46","userId":"unauthenticated"}
+{"duration":"2744ms","level":"info","message":"Response sent","method":"POST","status":200,"timestamp":"2025-03-27 18:07:46","url":"/send-otp","userId":"unauthenticated"}

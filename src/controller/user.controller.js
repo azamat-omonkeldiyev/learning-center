@@ -314,7 +314,7 @@ const sendOtp = async (req, res) => {
     const token = totp.generate(email + process.env.TOTP_SECRET);
     console.log(token);
 
-    // await sendSms(phone,token);
+    await sendSms(phone,token);
     await sendEmail(email, token);
     logger.info("OTP sent successfully", {
       email,
@@ -447,16 +447,35 @@ const me = async (req, res) => {
     logger.info("Fetching user profile (me)", {
       userId: req.userId,
     });
+
     console.log(req.userId);
+    let my_ip = req.body.my_ip; // Body orqali olish
+
+    if (!my_ip) {
+      return res.status(400).json({ message: "My IP idni kiriting!" });
+    }
+
+    let checkSession = await Session.findOne({
+      where: { user_id: req.userId, ip_id: my_ip }
+    });
+
+    if (!checkSession) {
+      return res.status(404).json({ message: "Session mavjud emas" });
+    }
+
     let data = await User.findByPk(req.userId, { include: Region });
+
     logger.info("User profile fetched successfully", {
       userId: req.userId,
     });
+
     res.json(data);
   } catch (error) {
-    throw error
+    console.error(error);
+    res.status(500).json({ message: "Server error" });
   }
 };
+
 // get refresh token
 const refresh = async (req, res) => {
   try {
