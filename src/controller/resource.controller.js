@@ -88,6 +88,10 @@ const createResource = async (req, res) => {
         .status(400)
         .json({ message: error.details.map((detail) => detail.message) });
     }
+    const categoryId = await resCategory.findByPk(req.body.category_id)
+    if(!categoryId){
+      return res.status(404).json({message: "Category not found"})
+    }
 
     const resource = await Resource.create({...req.body,user_id: req.userId});
     res.status(201).json(resource);
