@@ -87,7 +87,8 @@ router.post("/", roleMiddleware(["admin"]), createAdmin);
  *         name: id
  *         required: true
  *         schema:
- *           type: integer
+ *           type: string
+ *           format: uuid
  *         description: Admin ID
  *     responses:
  *       200:
@@ -100,5 +101,6 @@ router.post("/", roleMiddleware(["admin"]), createAdmin);
  *         description: Internal server error
  */
 router.delete("/:id", roleMiddleware(["admin"]), deleteAdmin);
+
 
 module.exports = router;

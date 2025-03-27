@@ -139,7 +139,7 @@ const roleMiddleware = require("../rolemiddleware/roleAuth");
  *         description: Server error
  */
 
-router.get('/', roleMiddleware(["admin", "superadmin", "user", "ceo"]), getBranches);
+router.get('/', getBranches);
 
 /**
  * @swagger
@@ -167,7 +167,7 @@ router.get('/', roleMiddleware(["admin", "superadmin", "user", "ceo"]), getBranc
  *       500:
  *         description: Server error
  */
-router.get('/:id', roleMiddleware(["admin", "superadmin", "user", "ceo"]), getBranch);
+router.get('/:id', getBranch);
 
 /**
  * @swagger

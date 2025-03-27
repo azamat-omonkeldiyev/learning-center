@@ -85,7 +85,7 @@ router.post("/",roleMiddleware(["admin"]), createRegion);
  *       200:
  *         description: List of regions
  */
-router.get("/",roleMiddleware(["admin", "superadmin", "user", "ceo"]), getAllRegions);
+router.get("/", getAllRegions);
 
 /**
  * @swagger
@@ -106,7 +106,7 @@ router.get("/",roleMiddleware(["admin", "superadmin", "user", "ceo"]), getAllReg
  *       404:
  *         description: Region not found
  */
-router.get("/:id",roleMiddleware(["admin", "superadmin", "user", "ceo"]), getRegionById);
+router.get("/:id", getRegionById);
 
 /**
  * @swagger

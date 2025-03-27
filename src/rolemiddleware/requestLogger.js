@@ -19,8 +19,7 @@ const requestLogger = (req, res, next) => {
       url: req.url,
       status: res.statusCode,
       duration: `${duration}ms`,
-      userId: req.userId || "unauthenticated",
-      response: data,
+      userId: req.userId || "unauthenticated"
     });
     return originalJson.call(this, data);
   };
