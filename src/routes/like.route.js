@@ -24,16 +24,12 @@ const router = express.Router();
  *           schema:
  *             type: object
  *             required:
- *               - edu_id or branch_id
+ *               - edu_id
  *             properties:
  *               edu_id:
  *                 type: string
  *                 example: "550e8400-e29b-41d4-a716-446655440000"
  *                 description: Educational center ID (optional, must provide either edu_id or branch_id)
- *               branch_id:
- *                 type: string
- *                 example: "550e8400-e29b-41d4-a716-446655440001"
- *                 description: Branch ID (optional, must provide either edu_id or branch_id)
  *     responses:
  *       201:
  *         description: Like added successfully

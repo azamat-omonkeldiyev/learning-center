@@ -326,7 +326,7 @@ router.get("/:id",roleMiddleware(["admin", "superadmin", "user", "ceo"]), getUse
  *           schema:
  *             type: object
  *             properties:
- *               name:
+ *               fullname:
  *                 type: string
  *                 example: "John Doe"
  *               email:
