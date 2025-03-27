@@ -12,7 +12,7 @@ const getComments = async (req, res) => {
             query: req.query,
             userId: req.userId || "unauthenticated",
           });
-        const { page, limit, sort, text, star, edu_id, branch_id, user_id } = req.query;
+        const { page = 1, limit = 10, sort, text, star, edu_id, branch_id, user_id } = req.query;
 
         const queryOptions = {
             include: [

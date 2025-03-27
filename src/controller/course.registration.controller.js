@@ -11,7 +11,7 @@ const getEnrollments = async (req, res) => {
       query: req.query,
       userId: req.userId || "unauthenticated",
     });
-      const { page, limit, sortField, sortOrder, edu_id, branch_id } = req.query;
+      const { page = 1, limit = 10, sortField, sortOrder, edu_id, branch_id } = req.query;
 
       const queryOptions = {
           include: [

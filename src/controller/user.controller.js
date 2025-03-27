@@ -368,7 +368,7 @@ const getUsers = async (req, res) => {
       query: req.query,
       userId: req.userId || "unauthenticated",
     });
-      const { page, limit, sortField, sortOrder, region_id } = req.query;
+      const { page = 1, limit = 10, sortField, sortOrder, region_id } = req.query;
 
       const queryOptions = {
           include: [
@@ -469,10 +469,10 @@ const refresh = async (req, res) => {
       return res.status(400).json({ message: "refresh_token is not provided" });
 
     let data = jwt.verify(refresh_token, "secret_boshqa");
-    let token = genToken(data.id);
     logger.info("Token refreshed successfully", {
       userId: data.id,
     });
+    let token = genToken(data);
     res.json({ token });
   } catch (error) {
     logger.warn("Token refresh failed: Invalid refresh token", {

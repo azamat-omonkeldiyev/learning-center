@@ -11,7 +11,7 @@ const getResources = async (req, res) => {
       query: req.query,
       userId: req.userId || "unauthenticated",
     });
-      const { page, limit, sortField, sortOrder, name, category_id, user_id } = req.query;
+      const { page = 1, limit = 10, sortField, sortOrder, name, category_id, user_id } = req.query;
 
     const queryOptions = {
       include: [

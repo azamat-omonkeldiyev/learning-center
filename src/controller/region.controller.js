@@ -33,7 +33,7 @@ const getAllRegions = async (req, res) => {
             query: req.query,
             userId: req.userId || "unauthenticated",
           });
-        const { page, limit, sortField, sortOrder } = req.query;
+        const { page = 1, limit = 10, sortField, sortOrder } = req.query;
 
         const queryOptions = {
             order: [],

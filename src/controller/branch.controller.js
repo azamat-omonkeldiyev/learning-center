@@ -16,14 +16,14 @@ const getBranches = async (req, res) => {
       query: req.query,
       userId: req.userId || "unauthenticated",
     });
-    const { page, limit, sort, name, edu_id, subject_id, field_id } = req.query;
+    const { page = 1, limit = 10, sort, name, edu_id, subject_id, field_id } = req.query;
 
     const queryOptions = {
       include: [
         { model: EduCenter, attributes: ["id", "name"], as: "educenter" },
         { model: Enrollment, attributes: ["id", "date"] },
-        { model: Subjects, through: { attributes: [] }, as: "subjects2" },
-        { model: Fields, through: { attributes: [] }, as: "fields2" },
+        { model: Subjects,attributes: ["id", "name"], through: { attributes: [] }, as: "subjects2" },
+        { model: Fields, attributes: ["id", "name"], through: { attributes: [] }, as: "fields2" },
       ],
       where: {},
       order: [],

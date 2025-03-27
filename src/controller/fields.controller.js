@@ -10,7 +10,7 @@ const getFields = async (req, res) => {
       query: req.query,
       userId: req.userId || "unauthenticated",
     });
-      const { page, limit, sortField, sortOrder, name } = req.query;
+    const { page = 1, limit = 10, sortField, sortOrder, name } = req.query;
 
     const queryOptions = {
       where: {},
