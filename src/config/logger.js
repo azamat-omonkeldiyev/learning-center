@@ -35,10 +35,6 @@ const logger = createLogger({
       collection: "logger",
       format: format.combine(format.timestamp(), format.json()),
     }),
-    new transports.Console({
-      level: "debug",
-      format: format.combine(format.colorize(), format.simple()),
-    }),
   ],
 });
 

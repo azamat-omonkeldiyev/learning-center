@@ -94,7 +94,7 @@ const roleMiddleware = require("../rolemiddleware/roleAuth");
  *         description: Server error
  */
 
-router.get('/', roleMiddleware(["admin", "superadmin", "user", "ceo"]), getFields);
+router.get('/', getFields);
 
 
 /**
@@ -118,7 +118,7 @@ router.get('/', roleMiddleware(["admin", "superadmin", "user", "ceo"]), getField
  *       500:
  *         description: Server error
  */
-router.get('/:id',roleMiddleware(["admin", "superadmin", "user", "ceo"]), getField);
+router.get('/:id', getField);
 
 /**
  * @swagger
