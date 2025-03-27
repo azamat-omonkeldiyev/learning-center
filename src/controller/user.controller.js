@@ -275,7 +275,7 @@ const verify = async (req, res) => {
 // Get All Users
 const getUsers = async (req, res) => {
   try {
-      const { page, limit, sortField, sortOrder, region_id } = req.query;
+      const { page = 1, limit = 10, sortField, sortOrder, region_id } = req.query;
 
       const queryOptions = {
           include: [

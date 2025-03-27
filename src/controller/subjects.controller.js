@@ -5,7 +5,7 @@ const { Op } = require('sequelize');
 
 const getSubjects = async (req, res) => {
     try {
-        const { page, limit, sortField, sortOrder, name } = req.query;
+        const { page = 1, limit = 10, sortField, sortOrder, name } = req.query;
 
         const queryOptions = {
             include: [

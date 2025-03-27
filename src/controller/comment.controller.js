@@ -8,7 +8,7 @@ const { Op } = require("sequelize");
 
 const getComments = async (req, res) => {
     try {
-        const { page, limit, sort, text, star, edu_id, branch_id, user_id } = req.query;
+        const { page = 1, limit = 10, sort, text, star, edu_id, branch_id, user_id } = req.query;
 
         const queryOptions = {
             include: [

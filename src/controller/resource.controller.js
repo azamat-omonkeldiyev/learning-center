@@ -7,7 +7,7 @@ const { Op } = require("sequelize");
 
 const getResources = async (req, res) => {
   try {
-      const { page, limit, sortField, sortOrder, name, category_id, user_id } = req.query;
+      const { page = 1, limit = 10, sortField, sortOrder, name, category_id, user_id } = req.query;
 
     const queryOptions = {
       include: [

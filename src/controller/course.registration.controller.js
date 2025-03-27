@@ -6,7 +6,7 @@ const { Op } = require("sequelize");
 
 const getEnrollments = async (req, res) => {
   try {
-      const { page, limit, sortField, sortOrder, edu_id, branch_id } = req.query;
+      const { page = 1, limit = 10, sortField, sortOrder, edu_id, branch_id } = req.query;
 
       const queryOptions = {
           include: [

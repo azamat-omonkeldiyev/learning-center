@@ -11,7 +11,7 @@ const Region = require("../models/region.model");
 
 const getBranches = async (req, res) => {
   try {
-    const { page, limit, sort, name, edu_id, subject_id, field_id } = req.query;
+    const { page = 1, limit = 10, sort, name, edu_id, subject_id, field_id } = req.query;
 
     const queryOptions = {
       include: [

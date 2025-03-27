@@ -20,7 +20,7 @@ const createRegion = async (req, res) => {
 //  Barcha regionlarni olish (Read All + Pagination)
 const getAllRegions = async (req, res) => {
     try {
-        const { page, limit, sortField, sortOrder } = req.query;
+        const { page = 1, limit = 10, sortField, sortOrder } = req.query;
 
         const queryOptions = {
             order: [],
