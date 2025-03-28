@@ -6,10 +6,13 @@ const userValidationSchema = require("../validation/user.validate");
 const { totp } = require("otplib");
 const { sendEmail, sendSms } = require("./../sent-otp-funcs/sent-otp-funcs");
 const Region = require("../models/region.model");
-const Comment = require('../models/comment.model');
+const Comment = require("../models/comment.model");
 const DeviceDetector = require("device-detector-js");
 const deviceDetector = new DeviceDetector();
-const logger = require('../config/logger')
+const logger = require("../config/logger");
+const { Op } = require("sequelize");
+const Session = require("../models/session.model");
+const Joi = require("joi");
 
 totp.options = { step: 1000, digits: 6 };
 
@@ -34,36 +37,37 @@ function genRefreshToken(user) {
 const register = async (req, res) => {
   try {
     logger.info("registering user", {
-      body: req.body
-    })
+      body: req.body,
+    });
     const { error } = userValidationSchema.validate(req.body);
     if (error) {
       logger.warn("user registration failed: validation error", {
-        error: error.details[0].message
-      })
+        error: error.details[0].message,
+      });
       return res.status(400).json({ error: error.details[0].message });
     }
 
-    let { phone, email, password, region_id,role, fullname, ...rest } = req.body;
+    let { phone, email, password, region_id, role, fullname, ...rest } =
+      req.body;
 
     let userEmail = await User.findOne({ where: { email } });
     if (userEmail) {
       logger.warn("user registration failed: email already exists", {
-        email
-      })
+        email,
+      });
       return res.status(400).json({ message: "Email already exists" });
     }
 
     let userPhone = await User.findOne({ where: { phone } });
     if (userPhone) {
-      logger.warn("user registration failed: phone already exists", {phone})
-      return res.status(400).json({ message: "Phone already exists"});
+      logger.warn("user registration failed: phone already exists", { phone });
+      return res.status(400).json({ message: "Phone already exists" });
     }
 
     let usernameFound = await User.findOne({ where: { fullname } });
     if (usernameFound) {
       logger.warn("User registration failed: Fullname already exists", {
-        fullname
+        fullname,
       });
       return res.status(400).json({
         message: "Fullname already exists. Please change your username..",
@@ -76,9 +80,10 @@ const register = async (req, res) => {
         userId: req.userId || "unauthenticated",
       });
       return res.status(400).json({ message: "Invalid role" });
-    };
+    }
 
-    if(!region_id) return res.status(400).json({message: "region_id is required"});
+    if (!region_id)
+      return res.status(400).json({ message: "region_id is required" });
 
     let region = await Region.findByPk(region_id);
     if (!region) return res.status(404).json({ message: "region not found" });
@@ -102,7 +107,7 @@ const register = async (req, res) => {
 
     res.json(newUser);
   } catch (err) {
-    throw err
+    throw err;
   }
 };
 
@@ -121,8 +126,7 @@ const createAdmin = async (req, res) => {
       return res.status(400).json({ error: error.details[0].message });
     }
 
-    let { phone, email, password, fullname, role, ...rest } =
-      req.body;
+    let { phone, email, password, fullname, role, ...rest } = req.body;
 
     if (!["admin", "superadmin"].includes(role)) {
       logger.warn("Admin creation failed: Invalid role", {
@@ -166,7 +170,7 @@ const createAdmin = async (req, res) => {
 
     res.status(201).json(newAdmin);
   } catch (err) {
-    throw err
+    throw err;
   }
 };
 
@@ -191,7 +195,7 @@ const deleteAdmin = async (req, res) => {
     await user.destroy();
     res.status(200).json({ message: "Admin deleted successfully" });
   } catch (err) {
-    throw err
+    throw err;
   }
 };
 
@@ -231,8 +235,8 @@ const login = async (req, res) => {
       });
     }
     logger.info("Default admin created during login", {
-      userId: user.id,
-      role: user.role,
+      // userId: user.id || "unauthenticated",
+      // role: user.role,
     });
 
     if (!user) {
@@ -269,15 +273,14 @@ const login = async (req, res) => {
         userId: user.id,
         sessionId: newSession.id,
       });
-      return res.json({ access_token,refresh_token,newSession });
+      return res.json({ access_token, refresh_token, newSession });
     }
     logger.info("User logged in successfully", {
       userId: user.id,
     });
     res.json({ access_token, refresh_token });
-
   } catch (error) {
-    throw err
+    throw error;
   }
 };
 
@@ -314,7 +317,7 @@ const sendOtp = async (req, res) => {
     const token = totp.generate(email + process.env.TOTP_SECRET);
     console.log(token);
 
-    // await sendSms(phone,token);
+    await sendSms(phone, token);
     await sendEmail(email, token);
     logger.info("OTP sent successfully", {
       email,
@@ -325,7 +328,7 @@ const sendOtp = async (req, res) => {
       message: `The otp is sent to your email and phone.[${token}]`,
     });
   } catch (error) {
-    throw error
+    throw error;
   }
 };
 
@@ -357,7 +360,7 @@ const verify = async (req, res) => {
     });
     res.json({ verified: match });
   } catch (error) {
-    throw error
+    throw error;
   }
 };
 
@@ -368,53 +371,51 @@ const getUsers = async (req, res) => {
       query: req.query,
       userId: req.userId || "unauthenticated",
     });
-      const { page = 1, limit = 10, sortField, sortOrder, region_id } = req.query;
+    const { page = 1, limit = 10, sortField, sortOrder, region_id } = req.query;
 
-      const queryOptions = {
-          include: [
-              { model: Comment, attributes: ["id", "text", "star"] }
-          ],
-          where: {},
-          order: [],
-          attributes: { exclude: ['password'] },
-      };
+    const queryOptions = {
+      include: [{ model: Comment, attributes: ["id", "text", "star"] }],
+      where: {},
+      order: [],
+      attributes: { exclude: ["password"] },
+    };
 
-      if (page && limit) {
-          queryOptions.limit = parseInt(limit);
-          queryOptions.offset = (parseInt(page) - 1) * parseInt(limit);
-      }
+    if (page && limit) {
+      queryOptions.limit = parseInt(limit);
+      queryOptions.offset = (parseInt(page) - 1) * parseInt(limit);
+    }
 
-      if (sortField && sortOrder) {
-          queryOptions.order.push([
-              sortField,
-              sortOrder.toUpperCase() === "DESC" ? "DESC" : "ASC",
-          ]);
-      } else {
-          queryOptions.order.push(["fullname", "ASC"]);
-      }
+    if (sortField && sortOrder) {
+      queryOptions.order.push([
+        sortField,
+        sortOrder.toUpperCase() === "DESC" ? "DESC" : "ASC",
+      ]);
+    } else {
+      queryOptions.order.push(["fullname", "ASC"]);
+    }
 
-      if (region_id) {
-          queryOptions.where.region_id = region_id;
-      }
+    if (region_id) {
+      queryOptions.where.region_id = region_id;
+    }
 
-      const users = await User.findAndCountAll(queryOptions);
+    const users = await User.findAndCountAll(queryOptions);
 
-      const response = {
-          data: users.rows,
-          total: users.count,
-      };
+    const response = {
+      data: users.rows,
+      total: users.count,
+    };
 
-      if (page && limit) {
-          response.page = parseInt(page);
-          response.totalPages = Math.ceil(users.count / limit);
-      }
-      logger.info("Users fetched successfully", {
-        total: users.count,
-        userId: req.userId || "unauthenticated",
-      });
-      res.json(response);
+    if (page && limit) {
+      response.page = parseInt(page);
+      response.totalPages = Math.ceil(users.count / limit);
+    }
+    logger.info("Users fetched successfully", {
+      total: users.count,
+      userId: req.userId || "unauthenticated",
+    });
+    res.json(response);
   } catch (error) {
-    throw error
+    throw error;
   }
 };
 
@@ -437,7 +438,7 @@ const getUserById = async (req, res) => {
     });
     res.status(200).json(user);
   } catch (err) {
-    throw err
+    throw err;
   }
 };
 
@@ -447,16 +448,35 @@ const me = async (req, res) => {
     logger.info("Fetching user profile (me)", {
       userId: req.userId,
     });
+
     console.log(req.userId);
+    let my_ip = req.body.my_ip; // Body orqali olish
+
+    if (!my_ip) {
+      return res.status(400).json({ message: "My IP idni kiriting!" });
+    }
+
+    let checkSession = await Session.findOne({
+      where: { user_id: req.userId, ip_id: my_ip },
+    });
+
+    if (!checkSession) {
+      return res.status(404).json({ message: "Session mavjud emas" });
+    }
+
     let data = await User.findByPk(req.userId, { include: Region });
+
     logger.info("User profile fetched successfully", {
       userId: req.userId,
     });
+
     res.json(data);
   } catch (error) {
-    throw error
+    console.error(error);
+    res.status(500).json({ message: "Server error" });
   }
 };
+
 // get refresh token
 const refresh = async (req, res) => {
   try {
@@ -480,24 +500,26 @@ const refresh = async (req, res) => {
     });
     return res.status(400).json({ message: "Invalid refresh token" });
   }
-}
-
-
-// Update User
-const { Op } = require("sequelize");
-const Session = require("../models/session.model");
+};
 
 const updateUser = async (req, res) => {
   try {
-    const { error } = userValidationSchema
-      .fork(Object.keys(req.body), (schema) => schema.required())
-      .validate(req.body, { abortEarly: false });
-
-    if (error) {
+    if (!req.body || Object.keys(req.body).length === 0) {
       return res
         .status(400)
-        .json({ error: error.details.map((err) => err.message) });
+        .json({ message: "Body bo‘sh bo‘lishi mumkin emas!" });
     }
+
+    // Faqat `req.body` ichidagi maydonlarni olish
+    const validBody = {};
+    Object.keys(req.body).forEach((key) => {
+      if (userValidationSchema.describe().keys[key]) {
+        validBody[key] = req.body[key];
+      }
+    });
+
+    // `validBody` ni tekshirish
+    await Joi.object(validBody).validateAsync(req.body, { abortEarly: false });
 
     const user = await User.findByPk(req.params.id);
     if (!user) {
@@ -535,14 +557,17 @@ const updateUser = async (req, res) => {
       }
     }
 
-    await user.update(req.body, { fields: Object.keys(req.body) });
+    // Faqat `req.body` dagi maydonlarni yangilash
+    await user.update(validBody, { fields: Object.keys(validBody) });
+
     logger.info("User updated successfully", {
       userId: req.params.id,
       requesterId: req.userId || "unauthenticated",
     });
+
     res.status(200).json(user);
   } catch (err) {
-    throw err
+    return res.status(500).json({ error: err.message });
   }
 };
 
@@ -560,42 +585,46 @@ const deleteUser = async (req, res) => {
     });
     res.status(200).json({ message: "User deleted successfully" });
   } catch (err) {
-    throw err
+    throw err;
   }
 };
 
 const resetPassword = async (req, res) => {
-  try{
+  try {
     logger.info("Resetting password", {
       userId: req.userId,
     });
-    const {newpassword} = req.body
-    if(!newpassword){
-      return res.status(400).json({message: "Please provide you new password password"})
+    const { newpassword } = req.body;
+    if (!newpassword) {
+      return res
+        .status(400)
+        .json({ message: "Please provide you new password password" });
     }
-    if(typeof newpassword !== "string"){
-      return res.status(400).json({message: "Password must be a string"})
+    if (typeof newpassword !== "string") {
+      return res.status(400).json({ message: "Password must be a string" });
     }
-    if(newpassword.length < 8){
-      return res.status(400).json({message: "Your password should be at least 8 characters long"})
+    if (newpassword.length < 8) {
+      return res.status(400).json({
+        message: "Your password should be at least 8 characters long",
+      });
     }
-    let user_id = req.userId
+    let user_id = req.userId;
 
-    let user = await User.findByPk(user_id)
-    if(!user){
-      return res.status(404).json({message: "User not found"})
+    let user = await User.findByPk(user_id);
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
     }
-    const hashed = await bcrypt.hash(newpassword, 10)
-    user.password = hashed
-    await user.save()
+    const hashed = await bcrypt.hash(newpassword, 10);
+    user.password = hashed;
+    await user.save();
     logger.info("Password reset successfully", {
       userId: req.userId,
     });
-    res.status(200).json({message: "Password reset successfully"})
-  }catch(error){
-    throw err
+    res.status(200).json({ message: "Password reset successfully" });
+  } catch (error) {
+    throw err;
   }
-}
+};
 
 module.exports = {
   login,
@@ -610,5 +639,5 @@ module.exports = {
   me,
   createAdmin,
   deleteAdmin,
-  resetPassword
+  resetPassword,
 };

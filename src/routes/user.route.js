@@ -200,19 +200,46 @@ router.post("/refresh", refresh);
 /**
  * @swagger
  * /users/me:
- *   get:
+ *   post:
  *     summary: Get the current user's information 👤
  *     description: Retrieves the details of the currently authenticated user.
  *     tags: [Users]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - my_ip
+ *             properties:
+ *               my_ip:
+ *                 type: string
+ *                 description: IP address of the user session
+ *                 example: "192.168.1.1"
  *     responses:
  *       200:
  *         description: Successfully retrieved user data
+ *       400:
+ *         description: Bad request, missing my_ip field
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "My IP idni kiriting!"
  *       401:
  *         description: Unauthorized, missing or invalid token
+ *       404:
+ *         description: Session mavjud emas
  *       500:
  *         description: Server error
  */
-router.get("/me",roleMiddleware(["admin", "superadmin", "user", "ceo"]), me);
+
+router.post("/me", roleMiddleware(["admin", "superadmin", "user", "ceo"]), me);
+
 
 /**
  * @swagger
@@ -299,7 +326,7 @@ router.get("/:id",roleMiddleware(["admin", "superadmin", "user", "ceo"]), getUse
  *           schema:
  *             type: object
  *             properties:
- *               name:
+ *               fullname:
  *                 type: string
  *                 example: "John Doe"
  *               email:

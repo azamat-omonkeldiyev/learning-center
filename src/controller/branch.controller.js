@@ -8,7 +8,8 @@ const BranchField = require("../models/branch_fields.model");
 const Subjects = require("../models/subject.model");
 const Fields = require("../models/fields.model");
 const Region = require("../models/region.model");
-const logger = require('../config/logger')
+const logger = require('../config/logger');
+const Joi = require("joi");
 
 const getBranches = async (req, res) => {
   try {
@@ -198,7 +199,25 @@ const updateBranch = async (req, res) => {
       body: req.body,
       userId: req.userId || "unauthenticated",
     });
-    const { error } = branchValidationSchema.fork(Object.keys(req.body), (schema) => schema.required()).validate(req.body, { abortEarly: false });
+
+    let { fields, subjects,region_id, edu_id, ...rest } = req.body;
+
+    if (edu_id) {
+      const findEdu = await EduCenter.findByPk(edu_id);
+      if (!findEdu) {
+        return res.status(404).json({ message: "edu_id not found in EduCenters" });
+      }
+    }
+
+    // Faqat kiritilgan maydonlarni required qilish
+    const filteredRest = Object.fromEntries(
+      Object.entries(rest).filter(([_, value]) => value !== undefined && value !== null)
+    );
+
+    const { error } = branchValidationSchema
+      .fork(Object.keys(filteredRest), (schema) => schema.optional())
+      .validate(filteredRest, { abortEarly: false });
+
     if (error) {
       logger.warn("Branch update failed: Validation error", {
         error: error.details.map((detail) => detail.message),
@@ -228,50 +247,77 @@ const updateBranch = async (req, res) => {
       }
     }
 
-    if (req.body.name) {
-      const existingBranch = await Branch.findOne({ where: { name: req.body.name, id: { [Op.ne]: branch.id } } });
+    if (filteredRest.name) {
+      const existingBranch = await Branch.findOne({ where: { name: filteredRest.name, id: { [Op.ne]: branch.id } } });
       if (existingBranch) {
         logger.warn("Branch update failed: Name already exists", {
-          name: req.body.name,
+          name: filteredRest.name,
           userId: req.userId || "unauthenticated",
         });
         return res.status(400).json({ message: "This branch name already exists" });
       }
     }
 
-    if (req.body.phone) {
-      const existingPhone = await Branch.findOne({ where: { phone: req.body.phone, id: { [Op.ne]: branch.id } } });
+    if (filteredRest.phone) {
+      const existingPhone = await Branch.findOne({ where: { phone: filteredRest.phone, id: { [Op.ne]: branch.id } } });
       if (existingPhone) {
         logger.warn("Branch update failed: Phone number already in use", {
-          phone: req.body.phone,
+          phone: filteredRest.phone,
           userId: req.userId || "unauthenticated",
         });
         return res.status(400).json({ message: "This phone number is already in use" });
       }
     }
 
-    if (req.body.subjects) {
+    if (subjects && subjects.length > 0) {
+      const validSubjects = await Subjects.findAll({ where: { id: subjects } });
+      const invalidSubjects = subjects.filter((id) => !validSubjects.some((s) => s.id === id));
+      if (invalidSubjects.length > 0) {
+        logger.warn("Branch update failed: Invalid subject IDs", {
+          invalidSubjects: invalidSubjects.join(", "),
+          userId: req.userId || "unauthenticated",
+        });
+        return res.status(400).json({ message: `Invalid subject IDs: ${invalidSubjects.join(", ")}` });
+      }
       await BranchSubject.destroy({ where: { branch_id: branch.id } });
-      const subjectLinks = req.body.subjects.map((id) => ({ branch_id: branch.id, subject_id: id }));
+      const subjectLinks = subjects.map((id) => ({ branch_id: branch.id, subject_id: id }));
       await BranchSubject.bulkCreate(subjectLinks);
     }
 
-    if (req.body.fields) {
+    if (fields && fields.length > 0) {
+      const validFields = await Fields.findAll({ where: { id: fields } });
+      const invalidFields = fields.filter((id) => !validFields.some((f) => f.id === id));
+      if (invalidFields.length > 0) {
+        logger.warn("Branch update failed: Invalid field IDs", {
+          invalidFields: invalidFields.join(", "),
+          userId: req.userId || "unauthenticated",
+        });
+        return res.status(400).json({ message: `Invalid field IDs: ${invalidFields.join(", ")}` });
+      }
       await BranchField.destroy({ where: { branch_id: branch.id } });
-      const fieldLinks = req.body.fields.map((id) => ({ branch_id: branch.id, field_id: id }));
+      const fieldLinks = fields.map((id) => ({ branch_id: branch.id, field_id: id }));
       await BranchField.bulkCreate(fieldLinks);
     }
 
-    await branch.update(req.body, { fields: Object.keys(req.body) });
+    if (Object.keys(filteredRest).length > 0) {
+      await branch.update(filteredRest, { fields: Object.keys(filteredRest) });
+    }
+
     logger.info("Branch updated successfully", {
       branchId: req.params.id,
       userId: req.userId || "unauthenticated",
     });
+
     res.status(200).json({ message: "Branch updated successfully", branch });
   } catch (error) {
-    throw error
+    logger.error("Branch update failed: Internal server error", {
+      error: error.message,
+      userId: req.userId || "unauthenticated",
+    });
+    res.status(500).json({ message: "Internal server error" });
   }
 };
+
 
 // ✅ DELETE BRANCH: Faqat CEO o‘zining branchini o‘chira oladi
 const deleteBranch = async (req, res) => {

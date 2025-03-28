@@ -10,26 +10,21 @@ const createLike = async (req, res) => {
             body: req.body,
             userId: req.userId || "unauthenticated",
           });
-        const { edu_id, branch_id } = req.body;
+        const { edu_id} = req.body;
         const user_id = req.userId;
 
-        if ((!edu_id && !branch_id)) {
-            return res.status(400).json({ message: "edu_id or branch_id must be provided!" });
+        if ((!edu_id)) {
+            return res.status(400).json({ message: "edu_id  must be provided!" });
         };
         if (edu_id) {
             const eduExists = await EduCenter.findByPk(edu_id);
             if (!eduExists) return res.status(404).json({ message: "Educational Center not found." });
-        }
-        if (branch_id) {
-            const branchExists = await Branch.findByPk(branch_id);
-            if (!branchExists) return res.status(404).json({ message: "Branch not found." });
         }
 
         const existingLike = await Like.findOne({
             where: {
                 user_id,
                 edu_id: edu_id || null,
-                branch_id: branch_id || null,
             },
         });
 
@@ -37,12 +32,11 @@ const createLike = async (req, res) => {
             return res.status(400).json({ message: "You have already liked this!" });
         }
 
-        const newLike = await Like.create({ user_id, edu_id, branch_id });
+        const newLike = await Like.create({ user_id, edu_id });
         logger.info("Like created successfully", {
             likeId: newLike.id,
             userId: user_id,
             eduId: edu_id,
-            branchId: branch_id,
           });
         res.status(201).json({ like: newLike });
     } catch (error) {

@@ -1,4 +1,4 @@
-const Joi = require('joi');
+const Joi = require("joi");
 
 const subjectsOfEduValidationSchema = Joi.object({
     edu_id: Joi.string()

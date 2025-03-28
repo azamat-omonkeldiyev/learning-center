@@ -5,6 +5,8 @@ const Resource = require("../models/resources.model");
 const User = require("../models/user.model");
 const resCategory = require("../models/res-category.model");
 const ExcelJS = require("exceljs");
+const Region = require("../models/region.model");
+const Enrollment = require("./../models/course_register.model");
 
 // ✅ Excel fayl yaratish funksiyasi
 const createExcelFile = async (data, headers, sheetName, res, fileName) => {
