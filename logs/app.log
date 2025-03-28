@@ -14,3 +14,17 @@
 {"level":"info","message":"Fetching education centers","query":{"limit":"10","page":"1","sortField":"createdAt","sortOrder":"ASC"},"timestamp":"2025-03-28 14:48:39","userId":"unauthenticated"}
 {"level":"info","message":"Education centers fetched successfully","timestamp":"2025-03-28 14:48:39","total":2,"userId":"unauthenticated"}
 {"duration":"122ms","level":"info","message":"Response sent","method":"GET","status":200,"timestamp":"2025-03-28 14:48:39","url":"/?page=1&limit=10&sortField=createdAt&sortOrder=ASC","userId":"unauthenticated"}
+{"body":{},"level":"info","message":"Incoming request","method":"GET","query":{},"timestamp":"2025-03-28 15:25:37","url":"/api-docs/","userId":"unauthenticated"}
+{"body":{},"level":"info","message":"Incoming request","method":"GET","query":{},"timestamp":"2025-03-28 15:25:37","url":"/api-docs/swagger-ui.css","userId":"unauthenticated"}
+{"body":{},"level":"info","message":"Incoming request","method":"GET","query":{},"timestamp":"2025-03-28 15:25:37","url":"/api-docs/swagger-ui-standalone-preset.js","userId":"unauthenticated"}
+{"body":{},"level":"info","message":"Incoming request","method":"GET","query":{},"timestamp":"2025-03-28 15:25:37","url":"/api-docs/swagger-ui-bundle.js","userId":"unauthenticated"}
+{"body":{},"level":"info","message":"Incoming request","method":"GET","query":{},"timestamp":"2025-03-28 15:25:37","url":"/api-docs/swagger-ui-init.js","userId":"unauthenticated"}
+{"body":{},"level":"info","message":"Incoming request","method":"GET","query":{},"timestamp":"2025-03-28 15:48:34","url":"/api-docs/","userId":"unauthenticated"}
+{"body":{},"level":"info","message":"Incoming request","method":"GET","query":{},"timestamp":"2025-03-28 15:48:34","url":"/api-docs/swagger-ui.css","userId":"unauthenticated"}
+{"body":{},"level":"info","message":"Incoming request","method":"GET","query":{},"timestamp":"2025-03-28 15:48:34","url":"/api-docs/swagger-ui-bundle.js","userId":"unauthenticated"}
+{"body":{},"level":"info","message":"Incoming request","method":"GET","query":{},"timestamp":"2025-03-28 15:48:34","url":"/api-docs/swagger-ui-standalone-preset.js","userId":"unauthenticated"}
+{"body":{},"level":"info","message":"Incoming request","method":"GET","query":{},"timestamp":"2025-03-28 15:48:34","url":"/api-docs/swagger-ui-init.js","userId":"unauthenticated"}
+{"body":{},"level":"info","message":"Incoming request","method":"GET","query":{"sortField":"createdAt","sortOrder":"ASC"},"timestamp":"2025-03-28 15:48:43","url":"/branches?sortField=createdAt&sortOrder=ASC","userId":"unauthenticated"}
+{"level":"info","message":"Fetching branches","query":{"sortField":"createdAt","sortOrder":"ASC"},"timestamp":"2025-03-28 15:48:43","userId":"unauthenticated"}
+{"level":"info","message":"Branches fetched successfully","timestamp":"2025-03-28 15:48:43","total":0,"userId":"unauthenticated"}
+{"duration":"102ms","level":"info","message":"Response sent","method":"GET","status":200,"timestamp":"2025-03-28 15:48:43","url":"/?sortField=createdAt&sortOrder=ASC","userId":"unauthenticated"}
