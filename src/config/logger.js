@@ -3,7 +3,7 @@ const { MongoDB } = require("winston-mongodb");
 const mongoose = require("mongoose");
 
 mongoose
-  .connect("mongodb://localhost:27017/imtihon")
+  .connect(process.env.MONGODBURI)
   .then(() => {
     console.log("connected to mongodb");
   })
@@ -31,7 +31,7 @@ const logger = createLogger({
     }),
     new MongoDB({
       level: "info",
-      db: "mongodb://localhost:27017/imtihon",
+      db: process.env.MONGODBURI,
       collection: "logger",
       format: format.combine(format.timestamp(), format.json()),
     }),
