@@ -49,7 +49,7 @@ api.post("/", upload.single("rasm"), (req, res) => {
   if (!req.file) {
     return res.status(400).send({ error: "No file uploaded" });
   }
-  res.send({ url: `http://localhost:4000/image/${req.file.filename}` });
+  res.send({ url: `http://3.70.45.246:4000/image/${req.file.filename}` });
 });
 
 module.exports = api;
