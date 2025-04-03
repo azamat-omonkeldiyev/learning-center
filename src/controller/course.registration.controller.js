@@ -107,21 +107,43 @@ const createEnrollment = async (req, res) => {
         .json({ message: error.details.map((detail) => detail.message) });
     }
 
-    const eduAydi = await EduCenter.findByPk(req.body.edu_id)
-    if(!eduAydi){
+    const {edu_id, branch_id} = req.body
+
+    const eduCenter = await EduCenter.findByPk(edu_id)
+    if(!eduCenter){
       logger.warn("Enrollment creation failed: Edu center not found", {
-        eduId: req.body.edu_id,
+        eduId: edu_id,
         userId: req.userId || "unauthenticated",
       });
       return res.status(404).json({message: "Edu center id not found"})
     }
-    const branchAydi = await Branch.findByPk(req.body.branch_id)
-    if(!branchAydi){
-      logger.warn("Enrollment creation failed: Branch not found", {
-        branchId: req.body.branch_id,
-        userId: req.userId || "unauthenticated",
-      });
-      return res.status(404).json({message: "Branch id not found"})
+    if(branch_id){
+      const branch = await Branch.findByPk(branch_id)
+      if(!branch){
+        logger.warn("Enrollment creation failed: Branch not found", {
+          branchId: req.body.branch_id,
+          userId: req.userId || "unauthenticated",
+        });
+        return res.status(404).json({message: "Branch id not found"})
+      }
+
+      if(branch.edu_id !== edu_id){
+        logger.warn("Enrollment creation failed: Branch does not belong to Edu center", {
+          branchId: branch_id,
+          eduId: edu_id,
+          userId: req.userId || "unauthenticated",
+        });
+        return res.status(400).json({ message: "Branch does not belong to the specified Edu center" });
+      }
+    }else{
+      const branchCount = await Branch.count({where: {edu_id}})
+      if(branchCount > 0){
+        logger.warn("Enrollment creation failed: Edu center has branches, but no branch_id provided", {
+          eduId: edu_id,
+          userId: req.userId || "unauthenticated",
+        });
+        return res.status(400).json({ message: "This Edu center has branches, please specify a branch_id" });
+      }
     }
 
     const enrollment = await Enrollment.create({...req.body, user_id: req.userId});
